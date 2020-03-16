@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<map version="1.2" tiledversion="1.3.3" orientation="orthogonal" renderorder="right-down" width="280" height="13" tilewidth="16" tileheight="16" infinite="0" nextlayerid="3" nextobjectid="1">
+ <tileset firstgid="1" source="tiles2.tsx"/>
+ <layer id="1" name="sky" width="280" height="13">
+  <data encoding="base64" compression="zlib">
+   eJztw4EJADAIA7CC8/+XvcKBkEAqSamqqqqqem6rLn2qqqqqqqqq+uEAARU0gQ==
+  </data>
+ </layer>
+ <layer id="2" name="ground" width="280" height="13">
+  <data encoding="base64" compression="zlib">
+   eJzt1rsJgEAQBFDtQK1B7b9ELzC4QPFz6h7yHky4MNGwTQMA8F9jypQyV9IjT3QnAOCf8r+jln/DLwQAAABw3ZAFoMSZPbE58L0+OKX9gHp1wTnajaP7u57cQGBb9L7spV3z1r5c6QLcswApEQ09
+  </data>
+ </layer>
+</map>
