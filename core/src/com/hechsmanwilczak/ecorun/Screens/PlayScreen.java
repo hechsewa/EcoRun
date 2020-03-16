@@ -35,9 +35,8 @@ public class PlayScreen implements Screen {
         map = mapLoader.load("ecorun-lvl1.tmx");
         renderer = new OrthogonalTiledMapRenderer(map);
         gamecam.position.set(gameport.getWorldWidth() / 2, gameport.getWorldHeight() / 2, 0);
-
-
     }
+
     @Override
     public void show() {
 
@@ -59,7 +58,7 @@ public class PlayScreen implements Screen {
         update(delta);
 
         Gdx.gl.glClearColor(1,1,1,1);
-        Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT); //oo to opengl fun
+        Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 
         renderer.render();
 
