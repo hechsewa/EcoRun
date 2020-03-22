@@ -6,6 +6,7 @@ import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.maps.MapObject;
 import com.badlogic.gdx.maps.objects.RectangleMapObject;
 import com.badlogic.gdx.maps.tiled.TiledMap;
@@ -20,9 +21,12 @@ import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.hechsmanwilczak.ecorun.EcoRun;
 import com.hechsmanwilczak.ecorun.Scenes.Hud;
 import com.hechsmanwilczak.ecorun.Sprites.Earth;
+import com.hechsmanwilczak.ecorun.Tools.B2WorldCreator;
 
 public class PlayScreen implements Screen {
     private EcoRun game;
+    private TextureAtlas atlas;
+
     private Viewport gameport;
     private OrthographicCamera gamecam;
     private Hud hud;
@@ -39,6 +43,8 @@ public class PlayScreen implements Screen {
 
 
     public PlayScreen(EcoRun game) {
+        atlas = new TextureAtlas("Earth_and_enemy.pack");
+
         this.game = game;
         gamecam = new OrthographicCamera();
         gameport = new FitViewport(EcoRun.V_WIDTH / EcoRun.PPM, EcoRun.V_HEIGHT / EcoRun.PPM, gamecam);
@@ -52,55 +58,13 @@ public class PlayScreen implements Screen {
         world = new World(new Vector2(0, -10) , true);
         b2dr = new Box2DDebugRenderer();
 
-        player = new Earth(world);
+        new B2WorldCreator(world, map);
 
-        BodyDef bdef = new BodyDef();
-        PolygonShape shape = new PolygonShape();
-        FixtureDef fdef = new FixtureDef();
-        Body body;
+        player = new Earth(world, this);
+    }
 
-
-        //ground layer
-        for(MapObject object : map.getLayers().get(3).getObjects().getByType(RectangleMapObject.class)){
-            Rectangle rectangle = ((RectangleMapObject) object).getRectangle();
-
-            bdef.type = BodyDef.BodyType.StaticBody;
-            bdef.position.set((rectangle.getX() + rectangle.getWidth() / 2) / EcoRun.PPM, (rectangle.getY() + rectangle.getHeight() / 2) / EcoRun.PPM);
-
-            body = world.createBody(bdef);
-
-            shape.setAsBox(rectangle.getWidth() / 2 / EcoRun.PPM, rectangle.getHeight() / 2 / EcoRun.PPM);
-            fdef.shape = shape;
-            body.createFixture(fdef);
-        }
-
-        //bins layer
-        for(MapObject object : map.getLayers().get(4).getObjects().getByType(RectangleMapObject.class)){
-            Rectangle rectangle = ((RectangleMapObject) object).getRectangle();
-
-            bdef.type = BodyDef.BodyType.StaticBody;
-            bdef.position.set((rectangle.getX() + rectangle.getWidth() / 2) / EcoRun.PPM, (rectangle.getY() + rectangle.getHeight() / 2) / EcoRun.PPM);
-
-            body = world.createBody(bdef);
-
-            shape.setAsBox(rectangle.getWidth() / 2 / EcoRun.PPM, rectangle.getHeight() / 2 / EcoRun.PPM);
-            fdef.shape = shape;
-            body.createFixture(fdef);
-        }
-
-        //portal layer
-        for(MapObject object : map.getLayers().get(3).getObjects().getByType(RectangleMapObject.class)){
-            Rectangle rectangle = ((RectangleMapObject) object).getRectangle();
-
-            bdef.type = BodyDef.BodyType.StaticBody;
-            bdef.position.set((rectangle.getX() + rectangle.getWidth() / 2) / EcoRun.PPM, (rectangle.getY() + rectangle.getHeight() / 2) / EcoRun.PPM);
-
-            body = world.createBody(bdef);
-
-            shape.setAsBox(rectangle.getWidth() / 2 / EcoRun.PPM, rectangle.getHeight() / 2 / EcoRun.PPM);
-            fdef.shape = shape;
-            body.createFixture(fdef);
-        }
+    public TextureAtlas getAtlas() {
+        return atlas;
     }
 
     @Override
@@ -110,7 +74,7 @@ public class PlayScreen implements Screen {
 
     public void handleInput(float dt){
         if(Gdx.input.isKeyJustPressed(Input.Keys.UP))
-            player.b2body.applyLinearImpulse(new Vector2(0, 4f), player.b2body.getWorldCenter(), true);
+            player.b2body.applyLinearImpulse(new Vector2(0, 3f), player.b2body.getWorldCenter(), true);
         if(Gdx.input.isKeyPressed(Input.Keys.RIGHT) && player.b2body.getLinearVelocity().x <= 2)
             player.b2body.applyLinearImpulse(new Vector2(0.1f, 0), player.b2body.getWorldCenter(), true);
         if(Gdx.input.isKeyPressed(Input.Keys.LEFT) && player.b2body.getLinearVelocity().x >= -2)
@@ -122,6 +86,8 @@ public class PlayScreen implements Screen {
         handleInput(dt);
 
         world.step(1 / 60f, 6, 2);
+
+        player.update(dt);
 
         gamecam.position.x = player.b2body.getPosition().x;
 
@@ -139,6 +105,11 @@ public class PlayScreen implements Screen {
         renderer.render();
 
         b2dr.render(world, gamecam.combined);
+
+        game.batch.setProjectionMatrix(gamecam.combined);
+        game.batch.begin();
+        player.draw(game.batch);
+        game.batch.end();
 
         game.batch.setProjectionMatrix(hud.stage.getCamera().combined);
         hud.stage.draw();
@@ -167,6 +138,10 @@ public class PlayScreen implements Screen {
 
     @Override
     public void dispose() {
-
+        map.dispose();
+        renderer.dispose();
+        b2dr.dispose();
+        world.dispose();
+        hud.dispose();
     }
 }
