@@ -21,7 +21,10 @@ import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.hechsmanwilczak.ecorun.EcoRun;
 import com.hechsmanwilczak.ecorun.Scenes.Hud;
 import com.hechsmanwilczak.ecorun.Sprites.Earth;
+import com.hechsmanwilczak.ecorun.Sprites.Enemy;
+import com.hechsmanwilczak.ecorun.Sprites.PlasticBag;
 import com.hechsmanwilczak.ecorun.Tools.B2WorldCreator;
+import com.hechsmanwilczak.ecorun.Tools.WorldContactListener;
 
 public class PlayScreen implements Screen {
     private EcoRun game;
@@ -38,9 +41,9 @@ public class PlayScreen implements Screen {
     //Box2d
     private World world;
     private Box2DDebugRenderer b2dr;
+    private B2WorldCreator creator;
 
     private Earth player;
-
 
     public PlayScreen(EcoRun game) {
         atlas = new TextureAtlas("Earth_and_enemy.pack");
@@ -58,10 +61,14 @@ public class PlayScreen implements Screen {
         world = new World(new Vector2(0, -10) , true);
         b2dr = new Box2DDebugRenderer();
 
-        new B2WorldCreator(world, map);
+        creator = new B2WorldCreator(this);
 
-        player = new Earth(world, this);
-    }
+        player = new Earth(this);
+
+        world.setContactListener(new WorldContactListener());
+
+
+     }
 
     public TextureAtlas getAtlas() {
         return atlas;
@@ -88,6 +95,8 @@ public class PlayScreen implements Screen {
         world.step(1 / 60f, 6, 2);
 
         player.update(dt);
+        for(Enemy enemy : creator.getPlasticBagArray())
+            enemy.update(dt);
 
         gamecam.position.x = player.b2body.getPosition().x;
 
@@ -109,6 +118,8 @@ public class PlayScreen implements Screen {
         game.batch.setProjectionMatrix(gamecam.combined);
         game.batch.begin();
         player.draw(game.batch);
+        for(Enemy enemy : creator.getPlasticBagArray())
+            enemy.draw(game.batch);
         game.batch.end();
 
         game.batch.setProjectionMatrix(hud.stage.getCamera().combined);
@@ -119,6 +130,14 @@ public class PlayScreen implements Screen {
     public void resize(int width, int height) {
         gameport.update(width, height);
 
+    }
+
+    public TiledMap getMap(){
+        return map;
+    }
+
+    public World getWorld(){
+        return world;
     }
 
     @Override

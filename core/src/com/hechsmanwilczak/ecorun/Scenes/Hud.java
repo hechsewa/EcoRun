@@ -18,11 +18,11 @@ public class Hud implements Disposable {
     public Stage stage;
     private Viewport viewport;
 
-    private Integer score;
+    private static Integer score;
     private Integer lives;
 
-    Label scoreLabel;
-    Label livesLabel;
+    private static Label scoreLabel;
+    private Label livesLabel;
     BitmapFont hudFont;
 
     public Hud(SpriteBatch sb){
@@ -44,6 +44,11 @@ public class Hud implements Disposable {
         table.add(livesLabel).expandX().right().padRight(20); //table.row() zeby utworzyc nowy rekord w tabeli
 
         stage.addActor(table);
+    }
+
+    public static void addScore(int value){
+        score += value;
+        scoreLabel.setText(String.format("score: %05d", score));
     }
 
     @Override

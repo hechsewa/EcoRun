@@ -3,6 +3,7 @@ package com.hechsmanwilczak.ecorun.Sprites;
 import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
+import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.*;
 import com.badlogic.gdx.utils.Array;
 import com.hechsmanwilczak.ecorun.EcoRun;
@@ -21,13 +22,14 @@ public class Earth extends Sprite {
     private float stateTimer;
     private Boolean runningRight;
 
-    public Earth(World world, PlayScreen screen){
+    public Earth(PlayScreen screen){
         super(screen.getAtlas().findRegion("earth_left"));
-        this.world = world;
+        this.world = screen.getWorld();
         currentState = State.STILL;
         previousState = State.STILL;
         stateTimer = 0;
         runningRight = true;
+
 
         Array<TextureRegion> frames = new Array<TextureRegion>();
         //running animation
@@ -41,10 +43,12 @@ public class Earth extends Sprite {
         earthJump = new Animation<TextureRegion>(0.1f, frames);
         frames.clear();
 
-        defineEarth();
         earthStill = new TextureRegion(getTexture(), 1,1, 16, 16);
+
+        defineEarth();
         setBounds(0,0, 16/EcoRun.PPM, 16/EcoRun.PPM);
         setRegion(earthStill);
+
     }
 
     public void update(float dt){
@@ -102,9 +106,23 @@ public class Earth extends Sprite {
         FixtureDef fdef = new FixtureDef();
         CircleShape shape = new CircleShape();
         shape.setRadius(6.5f / EcoRun.PPM);
+        fdef.filter.categoryBits = EcoRun.EARTH_BIT;
+        //collides with:
+        fdef.filter.maskBits = EcoRun.GROUND_BIT |
+                EcoRun.PORTAL_BIT |
+                EcoRun.ENEMY_BIT |
+                EcoRun.ENEMY_HEAD_BIT;
 
         fdef.shape = shape;
         b2body.createFixture(fdef);
+
+        //head touch
+        EdgeShape head = new EdgeShape();
+        head.set(new Vector2(-4 / EcoRun.PPM, 7 / EcoRun.PPM), new Vector2(4 / EcoRun.PPM, 7 / EcoRun.PPM));
+        fdef.shape = head;
+        fdef.isSensor = true;
+
+        b2body.createFixture(fdef).setUserData("head");
 
     }
 }
