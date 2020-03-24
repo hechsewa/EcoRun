@@ -19,15 +19,18 @@ public class Hud implements Disposable {
     private Viewport viewport;
 
     private static Integer score;
-    private Integer lives;
+    private static Integer lives;
+    private static Integer items;
 
     private static Label scoreLabel;
-    private Label livesLabel;
+    private static Label livesLabel;
+    private static Label itemsLabel;
     BitmapFont hudFont;
 
     public Hud(SpriteBatch sb){
         score = 0;
         lives = 3;
+        items = 0;
         viewport = new FitViewport(EcoRun.V_WIDTH, EcoRun.V_HEIGHT, new OrthographicCamera());
         stage = new Stage(viewport, sb);
         hudFont = new BitmapFont(Gdx.files.internal("hudFont.fnt"));
@@ -38,9 +41,11 @@ public class Hud implements Disposable {
         table.setFillParent(true);
 
         scoreLabel = new Label(String.format("score: %05d", score), new Label.LabelStyle(hudFont, Color.WHITE));
+        itemsLabel = new Label(String.format("Items: %01d", items), new Label.LabelStyle(hudFont, Color.WHITE));
         livesLabel = new Label(String.format("lives: %01d", lives), new Label.LabelStyle(hudFont, Color.WHITE));
 
         table.add(scoreLabel).expandX().left().padLeft(20);
+        table.add(itemsLabel).expandX().center();
         table.add(livesLabel).expandX().right().padRight(20); //table.row() zeby utworzyc nowy rekord w tabeli
 
         stage.addActor(table);
@@ -49,6 +54,21 @@ public class Hud implements Disposable {
     public static void addScore(int value){
         score += value;
         scoreLabel.setText(String.format("score: %05d", score));
+    }
+
+    public static void zeroLives(){
+        lives = 0;
+        livesLabel.setText(String.format("lives: %01d", lives));
+    }
+
+    public static void loseLive(){
+        lives -= 1;
+        livesLabel.setText(String.format("lives: %01d", lives));
+    }
+
+    public static void addItem(){
+        items += 1;
+        itemsLabel.setText(String.format("items: %01d", items));
     }
 
     @Override

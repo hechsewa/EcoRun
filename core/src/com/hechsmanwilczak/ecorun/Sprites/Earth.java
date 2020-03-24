@@ -34,16 +34,16 @@ public class Earth extends Sprite {
         Array<TextureRegion> frames = new Array<TextureRegion>();
         //running animation
         for (int i=1; i<4; i++)
-            frames.add(new TextureRegion(getTexture(), i*16+1, 1, 16, 16));
+            frames.add(new TextureRegion(screen.getAtlas().findRegion("earth_left"), i*16, 0, 16, 16));
         earthRun = new Animation<TextureRegion>(0.1f, frames);
         frames.clear();
 
         //jumping animation
-        frames.add(new TextureRegion(getTexture(), 4*16+1, 1, 16, 16));
+        frames.add(new TextureRegion(screen.getAtlas().findRegion("earth_left"), 4*16, 0, 16, 16));
         earthJump = new Animation<TextureRegion>(0.1f, frames);
         frames.clear();
 
-        earthStill = new TextureRegion(getTexture(), 1,1, 16, 16);
+        earthStill = new TextureRegion(screen.getAtlas().findRegion("earth_left"), 0,0, 16, 16);
 
         defineEarth();
         setBounds(0,0, 16/EcoRun.PPM, 16/EcoRun.PPM);
@@ -109,9 +109,12 @@ public class Earth extends Sprite {
         fdef.filter.categoryBits = EcoRun.EARTH_BIT;
         //collides with:
         fdef.filter.maskBits = EcoRun.GROUND_BIT |
+                EcoRun.WATER_BIT |
                 EcoRun.PORTAL_BIT |
                 EcoRun.ENEMY_BIT |
-                EcoRun.ENEMY_HEAD_BIT;
+                EcoRun.ENEMY_HEAD_BIT |
+                EcoRun.ITEM_BIT |
+                EcoRun.BIN_BIT;
 
         fdef.shape = shape;
         b2body.createFixture(fdef);

@@ -16,15 +16,19 @@ import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.*;
+import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.viewport.Viewport;
 import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.hechsmanwilczak.ecorun.EcoRun;
 import com.hechsmanwilczak.ecorun.Scenes.Hud;
 import com.hechsmanwilczak.ecorun.Sprites.Earth;
 import com.hechsmanwilczak.ecorun.Sprites.Enemy;
+import com.hechsmanwilczak.ecorun.Sprites.Items.Item;
 import com.hechsmanwilczak.ecorun.Sprites.PlasticBag;
 import com.hechsmanwilczak.ecorun.Tools.B2WorldCreator;
 import com.hechsmanwilczak.ecorun.Tools.WorldContactListener;
+
+import java.util.PriorityQueue;
 
 public class PlayScreen implements Screen {
     private EcoRun game;
@@ -43,7 +47,9 @@ public class PlayScreen implements Screen {
     private Box2DDebugRenderer b2dr;
     private B2WorldCreator creator;
 
+    //sprites
     private Earth player;
+    private Array<Item> items;
 
     public PlayScreen(EcoRun game) {
         atlas = new TextureAtlas("Earth_and_enemy.pack");
@@ -66,7 +72,6 @@ public class PlayScreen implements Screen {
         player = new Earth(this);
 
         world.setContactListener(new WorldContactListener());
-
 
      }
 
@@ -98,6 +103,12 @@ public class PlayScreen implements Screen {
         for(Enemy enemy : creator.getPlasticBagArray())
             enemy.update(dt);
 
+        for(Item item : creator.getLeavesArray())
+            item.update(dt);
+
+        for(Item item : creator.getTrashArray())
+            item.update(dt);
+
         gamecam.position.x = player.b2body.getPosition().x;
 
         gamecam.update();
@@ -120,6 +131,13 @@ public class PlayScreen implements Screen {
         player.draw(game.batch);
         for(Enemy enemy : creator.getPlasticBagArray())
             enemy.draw(game.batch);
+
+        for(Item item: creator.getLeavesArray())
+            item.draw(game.batch);
+
+        for(Item item: creator.getTrashArray())
+            item.draw(game.batch);
+
         game.batch.end();
 
         game.batch.setProjectionMatrix(hud.stage.getCamera().combined);

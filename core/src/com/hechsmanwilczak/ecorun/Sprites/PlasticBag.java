@@ -85,14 +85,6 @@ public class PlasticBag extends Enemy {
         fdef.restitution = 0.5f;
         fdef.filter.categoryBits  = EcoRun.ENEMY_HEAD_BIT;
         b2body.createFixture(fdef).setUserData(this);
-
-
-        /*//right side
-        EdgeShape right = new EdgeShape();
-        right.set(new Vector2(10 / EcoRun.PPM, 0 / EcoRun.PPM), new Vector2(10 / EcoRun.PPM, 0 / EcoRun.PPM));
-        fdef.shape = right;
-        fdef.filter.categoryBits  = EcoRun.ENEMY_RIGHT_BIT;
-        b2body.createFixture(fdef).setUserData(this);*/
     }
 
     public void draw(Batch batch){

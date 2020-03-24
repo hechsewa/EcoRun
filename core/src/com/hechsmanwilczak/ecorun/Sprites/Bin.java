@@ -22,4 +22,10 @@ public class Bin extends InteractiveTileObject {
     public void onHeadTouch() {
         Gdx.app.log("Bin", "head touch");
     }
+
+    @Override
+    public void onCollision() {
+        Gdx.app.log("Bin", "Collision");
+        setCategoryFilter(EcoRun.IN_BIN_BIT);
+    }
 }

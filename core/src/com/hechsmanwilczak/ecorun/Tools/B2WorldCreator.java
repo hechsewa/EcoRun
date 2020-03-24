@@ -9,12 +9,17 @@ import com.badlogic.gdx.utils.Array;
 import com.hechsmanwilczak.ecorun.EcoRun;
 import com.hechsmanwilczak.ecorun.Screens.PlayScreen;
 import com.hechsmanwilczak.ecorun.Sprites.Bin;
+import com.hechsmanwilczak.ecorun.Sprites.Items.Leaf;
+import com.hechsmanwilczak.ecorun.Sprites.Items.Trash;
 import com.hechsmanwilczak.ecorun.Sprites.PlasticBag;
 import com.hechsmanwilczak.ecorun.Sprites.Portal;
+import com.hechsmanwilczak.ecorun.Sprites.Water;
 
 
 public class B2WorldCreator {
     private Array<PlasticBag> plasticBagArray;
+    private Array<Leaf> leavesArray;
+    private Array<Trash> trashArray;
 
     public B2WorldCreator(PlayScreen screen){
         World world = screen.getWorld();
@@ -57,9 +62,31 @@ public class B2WorldCreator {
             Rectangle rectangle = ((RectangleMapObject) object).getRectangle();
             plasticBagArray.add(new PlasticBag(screen, rectangle.getX() / EcoRun.PPM, rectangle.getY() / EcoRun.PPM));
         }
+
+        //water
+        for(MapObject object : map.getLayers().get(7).getObjects().getByType(RectangleMapObject.class)){
+            Rectangle rectangle = ((RectangleMapObject) object).getRectangle();
+            new Water(screen, rectangle);
+        }
+
+        //leaves
+        leavesArray = new Array<Leaf>();
+        for(MapObject object : map.getLayers().get(8).getObjects().getByType(RectangleMapObject.class)){
+            Rectangle rectangle = ((RectangleMapObject) object).getRectangle();
+            leavesArray.add(new Leaf(screen, rectangle.getX() / EcoRun.PPM, rectangle.getY()/ EcoRun.PPM));
+        }
+
+        //trash
+        trashArray = new Array<Trash>();
+        for(MapObject object : map.getLayers().get(9).getObjects().getByType(RectangleMapObject.class)){
+            Rectangle rectangle = ((RectangleMapObject) object).getRectangle();
+            trashArray.add(new Trash(screen, rectangle.getX() / EcoRun.PPM, rectangle.getY()/ EcoRun.PPM, object.getName()));
+        }
     }
 
     public Array<PlasticBag> getPlasticBagArray() {
         return plasticBagArray;
     }
+    public Array<Leaf> getLeavesArray() { return leavesArray; }
+    public Array<Trash> getTrashArray() {return trashArray;}
 }

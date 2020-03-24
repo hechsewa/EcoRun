@@ -37,6 +37,7 @@ public abstract class InteractiveTileObject {
     }
 
     public abstract void onHeadTouch();
+    public abstract void onCollision();
 
     public void setCategoryFilter(short filterBit){
         Filter filter = new Filter();

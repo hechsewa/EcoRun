@@ -21,8 +21,10 @@ public class EcoRun extends Game {
 	public static final short OPEN_PORTAL_BIT = 16;
 	public static final short ENEMY_BIT = 32;
 	public static final short ENEMY_HEAD_BIT = 64;
-	//public static final short ENEMY_RIGHT_BIT = 128;
-	//public static final short ENEMY_LEFT_BIT = 256;
+	public static final short WATER_BIT = 128;
+	public static final short TOUCHED_WATER_BIT = 256;
+	public static final short ITEM_BIT = 512;
+	public static final short IN_BIN_BIT = 1024;
 
 
 	@Override
