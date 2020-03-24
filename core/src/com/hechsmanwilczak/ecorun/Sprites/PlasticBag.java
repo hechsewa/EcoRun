@@ -14,6 +14,7 @@ import com.hechsmanwilczak.ecorun.Screens.PlayScreen;
 public class PlasticBag extends Enemy {
 
     private float stateTime;
+    private int stepCount;
     private Animation walkAnimation;
     private Array<TextureRegion> frames;
     private boolean setToDestroy;
@@ -26,6 +27,7 @@ public class PlasticBag extends Enemy {
             frames.add(new TextureRegion(screen.getAtlas().findRegion("bag"), i * 16, 1, 16, 16));
         walkAnimation = new Animation(0.4f, frames);
         stateTime = 0;
+        stepCount = 0;
         setBounds(getX(), getY(), 16 / EcoRun.PPM, 16 / EcoRun.PPM);
         setToDestroy = false;
         destroyed = false;
@@ -33,6 +35,7 @@ public class PlasticBag extends Enemy {
 
     public void update(float dt) {
         stateTime += dt;
+        stepCount += 1;
         if (setToDestroy && !destroyed) {
             world.destroyBody(b2body);
             destroyed = true;
@@ -42,6 +45,10 @@ public class PlasticBag extends Enemy {
             b2body.setLinearVelocity(velocity);
             setPosition(b2body.getPosition().x - getWidth() / 2, b2body.getPosition().y - getHeight() / 2);
             setRegion((TextureRegion) walkAnimation.getKeyFrame(stateTime, true));
+            float vel = b2body.getPosition().x-getWidth()/2;
+            if (stepCount%50==0){ //co 50 ramke zmiana kierunku
+                this.reverseVelocity(true,false);
+            }
         }
     }
 
