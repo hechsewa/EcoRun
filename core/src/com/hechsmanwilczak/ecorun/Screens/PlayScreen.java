@@ -85,12 +85,14 @@ public class PlayScreen implements Screen {
     }
 
     public void handleInput(float dt){
-        if(Gdx.input.isKeyJustPressed(Input.Keys.UP))
-            player.b2body.applyLinearImpulse(new Vector2(0, 3f), player.b2body.getWorldCenter(), true);
-        if(Gdx.input.isKeyPressed(Input.Keys.RIGHT) && player.b2body.getLinearVelocity().x <= 2)
-            player.b2body.applyLinearImpulse(new Vector2(0.1f, 0), player.b2body.getWorldCenter(), true);
-        if(Gdx.input.isKeyPressed(Input.Keys.LEFT) && player.b2body.getLinearVelocity().x >= -2)
-            player.b2body.applyLinearImpulse(new Vector2(-0.1f, 0), player.b2body.getWorldCenter(), true);
+        if(player.currentState != Earth.State.DEAD) {
+            if (Gdx.input.isKeyJustPressed(Input.Keys.UP))
+                player.b2body.applyLinearImpulse(new Vector2(0, 3f), player.b2body.getWorldCenter(), true);
+            if (Gdx.input.isKeyPressed(Input.Keys.RIGHT) && player.b2body.getLinearVelocity().x <= 2)
+                player.b2body.applyLinearImpulse(new Vector2(0.1f, 0), player.b2body.getWorldCenter(), true);
+            if (Gdx.input.isKeyPressed(Input.Keys.LEFT) && player.b2body.getLinearVelocity().x >= -2)
+                player.b2body.applyLinearImpulse(new Vector2(-0.1f, 0), player.b2body.getWorldCenter(), true);
+        }
 
     }
 
@@ -109,10 +111,15 @@ public class PlayScreen implements Screen {
         for(Item item : creator.getTrashArray())
             item.update(dt);
 
-        gamecam.position.x = player.b2body.getPosition().x;
+        //move camera when earth is not dead
+        if(player.currentState != Earth.State.DEAD) {
+            gamecam.position.x = player.b2body.getPosition().x;
+        }
 
         gamecam.update();
         renderer.setView(gamecam);
+
+
     }
 
     @Override
@@ -142,8 +149,18 @@ public class PlayScreen implements Screen {
 
         game.batch.setProjectionMatrix(hud.stage.getCamera().combined);
         hud.stage.draw();
+
+        if(gameOver()){
+            game.setScreen(new GameOverScreen(game));
+            dispose();
+        }
     }
 
+    public boolean gameOver(){
+        if(player.currentState == Earth.State.DEAD && player.getStateTimer() > 2)
+            return true;
+        return false;
+    }
     @Override
     public void resize(int width, int height) {
         gameport.update(width, height);
@@ -180,5 +197,9 @@ public class PlayScreen implements Screen {
         b2dr.dispose();
         world.dispose();
         hud.dispose();
+    }
+
+    public Hud getHud(){
+        return hud;
     }
 }

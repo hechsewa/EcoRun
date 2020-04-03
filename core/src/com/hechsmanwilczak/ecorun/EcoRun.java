@@ -6,6 +6,7 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.hechsmanwilczak.ecorun.Screens.MenuScreen;
 import com.hechsmanwilczak.ecorun.Screens.PlayScreen;
 
 public class EcoRun extends Game {
@@ -14,6 +15,7 @@ public class EcoRun extends Game {
 	public static final int V_HEIGHT = 208;
 	public static final float PPM = 100;
 
+	public static final short NOTHING_BIT = 0;
 	public static final short GROUND_BIT = 1;
 	public static final short EARTH_BIT = 2;
 	public static final short BIN_BIT = 4;
@@ -30,7 +32,7 @@ public class EcoRun extends Game {
 	@Override
 	public void create () {
 		batch = new SpriteBatch();
-		setScreen(new PlayScreen(this));
+		setScreen(new MenuScreen(this));
 	}
 
 	@Override

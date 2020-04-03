@@ -1,0 +1,131 @@
+package com.hechsmanwilczak.ecorun.Screens;
+
+import com.badlogic.gdx.Game;
+import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Screen;
+import com.badlogic.gdx.graphics.Color;
+import com.badlogic.gdx.graphics.GL20;
+import com.badlogic.gdx.graphics.OrthographicCamera;
+import com.badlogic.gdx.graphics.g2d.BitmapFont;
+import com.badlogic.gdx.scenes.scene2d.InputEvent;
+import com.badlogic.gdx.scenes.scene2d.Stage;
+import com.badlogic.gdx.scenes.scene2d.ui.*;
+import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
+import com.badlogic.gdx.utils.viewport.FitViewport;
+import com.badlogic.gdx.utils.viewport.Viewport;
+import com.hechsmanwilczak.ecorun.EcoRun;
+
+public class LevelsScreen implements Screen {
+    private Viewport viewport;
+    private Stage stage;
+
+    private Game game;
+
+    public LevelsScreen(Game game){
+        this.game = game;
+        viewport = new FitViewport(EcoRun.V_WIDTH, EcoRun.V_HEIGHT, new OrthographicCamera());
+        stage = new Stage(viewport, ((EcoRun) game).batch);
+        Gdx.input.setInputProcessor(stage);
+
+        Table table = new Table();
+        table.center();
+        table.setFillParent(true);
+
+        TextButton.TextButtonStyle textButtonStyle = new TextButton.TextButtonStyle();
+        BitmapFont font = new BitmapFont();
+        textButtonStyle.font = font;
+        textButtonStyle.fontColor = Color.ORANGE;
+
+        TextButton level1Button=new TextButton("Level 1",textButtonStyle);
+        level1Button.setText("Level 1");
+        level1Button.setHeight(230);
+        level1Button.setWidth(500);
+        level1Button.setPosition(50,80);
+        level1Button.addListener(new ClickListener(){
+            @Override
+            public void clicked(InputEvent event, float x, float y) {
+                goToGameScreen();
+            }
+        });
+
+        TextButton level2Button=new TextButton("Level 2",textButtonStyle);
+        level2Button.setText("Level 2");
+        level2Button.setHeight(230);
+        level2Button.setWidth(500);
+        level2Button.setPosition(50,50);
+        level2Button.addListener(new ClickListener(){
+            @Override
+            public void clicked(InputEvent event, float x, float y) {
+                goToGameScreen();
+                //TODO: level 2
+            }
+        });
+
+
+        TextButton level3Button=new TextButton("Level 3",textButtonStyle);
+        level3Button.setText("Level 3");
+        level3Button.setHeight(230);
+        level3Button.setWidth(500);
+        level3Button.setPosition(50,20);
+        level3Button.addListener(new ClickListener(){
+            @Override
+            public void clicked(InputEvent event, float x, float y) {
+                goToGameScreen();
+                //TODO: level 3
+            }
+        });
+
+
+        table.add(level1Button).expandX();
+        table.row();
+        table.add(level2Button).expandX();
+        table.row();
+        table.add(level3Button).expandX();
+        table.row();
+
+        stage.addActor(table);
+
+    }
+
+    public void goToGameScreen(){
+        game.setScreen(new PlayScreen((EcoRun) game));
+        dispose();
+    }
+    @Override
+    public void show() {
+
+    }
+
+    @Override
+    public void render(float delta) {
+        Gdx.gl.glClearColor(0,0,0,1);
+        Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
+        stage.act();
+        stage.draw();
+    }
+
+    @Override
+    public void resize(int width, int height) {
+
+    }
+
+    @Override
+    public void pause() {
+
+    }
+
+    @Override
+    public void resume() {
+
+    }
+
+    @Override
+    public void hide() {
+
+    }
+
+    @Override
+    public void dispose() {
+        stage.dispose();
+    }
+}

@@ -66,6 +66,12 @@ public class Hud implements Disposable {
         livesLabel.setText(String.format("lives: %01d", lives));
     }
 
+    public boolean isLifeZero(){
+        if (lives == 0)
+                return true;
+        else return false;
+    }
+
     public static void addItem(){
         items += 1;
         itemsLabel.setText(String.format("items: %01d", items));

@@ -31,6 +31,7 @@ public class Trash extends Item {
         FixtureDef fdef = new FixtureDef();
         CircleShape shape = new CircleShape();
         shape.setRadius(6f / EcoRun.PPM);
+        shape.setPosition(new Vector2(8f / EcoRun.PPM ,8f / EcoRun.PPM));
         fdef.filter.categoryBits = EcoRun.ITEM_BIT;
         fdef.filter.maskBits = EcoRun.GROUND_BIT |
                 EcoRun.PORTAL_BIT |

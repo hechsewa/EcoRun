@@ -10,25 +10,29 @@ import com.hechsmanwilczak.ecorun.EcoRun;
 import com.hechsmanwilczak.ecorun.Screens.PlayScreen;
 
 public class Earth extends Sprite {
-    public enum State {JUMPING, STILL, RUNNING};
+    public enum State {JUMPING, STILL, RUNNING, DEAD};
     public State currentState;
     public State previousState;
     public World world;
     public Body b2body;
     private TextureRegion earthStill;
-
+    private TextureRegion earthDead;
     private Animation<TextureRegion> earthRun;
     private Animation<TextureRegion> earthJump;
     private float stateTimer;
     private Boolean runningRight;
+    private Boolean earthIsDead;
+    private PlayScreen screen;
 
     public Earth(PlayScreen screen){
         super(screen.getAtlas().findRegion("earth_left"));
         this.world = screen.getWorld();
+        this.screen = screen;
         currentState = State.STILL;
         previousState = State.STILL;
         stateTimer = 0;
         runningRight = true;
+        earthIsDead = false;
 
 
         Array<TextureRegion> frames = new Array<TextureRegion>();
@@ -45,6 +49,8 @@ public class Earth extends Sprite {
 
         earthStill = new TextureRegion(screen.getAtlas().findRegion("earth_left"), 0,0, 16, 16);
 
+        earthDead = new TextureRegion(screen.getAtlas().findRegion("earth_left"), 4*16, 0, 16, 16);
+
         defineEarth();
         setBounds(0,0, 16/EcoRun.PPM, 16/EcoRun.PPM);
         setRegion(earthStill);
@@ -52,6 +58,8 @@ public class Earth extends Sprite {
     }
 
     public void update(float dt){
+        if(screen.getHud().isLifeZero() && !isDead())
+            die();
         setPosition(b2body.getPosition().x - getWidth()/2, b2body.getPosition().y - getHeight()/2);
         setRegion(getFrame(dt));
     }
@@ -65,6 +73,9 @@ public class Earth extends Sprite {
                 break;
             case RUNNING:
                 region = earthRun.getKeyFrame(stateTimer, true);
+                break;
+            case DEAD:
+                region = earthDead;
                 break;
             case STILL:
             default:
@@ -89,12 +100,33 @@ public class Earth extends Sprite {
     }
 
     public State getState() {
-        if (b2body.getLinearVelocity().y > 0)
+        if (earthIsDead)
+            return State.DEAD;
+        else if (b2body.getLinearVelocity().y > 0)
             return State.JUMPING;
         else if (b2body.getLinearVelocity().x != 0)
             return State.RUNNING;
         else
             return State.STILL;
+    }
+
+    public void die(){
+        if(!isDead()){
+            earthIsDead = true;
+            Filter filter = new Filter();
+            filter.maskBits = EcoRun.NOTHING_BIT;
+            for(Fixture fixture : b2body.getFixtureList())
+                fixture.setFilterData(filter);
+            b2body.applyLinearImpulse(new Vector2(0,4f), b2body.getWorldCenter(), true);
+        }
+    }
+
+    public boolean isDead(){
+        return earthIsDead;
+    }
+
+    public float getStateTimer(){
+        return stateTimer;
     }
 
     public void defineEarth(){
@@ -105,7 +137,7 @@ public class Earth extends Sprite {
 
         FixtureDef fdef = new FixtureDef();
         CircleShape shape = new CircleShape();
-        shape.setRadius(6.5f / EcoRun.PPM);
+        shape.setRadius(4f / EcoRun.PPM);
         fdef.filter.categoryBits = EcoRun.EARTH_BIT;
         //collides with:
         fdef.filter.maskBits = EcoRun.GROUND_BIT |
