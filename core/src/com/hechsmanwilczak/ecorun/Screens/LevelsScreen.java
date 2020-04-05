@@ -18,6 +18,7 @@ import com.hechsmanwilczak.ecorun.EcoRun;
 public class LevelsScreen implements Screen {
     private Viewport viewport;
     private Stage stage;
+    private BitmapFont font;
 
     private Game game;
 
@@ -26,21 +27,21 @@ public class LevelsScreen implements Screen {
         viewport = new FitViewport(EcoRun.V_WIDTH, EcoRun.V_HEIGHT, new OrthographicCamera());
         stage = new Stage(viewport, ((EcoRun) game).batch);
         Gdx.input.setInputProcessor(stage);
+        font = new BitmapFont(Gdx.files.internal("font.fnt"));
 
         Table table = new Table();
         table.center();
         table.setFillParent(true);
 
         TextButton.TextButtonStyle textButtonStyle = new TextButton.TextButtonStyle();
-        BitmapFont font = new BitmapFont();
+        //BitmapFont font = new BitmapFont();
         textButtonStyle.font = font;
-        textButtonStyle.fontColor = Color.ORANGE;
 
         TextButton level1Button=new TextButton("Level 1",textButtonStyle);
         level1Button.setText("Level 1");
         level1Button.setHeight(230);
         level1Button.setWidth(500);
-        level1Button.setPosition(50,80);
+        level1Button.setPosition(50,90);
         level1Button.addListener(new ClickListener(){
             @Override
             public void clicked(InputEvent event, float x, float y) {
@@ -66,7 +67,7 @@ public class LevelsScreen implements Screen {
         level3Button.setText("Level 3");
         level3Button.setHeight(230);
         level3Button.setWidth(500);
-        level3Button.setPosition(50,20);
+        level3Button.setPosition(50,10);
         level3Button.addListener(new ClickListener(){
             @Override
             public void clicked(InputEvent event, float x, float y) {
@@ -76,9 +77,9 @@ public class LevelsScreen implements Screen {
         });
 
 
-        table.add(level1Button).expandX();
+        table.add(level1Button).expandX().padBottom(10);
         table.row();
-        table.add(level2Button).expandX();
+        table.add(level2Button).expandX().padBottom(10);
         table.row();
         table.add(level3Button).expandX();
         table.row();

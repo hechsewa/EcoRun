@@ -1,5 +1,6 @@
 package com.hechsmanwilczak.ecorun.Sprites;
 
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
@@ -9,8 +10,10 @@ import com.badlogic.gdx.utils.Array;
 import com.hechsmanwilczak.ecorun.EcoRun;
 import com.hechsmanwilczak.ecorun.Screens.PlayScreen;
 
+import java.util.concurrent.TimeUnit;
+
 public class Earth extends Sprite {
-    public enum State {JUMPING, STILL, RUNNING, DEAD};
+    public enum State {JUMPING, STILL, RUNNING, DEAD, HIT};
     public State currentState;
     public State previousState;
     public World world;
@@ -19,10 +22,12 @@ public class Earth extends Sprite {
     private TextureRegion earthDead;
     private Animation<TextureRegion> earthRun;
     private Animation<TextureRegion> earthJump;
+    private Animation<TextureRegion> earthHit;
     private float stateTimer;
     private Boolean runningRight;
     private Boolean earthIsDead;
     private PlayScreen screen;
+    public static Boolean hit;
 
     public Earth(PlayScreen screen){
         super(screen.getAtlas().findRegion("earth_left"));
@@ -33,7 +38,7 @@ public class Earth extends Sprite {
         stateTimer = 0;
         runningRight = true;
         earthIsDead = false;
-
+        hit = false;
 
         Array<TextureRegion> frames = new Array<TextureRegion>();
         //running animation
@@ -49,7 +54,15 @@ public class Earth extends Sprite {
 
         earthStill = new TextureRegion(screen.getAtlas().findRegion("earth_left"), 0,0, 16, 16);
 
-        earthDead = new TextureRegion(screen.getAtlas().findRegion("earth_left"), 4*16, 0, 16, 16);
+        earthDead = new TextureRegion(screen.getAtlas().findRegion("earth_dead"), 0, 0, 16, 16);
+
+        //hit by enemy animation
+        frames.add(earthDead);
+        frames.add(earthStill);
+        frames.add(earthDead);
+        frames.add(earthStill);
+        earthHit = new Animation<TextureRegion>(0.05f, frames);
+        frames.clear();
 
         defineEarth();
         setBounds(0,0, 16/EcoRun.PPM, 16/EcoRun.PPM);
@@ -73,6 +86,13 @@ public class Earth extends Sprite {
                 break;
             case RUNNING:
                 region = earthRun.getKeyFrame(stateTimer, true);
+                break;
+            case HIT:
+                region = earthHit.getKeyFrame(stateTimer);
+                if (earthHit.isAnimationFinished(stateTimer))
+                    hit = false;
+                else
+                    hit = true;
                 break;
             case DEAD:
                 region = earthDead;
@@ -106,6 +126,8 @@ public class Earth extends Sprite {
             return State.JUMPING;
         else if (b2body.getLinearVelocity().x != 0)
             return State.RUNNING;
+        else if (hit)
+            return State.HIT;
         else
             return State.STILL;
     }
@@ -156,8 +178,14 @@ public class Earth extends Sprite {
         head.set(new Vector2(-4 / EcoRun.PPM, 7 / EcoRun.PPM), new Vector2(4 / EcoRun.PPM, 7 / EcoRun.PPM));
         fdef.shape = head;
         fdef.isSensor = true;
-
         b2body.createFixture(fdef).setUserData("head");
 
+        //bottom of the earth touch - for ground detection
+        PolygonShape bottom = new PolygonShape();
+        bottom.setAsBox(4/EcoRun.PPM, 4/EcoRun.PPM);
+        fdef.shape = bottom;
+        fdef.filter.categoryBits = EcoRun.EARTH_BIT;
+        fdef.filter.maskBits = EcoRun.GROUND_BIT;
+        b2body.createFixture(fdef).setUserData("bottom");
     }
 }

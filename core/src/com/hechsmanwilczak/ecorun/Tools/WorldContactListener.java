@@ -1,13 +1,17 @@
 package com.hechsmanwilczak.ecorun.Tools;
 
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.physics.box2d.*;
 import com.hechsmanwilczak.ecorun.EcoRun;
 import com.hechsmanwilczak.ecorun.Scenes.Hud;
+import com.hechsmanwilczak.ecorun.Sprites.Earth;
 import com.hechsmanwilczak.ecorun.Sprites.Enemy;
 import com.hechsmanwilczak.ecorun.Sprites.InteractiveTileObject;
 import com.hechsmanwilczak.ecorun.Sprites.Items.Item;
 
 public class WorldContactListener implements ContactListener {
+
+    private boolean playerOnGround;
 
     @Override
     public void beginContact(Contact contact) {
@@ -32,6 +36,13 @@ public class WorldContactListener implements ContactListener {
                 ((InteractiveTileObject) object.getUserData()).onCollision();
             }
         }
+
+        //zablokowanie podwojnego skoku
+        if ((fixA.getUserData() != null && fixA.getUserData().equals("bottom")) ||
+        (fixB.getUserData() != null && fixB.getUserData().equals("bottom"))){
+            playerOnGround = true;
+        }
+
         switch (cDef) {
             case EcoRun.ENEMY_HEAD_BIT | EcoRun.EARTH_BIT:
                 //isEnemyHit = true;
@@ -50,6 +61,7 @@ public class WorldContactListener implements ContactListener {
             case EcoRun.EARTH_BIT | EcoRun.ENEMY_BIT:
                 //if(!isEnemyHit)
                 Hud.loseLive();
+                Earth.hit = true;
                 break;
             case EcoRun.ENEMY_BIT | EcoRun.ENEMY_BIT:
                 ((Enemy) fixA.getUserData()).reverseVelocity(true, false);
@@ -70,8 +82,22 @@ public class WorldContactListener implements ContactListener {
         }
     }
 
+    public boolean isPlayerOnGround(){
+        return playerOnGround;
+    }
+
     @Override
     public void endContact(Contact contact) {
+        Fixture fixA = contact.getFixtureA();
+        Fixture fixB = contact.getFixtureB();
+
+        //no longer on the ground
+        if ((fixA.getUserData()!= null && fixA.getUserData().equals("bottom"))) {
+            playerOnGround = false;
+        }
+        if (fixB.getUserData() != null && fixB.getUserData().equals("bottom")){
+            playerOnGround = false;
+        }
     }
 
     @Override

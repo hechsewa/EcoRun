@@ -22,24 +22,27 @@ public class MenuScreen implements Screen {
     private Stage stage;
 
     private Game game;
+    private BitmapFont menuFont;
 
     public MenuScreen(Game game){
         this.game = game;
         viewport = new FitViewport(EcoRun.V_WIDTH, EcoRun.V_HEIGHT, new OrthographicCamera());
         stage = new Stage(viewport, ((EcoRun) game).batch);
         Gdx.input.setInputProcessor(stage);
-        Label.LabelStyle font = new Label.LabelStyle(new BitmapFont(), Color.WHITE);
+
+        menuFont = new BitmapFont(Gdx.files.internal("font.fnt"));
+        Label.LabelStyle font = new Label.LabelStyle(menuFont, Color.WHITE);
 
         Table table = new Table();
         table.center();
         table.setFillParent(true);
 
-        Label gameNameLabel = new Label("ECO RUN", font);
+        Label gameNameLabel = new Label("ECO RUN", font); //tu bym chyba chciala jakies logo dac
         Label playLabel = new Label("Click to play!", font);
 
 
         Image playButtonImage = new Image(new Texture("play.png"));
-        playButtonImage.setSize(125, 125);
+        playButtonImage.setSize(30, 16);
         playButtonImage.addListener(new ClickListener(){
             @Override
             public void clicked(InputEvent event, float x, float y) {
@@ -48,7 +51,7 @@ public class MenuScreen implements Screen {
         });
 
         Image infoButtonImage = new Image(new Texture("info.png"));
-        infoButtonImage.setSize(125, 125);
+        infoButtonImage.setSize(30, 16);
         infoButtonImage.addListener(new ClickListener(){
             @Override
             public void clicked(InputEvent event, float x, float y) {
@@ -57,7 +60,7 @@ public class MenuScreen implements Screen {
         });
 
         Image exitButtonImage = new Image(new Texture("exit.png"));
-        exitButtonImage.setSize(125, 125);
+        exitButtonImage.setSize(30, 16);
         exitButtonImage.addListener(new ClickListener(){
             @Override
             public void clicked(InputEvent event, float x, float y) {
@@ -67,13 +70,13 @@ public class MenuScreen implements Screen {
 
         //nie wiem czemu ale nie wykrywa kliknięcia przyciskow na calej powierzchni : (
         // ale one i tak są do zmiany więc moze się to jakoś inaczej rozwiaze
-
+        //TODO: background image, wykrywanie przyciskow
 
         table.add(gameNameLabel).expandX();
         table.row();
         table.add(playLabel).expandX().padTop(10f);
         table.row();
-        table.add(playButtonImage).expandX().padTop(1f);
+        table.add(playButtonImage).expandX().padTop(10f);
         table.row();
         table.add(infoButtonImage).expandX().padTop(1f);
         table.row();
@@ -83,6 +86,7 @@ public class MenuScreen implements Screen {
         stage.addActor(table);
 
     }
+
     public void goToGameScreen(){
         game.setScreen(new LevelsScreen((EcoRun) game));
         dispose();

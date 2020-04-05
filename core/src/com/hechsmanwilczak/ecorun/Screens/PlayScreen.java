@@ -46,6 +46,7 @@ public class PlayScreen implements Screen {
     private World world;
     private Box2DDebugRenderer b2dr;
     private B2WorldCreator creator;
+    private WorldContactListener contactListener;
 
     //sprites
     private Earth player;
@@ -62,7 +63,7 @@ public class PlayScreen implements Screen {
         mapLoader = new TmxMapLoader();
         map = mapLoader.load("ecorun-lvl1.tmx");
         renderer = new OrthogonalTiledMapRenderer(map, 1 / EcoRun.PPM);
-        gamecam.position.set(gameport.getWorldWidth() / 2, gameport.getWorldHeight() / 2, 0);
+        gamecam.position.set(gameport.getWorldWidth(), gameport.getWorldHeight() / 2, 0);
 
         world = new World(new Vector2(0, -10) , true);
         b2dr = new Box2DDebugRenderer();
@@ -71,7 +72,8 @@ public class PlayScreen implements Screen {
 
         player = new Earth(this);
 
-        world.setContactListener(new WorldContactListener());
+        contactListener = new WorldContactListener();
+        world.setContactListener(contactListener);
 
      }
 
@@ -86,8 +88,10 @@ public class PlayScreen implements Screen {
 
     public void handleInput(float dt){
         if(player.currentState != Earth.State.DEAD) {
-            if (Gdx.input.isKeyJustPressed(Input.Keys.UP))
-                player.b2body.applyLinearImpulse(new Vector2(0, 3f), player.b2body.getWorldCenter(), true);
+            if (Gdx.input.isKeyJustPressed(Input.Keys.UP)){
+                if (contactListener.isPlayerOnGround())
+                    player.b2body.applyLinearImpulse(new Vector2(0, 3f), player.b2body.getWorldCenter(), true);
+            }
             if (Gdx.input.isKeyPressed(Input.Keys.RIGHT) && player.b2body.getLinearVelocity().x <= 2)
                 player.b2body.applyLinearImpulse(new Vector2(0.1f, 0), player.b2body.getWorldCenter(), true);
             if (Gdx.input.isKeyPressed(Input.Keys.LEFT) && player.b2body.getLinearVelocity().x >= -2)

@@ -20,7 +20,7 @@ import com.hechsmanwilczak.ecorun.EcoRun;
 public class GameOverScreen implements Screen {
     private Viewport viewport;
     private Stage stage;
-
+    private BitmapFont screenFont;
     private Game game;
 
     public GameOverScreen(Game game){
@@ -28,18 +28,19 @@ public class GameOverScreen implements Screen {
         viewport = new FitViewport(EcoRun.V_WIDTH, EcoRun.V_HEIGHT, new OrthographicCamera());
         stage = new Stage(viewport, ((EcoRun) game).batch);
         Gdx.input.setInputProcessor(stage);
-        Label.LabelStyle font = new Label.LabelStyle(new BitmapFont(), Color.WHITE);
+        screenFont = new BitmapFont(Gdx.files.internal("font.fnt"));
+        Label.LabelStyle font = new Label.LabelStyle(screenFont, Color.WHITE);
 
         Table table = new Table();
         table.center();
         table.setFillParent(true);
 
         Label gameOverLabel = new Label("GAME OVER", font);
-        Label playAgainLabel = new Label("Play again or back to menu!", font);
+        Label playAgainLabel = new Label("play again or go back to menu", font);
 
         TextButton.TextButtonStyle textButtonStyle = new TextButton.TextButtonStyle();
-        BitmapFont font2 = new BitmapFont();
-        textButtonStyle.font = font2;
+        //BitmapFont font2 = new BitmapFont();
+        textButtonStyle.font = screenFont;
         textButtonStyle.fontColor = Color.ORANGE;
 
         TextButton playAgainButton=new TextButton("Play again",textButtonStyle);
@@ -68,11 +69,11 @@ public class GameOverScreen implements Screen {
 
         table.add(gameOverLabel).expandX();
         table.row();
-        table.add(playAgainLabel).expandX().padTop(10f).padBottom(10f);
+        table.add(playAgainLabel).expandX().padTop(10f).padBottom(20f);
         table.row();
-        table.add(playAgainButton).expandX();
+        table.add(playAgainButton).expandX().padBottom(10f);
         table.row();
-        table.add(menuButton).expandX();
+        table.add(menuButton).expandX().padBottom(10f);
 
         stage.addActor(table);
 
