@@ -13,6 +13,7 @@ public class Portal extends InteractiveTileObject {
         super(screen, bounds);
         fixture.setUserData(this);
         setCategoryFilter(EcoRun.PORTAL_BIT);
+        fixture.setSensor(true);
     }
 
     @Override
@@ -23,6 +24,5 @@ public class Portal extends InteractiveTileObject {
 
     @Override
     public void onCollision() {
-
     }
 }

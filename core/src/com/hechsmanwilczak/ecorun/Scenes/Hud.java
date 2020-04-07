@@ -3,9 +3,11 @@ package com.hechsmanwilczak.ecorun.Scenes;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.OrthographicCamera;
+import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.scenes.scene2d.Stage;
+import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.utils.Disposable;
@@ -33,6 +35,7 @@ public class Hud implements Disposable {
     private static Integer noPlastic, colPlastic;
     private static Integer noMetal, colMetal;
     private static Integer noPaper, colPaper;
+    private Image imagePlastic, imageMetal, imagePaper, imageLife;
 
     public Hud(SpriteBatch sb, Integer plastic, Integer metal, Integer paper){
         score = 0;
@@ -49,6 +52,12 @@ public class Hud implements Disposable {
         stage = new Stage(viewport, sb);
         hudFont = new BitmapFont(Gdx.files.internal("hudFont.fnt"));
 
+        //images
+        imageLife = new Image(new Texture(Gdx.files.internal("heart.png")));
+        imagePlastic =  new Image(new Texture(Gdx.files.internal("plastic.png")));
+        imageMetal =  new Image(new Texture(Gdx.files.internal("metal.png")));
+        imagePaper =  new Image(new Texture(Gdx.files.internal("paper.png")));
+
         Table table = new Table();
         Table topTable = new Table();
         topTable.top();
@@ -59,18 +68,30 @@ public class Hud implements Disposable {
         table.setFillParent(true);
 
         scoreLabel = new Label(String.format("score: %05d", score), new Label.LabelStyle(hudFont, Color.WHITE));
-        plasticLabel = new Label(String.format("plastic: %01d/%01d", colPlastic, noPlastic), new Label.LabelStyle(hudFont, Color.WHITE));
-        metalLabel = new Label(String.format("metal: %01d/%01d", colMetal, noMetal), new Label.LabelStyle(hudFont, Color.WHITE));
-        paperLabel = new Label(String.format("paper: %01d/%01d", colPaper, noPaper), new Label.LabelStyle(hudFont, Color.WHITE));
+        plasticLabel = new Label(String.format(": %01d/%01d", colPlastic, noPlastic), new Label.LabelStyle(hudFont, Color.WHITE));
+        metalLabel = new Label(String.format(": %01d/%01d", colMetal, noMetal), new Label.LabelStyle(hudFont, Color.WHITE));
+        paperLabel = new Label(String.format(": %01d/%01d", colPaper, noPaper), new Label.LabelStyle(hudFont, Color.WHITE));
 
         livesLabel = new Label(String.format("lives: %01d", lives), new Label.LabelStyle(hudFont, Color.WHITE));
 
-        topTable.add(plasticLabel).expandX().center();
-        topTable.add(metalLabel).expandX().center();
-        topTable.add(paperLabel).expandX().center();
+        topTable.add(imagePlastic).center().padRight(5);
+        topTable.add(plasticLabel).center().padRight(20);
+        topTable.add(imageMetal).center().padRight(5);
+        topTable.add(metalLabel).center().padRight(20);
+        topTable.add(imagePaper).center().padRight(5);
+        topTable.add(paperLabel).center();
 
         table.add(scoreLabel).expandX().left().padLeft(20);
         table.add(livesLabel).expandX().right().padRight(20); //table.row() zeby utworzyc nowy rekord w tabeli
+        /*for (int i =1; i<=lives; i++){
+            if (i==lives) {
+                Image heart = new Image(imageLife.getDrawable());
+                table.add(heart).right().padRight(20);
+            } else {
+                Image heart2 = new Image(imageLife.getDrawable());
+                table.add(heart2).right();
+            }
+        }*/
 
         stage.addActor(topTable);
         stage.addActor(table);
@@ -85,6 +106,7 @@ public class Hud implements Disposable {
         lives = 0;
         livesLabel.setText(String.format("lives: %01d", lives));
     }
+
 
     public static void loseLive(){
         lives -= 1;
@@ -101,24 +123,24 @@ public class Hud implements Disposable {
         colMetal = 0;
         colPaper = 0;
         colPlastic = 0;
-        plasticLabel.setText(String.format("plastic: %01d/%01d", colPlastic, noPlastic));
-        paperLabel.setText(String.format("paper: %01d/%01d", colPaper, noPaper));
-        metalLabel.setText(String.format("metal: %01d/%01d", colMetal, noMetal));
+        plasticLabel.setText(String.format(": %01d/%01d", colPlastic, noPlastic));
+        paperLabel.setText(String.format(": %01d/%01d", colPaper, noPaper));
+        metalLabel.setText(String.format(": %01d/%01d", colMetal, noMetal));
     }
 
     public static void addPlastic(){
         colPlastic += 1;
-        plasticLabel.setText(String.format("plastic: %01d/%01d", colPlastic, noPlastic));
+        plasticLabel.setText(String.format(": %01d/%01d", colPlastic, noPlastic));
     }
 
     public static void addPaper(){
         colPaper += 1;
-        paperLabel.setText(String.format("paper: %01d/%01d", colPaper, noPaper));
+        paperLabel.setText(String.format(": %01d/%01d", colPaper, noPaper));
     }
 
     public static void addMetal(){
         colMetal += 1;
-        metalLabel.setText(String.format("metal: %01d/%01d", colMetal, noMetal));
+        metalLabel.setText(String.format(": %01d/%01d", colMetal, noMetal));
     }
 
     @Override

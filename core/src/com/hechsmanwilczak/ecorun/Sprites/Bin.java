@@ -16,6 +16,7 @@ public class Bin extends InteractiveTileObject {
       super(screen, bounds);
       fixture.setUserData(this);
       setCategoryFilter(EcoRun.BIN_BIT);
+      fixture.setSensor(true);
     }
 
     @Override
@@ -26,6 +27,6 @@ public class Bin extends InteractiveTileObject {
     @Override
     public void onCollision() {
         Gdx.app.log("Bin", "Collision");
-        setCategoryFilter(EcoRun.IN_BIN_BIT);
+        //setCategoryFilter(EcoRun.IN_BIN_BIT);
     }
 }
