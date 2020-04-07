@@ -11,13 +11,13 @@ import com.hechsmanwilczak.ecorun.Screens.PlayScreen;
 
 public class Leaf extends Item {
     public Leaf(PlayScreen screen, float x, float y){
-        super(screen, x, y);
+        super(screen, x, y, 3);
         setBounds(getX(), getY(), 16/EcoRun.PPM, 16/ EcoRun.PPM);
         setRegion(screen.getAtlas().findRegion("items"), 0,1,16,16);
     }
 
     @Override
-    public void defineItem() {
+    public void defineItem(Integer category) {
         BodyDef bdef = new BodyDef();
         bdef.position.set(getX(), getY());
         bdef.type = BodyDef.BodyType.StaticBody;
@@ -26,6 +26,7 @@ public class Leaf extends Item {
         FixtureDef fdef = new FixtureDef();
         CircleShape shape = new CircleShape();
         shape.setRadius(4f / EcoRun.PPM);
+        fdef.isSensor = true;
         shape.setPosition(new Vector2(8f / EcoRun.PPM ,8f / EcoRun.PPM));
         fdef.filter.categoryBits = EcoRun.ITEM_BIT;
         fdef.filter.maskBits = EcoRun.GROUND_BIT |
@@ -39,7 +40,7 @@ public class Leaf extends Item {
     }
 
     @Override
-    public void onCollision() {
+    public void onCollision(Integer category) {
         Hud.addScore(1);
         destroy();
     }

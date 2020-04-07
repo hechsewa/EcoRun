@@ -6,11 +6,14 @@ import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
+import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
+import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.*;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
+import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
 import com.hechsmanwilczak.ecorun.EcoRun;
@@ -21,6 +24,7 @@ public class LevelsScreen implements Screen {
     private BitmapFont font;
 
     private Game game;
+    private TextureRegion texRegBg;
 
     public LevelsScreen(Game game){
         this.game = game;
@@ -29,12 +33,14 @@ public class LevelsScreen implements Screen {
         Gdx.input.setInputProcessor(stage);
         font = new BitmapFont(Gdx.files.internal("font.fnt"));
 
+        texRegBg = new TextureRegion(new Texture(Gdx.files.internal("bg.jpg")));
+
         Table table = new Table();
         table.center();
+        table.setBackground(new TextureRegionDrawable(texRegBg));
         table.setFillParent(true);
 
         TextButton.TextButtonStyle textButtonStyle = new TextButton.TextButtonStyle();
-        //BitmapFont font = new BitmapFont();
         textButtonStyle.font = font;
 
         TextButton level1Button=new TextButton("Level 1",textButtonStyle);
@@ -45,7 +51,7 @@ public class LevelsScreen implements Screen {
         level1Button.addListener(new ClickListener(){
             @Override
             public void clicked(InputEvent event, float x, float y) {
-                goToGameScreen();
+                goToGameScreen(1);
             }
         });
 
@@ -57,7 +63,7 @@ public class LevelsScreen implements Screen {
         level2Button.addListener(new ClickListener(){
             @Override
             public void clicked(InputEvent event, float x, float y) {
-                goToGameScreen();
+                goToGameScreen(2);
                 //TODO: level 2
             }
         });
@@ -71,7 +77,7 @@ public class LevelsScreen implements Screen {
         level3Button.addListener(new ClickListener(){
             @Override
             public void clicked(InputEvent event, float x, float y) {
-                goToGameScreen();
+                goToGameScreen(3);
                 //TODO: level 3
             }
         });
@@ -88,8 +94,8 @@ public class LevelsScreen implements Screen {
 
     }
 
-    public void goToGameScreen(){
-        game.setScreen(new PlayScreen((EcoRun) game));
+    public void goToGameScreen(Integer lvl){
+        game.setScreen(new PlayScreen((EcoRun) game, lvl));
         dispose();
     }
     @Override

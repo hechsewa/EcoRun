@@ -9,20 +9,21 @@ import com.hechsmanwilczak.ecorun.Scenes.Hud;
 import com.hechsmanwilczak.ecorun.Screens.PlayScreen;
 
 public class Trash extends Item {
-    public Trash(PlayScreen screen, float x, float y, String name){
-        super(screen, x, y);
+
+    public Trash(PlayScreen screen, float x, float y, Integer category){
+        super(screen, x, y, category);
         setBounds(getX(), getY(), 16/EcoRun.PPM, 16/ EcoRun.PPM);
-        if(name.equals("Metal"))
+        if(category == 1)
             setRegion(screen.getAtlas().findRegion("items"), 32,1,16,16);
-        else if (name.equals("Paper"))
+        else if (category == 2)
             setRegion(screen.getAtlas().findRegion("items"), 48,1,16,16);
-        else if (name.equals("Plastic"))
+        else if (category == 0)
             setRegion(screen.getAtlas().findRegion("items"), 64,1,16,16);
 
     }
 
     @Override
-    public void defineItem() {
+    public void defineItem(Integer category) {
         BodyDef bdef = new BodyDef();
         bdef.position.set(getX(), getY());
         bdef.type = BodyDef.BodyType.StaticBody;
@@ -32,7 +33,13 @@ public class Trash extends Item {
         CircleShape shape = new CircleShape();
         shape.setRadius(6f / EcoRun.PPM);
         shape.setPosition(new Vector2(8f / EcoRun.PPM ,8f / EcoRun.PPM));
-        fdef.filter.categoryBits = EcoRun.ITEM_BIT;
+        if (category == 1)
+            fdef.filter.categoryBits = EcoRun.METAL_BIT;
+        else if (category == 0)
+            fdef.filter.categoryBits = EcoRun.PLASTIC_BIT;
+        else
+            fdef.filter.categoryBits = EcoRun.PAPER_BIT;
+        fdef.isSensor = true;
         fdef.filter.maskBits = EcoRun.GROUND_BIT |
                 EcoRun.PORTAL_BIT |
                 EcoRun.ENEMY_BIT  |
@@ -44,8 +51,13 @@ public class Trash extends Item {
     }
 
     @Override
-    public void onCollision() {
-        Hud.addItem();
+    public void onCollision(Integer category) {
+        if (category == 0)
+            Hud.addPlastic();
+        else if(category == 1)
+            Hud.addMetal();
+        else if (category == 2)
+            Hud.addPaper();
         destroy();
     }
 

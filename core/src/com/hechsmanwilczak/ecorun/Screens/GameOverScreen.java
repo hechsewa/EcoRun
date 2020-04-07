@@ -6,22 +6,28 @@ import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
+import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
+import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
+import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
 import com.hechsmanwilczak.ecorun.EcoRun;
+import com.hechsmanwilczak.ecorun.Scenes.Hud;
 
 public class GameOverScreen implements Screen {
     private Viewport viewport;
     private Stage stage;
     private BitmapFont screenFont;
     private Game game;
+
+    private TextureRegion texRegBg;
 
     public GameOverScreen(Game game){
         this.game = game;
@@ -31,8 +37,11 @@ public class GameOverScreen implements Screen {
         screenFont = new BitmapFont(Gdx.files.internal("font.fnt"));
         Label.LabelStyle font = new Label.LabelStyle(screenFont, Color.WHITE);
 
+        texRegBg = new TextureRegion(new Texture(Gdx.files.internal("bg.jpg")));
+
         Table table = new Table();
         table.center();
+        table.setBackground(new TextureRegionDrawable(texRegBg));
         table.setFillParent(true);
 
         Label gameOverLabel = new Label("GAME OVER", font);
@@ -41,7 +50,7 @@ public class GameOverScreen implements Screen {
         TextButton.TextButtonStyle textButtonStyle = new TextButton.TextButtonStyle();
         //BitmapFont font2 = new BitmapFont();
         textButtonStyle.font = screenFont;
-        textButtonStyle.fontColor = Color.ORANGE;
+        textButtonStyle.fontColor = Color.GREEN;
 
         TextButton playAgainButton=new TextButton("Play again",textButtonStyle);
         playAgainButton.setText("Play again");
@@ -80,8 +89,8 @@ public class GameOverScreen implements Screen {
     }
 
     public void goToGameScreen(){
-        game.setScreen(new PlayScreen((EcoRun) game));
-
+        game.setScreen(new PlayScreen((EcoRun) game, 1));
+        Hud.resetCollected();
         dispose();
     }
 

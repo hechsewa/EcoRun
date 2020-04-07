@@ -8,6 +8,7 @@ import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
+import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.scenes.scene2d.*;
 import com.badlogic.gdx.scenes.scene2d.ui.*;
@@ -24,6 +25,9 @@ public class MenuScreen implements Screen {
     private Game game;
     private BitmapFont menuFont;
 
+    //background
+    private TextureRegion texRegBg;
+
     public MenuScreen(Game game){
         this.game = game;
         viewport = new FitViewport(EcoRun.V_WIDTH, EcoRun.V_HEIGHT, new OrthographicCamera());
@@ -33,12 +37,14 @@ public class MenuScreen implements Screen {
         menuFont = new BitmapFont(Gdx.files.internal("font.fnt"));
         Label.LabelStyle font = new Label.LabelStyle(menuFont, Color.WHITE);
 
+        texRegBg = new TextureRegion(new Texture(Gdx.files.internal("bg.jpg")));
         Table table = new Table();
         table.center();
+        table.setBackground(new TextureRegionDrawable(texRegBg));
         table.setFillParent(true);
 
-        Label gameNameLabel = new Label("ECO RUN", font); //tu bym chyba chciala jakies logo dac
-        Label playLabel = new Label("Click to play!", font);
+        Label gameNameLabel = new Label("EcoRun", font);
+        Label playLabel = new Label("click to play!", font);
 
 
         Image playButtonImage = new Image(new Texture("play.png"));
@@ -74,7 +80,7 @@ public class MenuScreen implements Screen {
 
         table.add(gameNameLabel).expandX();
         table.row();
-        table.add(playLabel).expandX().padTop(10f);
+        table.add(playLabel).expandX().padBottom(10f);
         table.row();
         table.add(playButtonImage).expandX().padTop(10f);
         table.row();

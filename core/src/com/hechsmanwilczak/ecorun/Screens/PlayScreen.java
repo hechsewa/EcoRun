@@ -52,18 +52,28 @@ public class PlayScreen implements Screen {
     private Earth player;
     private Array<Item> items;
 
-    public PlayScreen(EcoRun game) {
+    //items
+    private Integer noPlastic = 1;
+    private Integer noMetal = 1;
+    private Integer noPaper = 1;
+
+    public PlayScreen(EcoRun game, Integer level) {
         atlas = new TextureAtlas("Earth_and_enemy.pack");
 
         this.game = game;
         gamecam = new OrthographicCamera();
         gameport = new FitViewport(EcoRun.V_WIDTH / EcoRun.PPM, EcoRun.V_HEIGHT / EcoRun.PPM, gamecam);
-        hud = new Hud(game.batch);
+        hud = new Hud(game.batch, noPlastic, noMetal, noPaper);
 
         mapLoader = new TmxMapLoader();
-        map = mapLoader.load("ecorun-lvl1.tmx");
+        if (level == 1)
+            map = mapLoader.load("ecorun-lvl1.tmx");
+        else if (level == 2)
+            map = mapLoader.load("ecorun-lvl2.tmx");
+        else
+            map = mapLoader.load("ecorun-lvl3.tmx");
         renderer = new OrthogonalTiledMapRenderer(map, 1 / EcoRun.PPM);
-        gamecam.position.set(gameport.getWorldWidth(), gameport.getWorldHeight() / 2, 0);
+        gamecam.position.set(gameport.getWorldWidth()/2, gameport.getWorldHeight()/2, 0);
 
         world = new World(new Vector2(0, -10) , true);
         b2dr = new Box2DDebugRenderer();

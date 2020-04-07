@@ -25,29 +25,54 @@ public class Hud implements Disposable {
     private static Label scoreLabel;
     private static Label livesLabel;
     private static Label itemsLabel;
+    private static Label plasticLabel;
+    private static Label metalLabel;
+    private static Label paperLabel;
     BitmapFont hudFont;
 
-    public Hud(SpriteBatch sb){
+    private static Integer noPlastic, colPlastic;
+    private static Integer noMetal, colMetal;
+    private static Integer noPaper, colPaper;
+
+    public Hud(SpriteBatch sb, Integer plastic, Integer metal, Integer paper){
         score = 0;
         lives = 3;
         items = 0;
+        noPlastic = plastic; //ilosc plastiku na planszy
+        noMetal = metal; //ilosc metalu na planszy
+        noPaper = paper; //ilosc papieru na planszy
+        colPlastic = 0; //zebrana ilosc plastiku
+        colMetal = 0;
+        colPaper = 0;
+
         viewport = new FitViewport(EcoRun.V_WIDTH, EcoRun.V_HEIGHT, new OrthographicCamera());
         stage = new Stage(viewport, sb);
         hudFont = new BitmapFont(Gdx.files.internal("hudFont.fnt"));
 
         Table table = new Table();
+        Table topTable = new Table();
+        topTable.top();
         table.bottom();
         table.padBottom(10);
+        topTable.padTop(10);
+        topTable.setFillParent(true);
         table.setFillParent(true);
 
         scoreLabel = new Label(String.format("score: %05d", score), new Label.LabelStyle(hudFont, Color.WHITE));
-        itemsLabel = new Label(String.format("Items: %01d", items), new Label.LabelStyle(hudFont, Color.WHITE));
+        plasticLabel = new Label(String.format("plastic: %01d/%01d", colPlastic, noPlastic), new Label.LabelStyle(hudFont, Color.WHITE));
+        metalLabel = new Label(String.format("metal: %01d/%01d", colMetal, noMetal), new Label.LabelStyle(hudFont, Color.WHITE));
+        paperLabel = new Label(String.format("paper: %01d/%01d", colPaper, noPaper), new Label.LabelStyle(hudFont, Color.WHITE));
+
         livesLabel = new Label(String.format("lives: %01d", lives), new Label.LabelStyle(hudFont, Color.WHITE));
 
+        topTable.add(plasticLabel).expandX().center();
+        topTable.add(metalLabel).expandX().center();
+        topTable.add(paperLabel).expandX().center();
+
         table.add(scoreLabel).expandX().left().padLeft(20);
-        table.add(itemsLabel).expandX().center();
         table.add(livesLabel).expandX().right().padRight(20); //table.row() zeby utworzyc nowy rekord w tabeli
 
+        stage.addActor(topTable);
         stage.addActor(table);
     }
 
@@ -72,9 +97,28 @@ public class Hud implements Disposable {
         else return false;
     }
 
-    public static void addItem(){
-        items += 1;
-        itemsLabel.setText(String.format("items: %01d", items));
+    public static void resetCollected() {
+        colMetal = 0;
+        colPaper = 0;
+        colPlastic = 0;
+        plasticLabel.setText(String.format("plastic: %01d/%01d", colPlastic, noPlastic));
+        paperLabel.setText(String.format("paper: %01d/%01d", colPaper, noPaper));
+        metalLabel.setText(String.format("metal: %01d/%01d", colMetal, noMetal));
+    }
+
+    public static void addPlastic(){
+        colPlastic += 1;
+        plasticLabel.setText(String.format("plastic: %01d/%01d", colPlastic, noPlastic));
+    }
+
+    public static void addPaper(){
+        colPaper += 1;
+        paperLabel.setText(String.format("paper: %01d/%01d", colPaper, noPaper));
+    }
+
+    public static void addMetal(){
+        colMetal += 1;
+        metalLabel.setText(String.format("metal: %01d/%01d", colMetal, noMetal));
     }
 
     @Override

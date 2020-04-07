@@ -67,11 +67,29 @@ public class WorldContactListener implements ContactListener {
                 ((Enemy) fixA.getUserData()).reverseVelocity(true, false);
                 ((Enemy) fixB.getUserData()).reverseVelocity(true, false);
                 break;
+            case EcoRun.PLASTIC_BIT | EcoRun.EARTH_BIT:
+                if (fixA.getFilterData().categoryBits == EcoRun.PLASTIC_BIT)
+                    ((Item) fixA.getUserData()).onCollision(0);
+                else
+                    ((Item) fixB.getUserData()).onCollision(0);
+                break;
+            case EcoRun.METAL_BIT | EcoRun.EARTH_BIT:
+                if (fixA.getFilterData().categoryBits == EcoRun.METAL_BIT)
+                    ((Item) fixA.getUserData()).onCollision(1);
+                else
+                    ((Item) fixB.getUserData()).onCollision(1);
+                break;
+            case EcoRun.PAPER_BIT | EcoRun.EARTH_BIT:
+                if (fixA.getFilterData().categoryBits == EcoRun.PAPER_BIT)
+                    ((Item) fixA.getUserData()).onCollision(2);
+                else
+                    ((Item) fixB.getUserData()).onCollision(2);
+                break;
             case EcoRun.ITEM_BIT | EcoRun.EARTH_BIT:
                 if (fixA.getFilterData().categoryBits == EcoRun.ITEM_BIT)
-                    ((Item) fixA.getUserData()).onCollision();
+                    ((Item) fixA.getUserData()).onCollision(3);
                 else
-                    ((Item) fixB.getUserData()).onCollision();
+                    ((Item) fixB.getUserData()).onCollision(3);
                 break;
             case EcoRun.BIN_BIT | EcoRun.EARTH_BIT:
                 if (fixA.getFilterData().categoryBits == EcoRun.BIN_BIT)

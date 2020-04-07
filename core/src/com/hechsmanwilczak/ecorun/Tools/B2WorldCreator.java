@@ -80,7 +80,15 @@ public class B2WorldCreator {
         trashArray = new Array<Trash>();
         for(MapObject object : map.getLayers().get(9).getObjects().getByType(RectangleMapObject.class)){
             Rectangle rectangle = ((RectangleMapObject) object).getRectangle();
-            trashArray.add(new Trash(screen, rectangle.getX() / EcoRun.PPM, rectangle.getY()/ EcoRun.PPM, object.getName()));
+            String name = object.getName();
+            Integer category = 3;
+            if (name.equals("Plastic"))
+                category = 0;
+            else if (name.equals("Metal"))
+                category = 1;
+            else if (name.equals("Paper"))
+                category = 2;
+            trashArray.add(new Trash(screen, rectangle.getX() / EcoRun.PPM, rectangle.getY()/ EcoRun.PPM, category));
         }
     }
 

@@ -15,17 +15,17 @@ public abstract class Item extends Sprite {
     protected boolean destroyed;
     protected Body body;
 
-    public Item(PlayScreen screen, float x, float y){
+    public Item(PlayScreen screen, float x, float y, Integer cat){
         this.screen = screen;
         this.world = screen.getWorld();
         setPosition(x,y);
-        defineItem();
+        defineItem(cat);
         destroyed = false;
         toDestroy = false;
     }
 
-    public abstract void defineItem();
-    public abstract void onCollision();
+    public abstract void defineItem(Integer category);
+    public abstract void onCollision(Integer category);
 
     public void update(float dt){
         if(toDestroy && !destroyed){

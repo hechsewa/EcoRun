@@ -8,6 +8,7 @@ import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.*;
 import com.badlogic.gdx.utils.Array;
 import com.hechsmanwilczak.ecorun.EcoRun;
+import com.hechsmanwilczak.ecorun.Scenes.Hud;
 import com.hechsmanwilczak.ecorun.Screens.PlayScreen;
 
 import java.util.concurrent.TimeUnit;
@@ -167,6 +168,9 @@ public class Earth extends Sprite {
                 EcoRun.PORTAL_BIT |
                 EcoRun.ENEMY_BIT |
                 EcoRun.ENEMY_HEAD_BIT |
+                EcoRun.PLASTIC_BIT |
+                EcoRun.METAL_BIT |
+                EcoRun.PAPER_BIT |
                 EcoRun.ITEM_BIT |
                 EcoRun.BIN_BIT;
 
