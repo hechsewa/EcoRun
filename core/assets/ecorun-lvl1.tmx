@@ -52,9 +52,9 @@
   <object id="37" x="3776" y="176" width="64" height="32"/>
  </objectgroup>
  <objectgroup id="4" name="bins">
-  <object id="42" x="3512.5" y="142" width="30" height="36"/>
-  <object id="43" x="3559.5" y="143.5" width="30.5" height="35"/>
-  <object id="44" x="3607" y="143.5" width="30.5" height="36"/>
+  <object id="42" name="RedBin" x="3512.5" y="142" width="30" height="36"/>
+  <object id="43" name="YellowBin" x="3559.5" y="143.5" width="30.5" height="35"/>
+  <object id="44" name="BlueBin" x="3607" y="143.5" width="30.5" height="36"/>
  </objectgroup>
  <objectgroup id="6" name="portal">
   <object id="39" x="3712.23" y="112.091" width="32" height="48"/>

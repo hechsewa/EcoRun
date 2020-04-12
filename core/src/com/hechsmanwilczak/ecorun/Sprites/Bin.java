@@ -12,11 +12,28 @@ import com.hechsmanwilczak.ecorun.Scenes.Hud;
 import com.hechsmanwilczak.ecorun.Screens.PlayScreen;
 
 public class Bin extends InteractiveTileObject {
-    public Bin(PlayScreen screen, Rectangle bounds){
+    public String binType;
+
+    public Bin(PlayScreen screen, Rectangle bounds, String type){ //type: RedBin, YellowBin, BlueBin
       super(screen, bounds);
+      binType = type;
       fixture.setUserData(this);
       setCategoryFilter(EcoRun.BIN_BIT);
       fixture.setSensor(true);
+    }
+
+
+    public int getBinType(){
+        if (binType.equals("RedBin"))
+            return 0;
+        else if (binType.equals("YellowBin"))
+            return 1;
+        else
+            return 2;
+    }
+
+    public float getBinBounds(){
+        return bounds.getX();
     }
 
     @Override
@@ -27,6 +44,7 @@ public class Bin extends InteractiveTileObject {
     @Override
     public void onCollision() {
         Gdx.app.log("Bin", "Collision");
+        Gdx.app.log("Bin", binType);
         //setCategoryFilter(EcoRun.IN_BIN_BIT);
     }
 }

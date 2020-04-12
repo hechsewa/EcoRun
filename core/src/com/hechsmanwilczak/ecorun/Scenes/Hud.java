@@ -119,10 +119,18 @@ public class Hud implements Disposable {
         else return false;
     }
 
-    public static void resetCollected() {
-        colMetal = 0;
-        colPaper = 0;
-        colPlastic = 0;
+    public static void resetCollected(int type) {
+        if (type == 0)
+            colMetal = 0;
+        else if (type == 1)
+            colPlastic = 0;
+        else if (type == 2)
+            colPaper = 0;
+        else {
+            colMetal = 0;
+            colPaper = 0;
+            colPlastic = 0;
+        }
         plasticLabel.setText(String.format(": %01d/%01d", colPlastic, noPlastic));
         paperLabel.setText(String.format(": %01d/%01d", colPaper, noPaper));
         metalLabel.setText(String.format(": %01d/%01d", colMetal, noMetal));
@@ -141,6 +149,26 @@ public class Hud implements Disposable {
     public static void addMetal(){
         colMetal += 1;
         metalLabel.setText(String.format(": %01d/%01d", colMetal, noMetal));
+    }
+
+    public static boolean areAllCollected(int type){
+        if (type == 0){ //metal
+            if (colMetal >= noMetal){
+                resetCollected(0);
+                return true;
+            }
+        } else if (type == 1){ //plastic
+            if (colPlastic >= noPlastic){
+                resetCollected(1);
+                return true;
+            }
+        } else { //paper
+            if (colPaper >= noPaper){
+                resetCollected(2);
+                return true;
+            }
+        }
+        return false;
     }
 
     @Override

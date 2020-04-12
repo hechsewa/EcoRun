@@ -28,7 +28,9 @@ public class Earth extends Sprite {
     private Boolean runningRight;
     private Boolean earthIsDead;
     private PlayScreen screen;
-    public static Boolean hit;
+    public static Boolean hit, redBin, yellowBin, blueBin;
+    public static float binBounds;
+    public static int binType;
 
     public Earth(PlayScreen screen){
         super(screen.getAtlas().findRegion("earth_left"));
@@ -40,6 +42,9 @@ public class Earth extends Sprite {
         runningRight = true;
         earthIsDead = false;
         hit = false;
+        redBin = false;
+        yellowBin = false;
+        blueBin = false;
 
         Array<TextureRegion> frames = new Array<TextureRegion>();
         //running animation
@@ -71,11 +76,22 @@ public class Earth extends Sprite {
 
     }
 
-    public void update(float dt){
-        if(screen.getHud().isLifeZero() && !isDead())
+    public void update(float dt) {
+        if (screen.getHud().isLifeZero() && !isDead())
             die();
-        setPosition(b2body.getPosition().x - getWidth()/2, b2body.getPosition().y - getHeight()/2);
+        setPosition(b2body.getPosition().x - getWidth() / 2, b2body.getPosition().y - getHeight() / 2);
         setRegion(getFrame(dt));
+        //handle hit animation
+        if (hit) {
+            Gdx.app.log("Hit", String.valueOf(earthHit.getKeyFrameIndex(stateTimer)));
+            setRegion(earthHit.getKeyFrame(stateTimer));
+            if (earthHit.isAnimationFinished(stateTimer))
+                hit = false;
+            else
+                hit = true;
+        }
+        //handle inside a bin
+        checkBin();
     }
 
     public TextureRegion getFrame(float dt) {
@@ -87,13 +103,6 @@ public class Earth extends Sprite {
                 break;
             case RUNNING:
                 region = earthRun.getKeyFrame(stateTimer, true);
-                break;
-            case HIT:
-                region = earthHit.getKeyFrame(stateTimer);
-                if (earthHit.isAnimationFinished(stateTimer))
-                    hit = false;
-                else
-                    hit = true;
                 break;
             case DEAD:
                 region = earthDead;
@@ -127,8 +136,6 @@ public class Earth extends Sprite {
             return State.JUMPING;
         else if (b2body.getLinearVelocity().x != 0)
             return State.RUNNING;
-        else if (hit)
-            return State.HIT;
         else
             return State.STILL;
     }
@@ -191,5 +198,28 @@ public class Earth extends Sprite {
         fdef.filter.categoryBits = EcoRun.EARTH_BIT;
         fdef.filter.maskBits = EcoRun.GROUND_BIT;
         b2body.createFixture(fdef).setUserData("bottom");
+    }
+
+    public void checkBin() {
+        if (100*b2body.getPosition().x >= binBounds && 100*b2body.getPosition().x <= (binBounds + 16)) {
+            if (binType == 0) { //redBin active
+                redBin = true;
+                yellowBin = false;
+                blueBin = false;
+            } else if (binType == 1) { //yellowBin active
+                redBin = false;
+                yellowBin = true;
+                blueBin = false;
+            } else if (binType == 2) { //blueBin active
+                redBin = false;
+                yellowBin = false;
+                blueBin = true;
+            }
+            else { //nothing active
+                redBin = false;
+                yellowBin = false;
+                blueBin = false;
+            }
+        }
     }
 }

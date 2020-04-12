@@ -90,7 +90,7 @@ public class GameOverScreen implements Screen {
 
     public void goToGameScreen(){
         game.setScreen(new PlayScreen((EcoRun) game, 1));
-        Hud.resetCollected();
+        Hud.resetCollected(3);
         dispose();
     }
 

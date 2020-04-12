@@ -4,6 +4,7 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.physics.box2d.*;
 import com.hechsmanwilczak.ecorun.EcoRun;
 import com.hechsmanwilczak.ecorun.Scenes.Hud;
+import com.hechsmanwilczak.ecorun.Sprites.Bin;
 import com.hechsmanwilczak.ecorun.Sprites.Earth;
 import com.hechsmanwilczak.ecorun.Sprites.Enemy;
 import com.hechsmanwilczak.ecorun.Sprites.InteractiveTileObject;
@@ -92,10 +93,17 @@ public class WorldContactListener implements ContactListener {
                     ((Item) fixB.getUserData()).onCollision(3);
                 break;
             case EcoRun.BIN_BIT | EcoRun.EARTH_BIT:
-                if (fixA.getFilterData().categoryBits == EcoRun.BIN_BIT)
+                Bin bin;
+                if (fixA.getFilterData().categoryBits == EcoRun.BIN_BIT) {
                     ((InteractiveTileObject) fixA.getUserData()).onCollision();
-                else
+                    bin = (Bin) fixA.getUserData();
+                }
+                else {
                     ((InteractiveTileObject) fixB.getUserData()).onCollision();
+                    bin = (Bin) fixB.getUserData();
+                }
+                Earth.binBounds = bin.getBinBounds();
+                Earth.binType = bin.getBinType();
                 break;
         }
     }

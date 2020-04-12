@@ -106,6 +106,20 @@ public class PlayScreen implements Screen {
                 player.b2body.applyLinearImpulse(new Vector2(0.1f, 0), player.b2body.getWorldCenter(), true);
             if (Gdx.input.isKeyPressed(Input.Keys.LEFT) && player.b2body.getLinearVelocity().x >= -2)
                 player.b2body.applyLinearImpulse(new Vector2(-0.1f, 0), player.b2body.getWorldCenter(), true);
+            //inside red bin
+            if (Gdx.input.isKeyPressed(Input.Keys.R) && player.redBin) {
+                Gdx.app.log("R", "pressed");
+                hud.areAllCollected(0); }
+            //inside yellow bin
+            if (Gdx.input.isKeyPressed(Input.Keys.Y) && player.yellowBin){
+                Gdx.app.log("Y", "pressed");
+                hud.areAllCollected(1);
+            }
+            //inside blue bin
+            if(Gdx.input.isKeyPressed(Input.Keys.B) && player.blueBin){
+                Gdx.app.log("B", "pressed");
+                hud.areAllCollected(2);
+            }
         }
 
     }

@@ -47,7 +47,7 @@ public class B2WorldCreator {
         //bins layer
         for(MapObject object : map.getLayers().get(4).getObjects().getByType(RectangleMapObject.class)){
             Rectangle rectangle = ((RectangleMapObject) object).getRectangle();
-            new Bin(screen, rectangle);
+            new Bin(screen, rectangle, object.getName());
         }
 
         //portal layer
