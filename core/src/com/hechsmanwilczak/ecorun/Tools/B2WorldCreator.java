@@ -41,6 +41,7 @@ public class B2WorldCreator {
 
             shape.setAsBox(rectangle.getWidth() / 2 / EcoRun.PPM, rectangle.getHeight() / 2 / EcoRun.PPM);
             fdef.shape = shape;
+
             body.createFixture(fdef);
         }
 
