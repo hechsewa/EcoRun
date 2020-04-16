@@ -34,6 +34,12 @@ public class MenuScreen implements Screen {
         stage = new Stage(viewport, ((EcoRun) game).batch);
         Gdx.input.setInputProcessor(stage);
 
+        float btnWidth = EcoRun.V_WIDTH/4f; //100
+        float btnHeight = EcoRun.V_HEIGHT/5f; //41
+        float btnPosX = EcoRun.V_WIDTH/8f; //50
+        float btnPosY = (3f*EcoRun.V_HEIGHT)/7f; //90
+        float btnPosMov = EcoRun.V_HEIGHT/6f; //35
+
         menuFont = new BitmapFont(Gdx.files.internal("font.fnt"));
         Label.LabelStyle font = new Label.LabelStyle(menuFont, Color.WHITE);
 
@@ -43,50 +49,64 @@ public class MenuScreen implements Screen {
         table.setBackground(new TextureRegionDrawable(texRegBg));
         table.setFillParent(true);
 
-        Label gameNameLabel = new Label("EcoRun", font);
+        Label gameNameLabel = new Label("ECO-RUN", font);
         Label playLabel = new Label("click to play!", font);
 
+        //TextBtn style
+        TextButton.TextButtonStyle textButtonStyle = new TextButton.TextButtonStyle();
+        textButtonStyle.font = new BitmapFont(Gdx.files.internal("font.fnt"));
+        textButtonStyle.fontColor = Color.GREEN;
 
-        Image playButtonImage = new Image(new Texture("play.png"));
-        playButtonImage.setSize(30, 16);
-        playButtonImage.addListener(new ClickListener(){
+        //Play the game
+        TextButton playBtn =new TextButton("Play",textButtonStyle);
+        playBtn.setText("Play");
+        playBtn.setHeight(btnHeight);
+        playBtn.setWidth(btnWidth);
+        playBtn.setPosition(btnPosX,btnPosY);
+        playBtn.addListener(new ClickListener(){
             @Override
             public void clicked(InputEvent event, float x, float y) {
                 goToGameScreen();
             }
         });
 
-        Image infoButtonImage = new Image(new Texture("info.png"));
-        infoButtonImage.setSize(30, 16);
-        infoButtonImage.addListener(new ClickListener(){
+        //Info about the game
+        TextButton infoBtn =new TextButton("Information",textButtonStyle);
+        infoBtn.setText("Information");
+        infoBtn.setHeight(btnHeight);
+        infoBtn.setWidth(btnWidth);
+        infoBtn.setPosition(btnPosX,btnPosY-btnPosMov);
+        infoBtn.addListener(new ClickListener(){
             @Override
             public void clicked(InputEvent event, float x, float y) {
                 goToInfoScreen();
             }
         });
 
-        Image exitButtonImage = new Image(new Texture("exit.png"));
-        exitButtonImage.setSize(30, 16);
-        exitButtonImage.addListener(new ClickListener(){
+        //Exit
+        TextButton exitBtn =new TextButton("Exit",textButtonStyle);
+        exitBtn.setText("Exit");
+        exitBtn.setHeight(btnHeight);
+        exitBtn.setWidth(btnWidth);
+        exitBtn.setPosition(btnPosX,btnPosY-2*btnPosMov);
+        exitBtn.addListener(new ClickListener(){
             @Override
             public void clicked(InputEvent event, float x, float y) {
                 Gdx.app.exit();
             }
         });
 
-        //nie wiem czemu ale nie wykrywa kliknięcia przyciskow na calej powierzchni : (
-        // ale one i tak są do zmiany więc moze się to jakoś inaczej rozwiaze
         //TODO: background image, wykrywanie przyciskow
 
         table.add(gameNameLabel).expandX();
         table.row();
         table.add(playLabel).expandX().padBottom(10f);
         table.row();
-        table.add(playButtonImage).expandX().padTop(10f);
+        table.add(playBtn).expandX().padTop(10f);
         table.row();
-        table.add(infoButtonImage).expandX().padTop(1f);
+        table.add(infoBtn).expandX().padTop(5f);
         table.row();
-        table.add(exitButtonImage).expandX().padTop(1f);
+        table.add(exitBtn).expandX().padTop(5f);
 
 
         stage.addActor(table);

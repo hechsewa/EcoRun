@@ -44,7 +44,6 @@ public class Bin extends InteractiveTileObject {
     @Override
     public void onCollision() {
         Gdx.app.log("Bin", "Collision");
-        Gdx.app.log("Bin", binType);
         //setCategoryFilter(EcoRun.IN_BIN_BIT);
     }
 }

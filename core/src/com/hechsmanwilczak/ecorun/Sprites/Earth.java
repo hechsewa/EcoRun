@@ -28,7 +28,7 @@ public class Earth extends Sprite {
     private Boolean runningRight;
     private Boolean earthIsDead;
     private PlayScreen screen;
-    public static Boolean hit, redBin, yellowBin, blueBin;
+    public static Boolean hit, redBin, yellowBin, blueBin, inPortal;
     public static float binBounds;
     public static int binType;
 
@@ -45,6 +45,7 @@ public class Earth extends Sprite {
         redBin = false;
         yellowBin = false;
         blueBin = false;
+        inPortal = false;
 
         Array<TextureRegion> frames = new Array<TextureRegion>();
         //running animation
@@ -92,6 +93,8 @@ public class Earth extends Sprite {
         }
         //handle inside a bin
         checkBin();
+        //handle inside a portal
+        insidePortal();
     }
 
     public TextureRegion getFrame(float dt) {
@@ -200,7 +203,16 @@ public class Earth extends Sprite {
         b2body.createFixture(fdef).setUserData("bottom");
     }
 
-    public void checkBin() {
+    private void insidePortal() {
+        if (inPortal && Hud.areTrashThrown()){
+          b2body.setActive(false);
+          inPortal = false;
+        } else {
+            inPortal = false;
+        }
+    }
+
+    private void checkBin() {
         if (100*b2body.getPosition().x >= binBounds && 100*b2body.getPosition().x <= (binBounds + 16)) {
             if (binType == 0) { //redBin active
                 redBin = true;

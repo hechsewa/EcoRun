@@ -105,6 +105,10 @@ public class WorldContactListener implements ContactListener {
                 Earth.binBounds = bin.getBinBounds();
                 Earth.binType = bin.getBinType();
                 break;
+            case EcoRun.PORTAL_BIT | EcoRun.EARTH_BIT:
+                Gdx.app.log("Portal", "Bit");
+                Earth.inPortal = true;
+                break;
         }
     }
 

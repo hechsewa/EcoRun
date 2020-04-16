@@ -57,8 +57,14 @@ public class PlayScreen implements Screen {
     private Integer noMetal = 1;
     private Integer noPaper = 1;
 
+    public static Boolean rThrown, yThrown, bThrown;
+
     public PlayScreen(EcoRun game, Integer level) {
         atlas = new TextureAtlas("Earth_and_enemy.pack");
+
+        rThrown = false;
+        yThrown = false;
+        bThrown = false;
 
         this.game = game;
         gamecam = new OrthographicCamera();
@@ -108,16 +114,13 @@ public class PlayScreen implements Screen {
                 player.b2body.applyLinearImpulse(new Vector2(-0.1f, 0), player.b2body.getWorldCenter(), true);
             //inside red bin
             if (Gdx.input.isKeyPressed(Input.Keys.R) && player.redBin) {
-                Gdx.app.log("R", "pressed");
                 hud.areAllCollected(0); }
             //inside yellow bin
             if (Gdx.input.isKeyPressed(Input.Keys.Y) && player.yellowBin){
-                Gdx.app.log("Y", "pressed");
                 hud.areAllCollected(1);
             }
             //inside blue bin
             if(Gdx.input.isKeyPressed(Input.Keys.B) && player.blueBin){
-                Gdx.app.log("B", "pressed");
                 hud.areAllCollected(2);
             }
         }

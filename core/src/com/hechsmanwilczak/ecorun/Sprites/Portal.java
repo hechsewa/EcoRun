@@ -19,7 +19,8 @@ public class Portal extends InteractiveTileObject {
     @Override
     public void onHeadTouch() {
         Gdx.app.log("Portal", "head touch");
-        setCategoryFilter(EcoRun.OPEN_PORTAL_BIT);
+        //setCategoryFilter(EcoRun.OPEN_PORTAL_BIT);
+        Earth.inPortal = true;
     }
 
     @Override

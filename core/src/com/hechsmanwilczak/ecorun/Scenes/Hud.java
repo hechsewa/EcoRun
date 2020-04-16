@@ -171,6 +171,10 @@ public class Hud implements Disposable {
         return false;
     }
 
+    public static Boolean areTrashThrown() {
+        return colPaper == 0 && colPlastic == 0 && colMetal == 0;
+    }
+
     @Override
     public void dispose() {
         stage.dispose();
