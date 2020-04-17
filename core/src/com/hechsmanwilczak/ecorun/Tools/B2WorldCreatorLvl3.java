@@ -8,20 +8,17 @@ import com.badlogic.gdx.physics.box2d.*;
 import com.badlogic.gdx.utils.Array;
 import com.hechsmanwilczak.ecorun.EcoRun;
 import com.hechsmanwilczak.ecorun.Screens.PlayScreen;
-import com.hechsmanwilczak.ecorun.Sprites.Bin;
+import com.hechsmanwilczak.ecorun.Sprites.*;
 import com.hechsmanwilczak.ecorun.Sprites.Items.Leaf;
 import com.hechsmanwilczak.ecorun.Sprites.Items.Trash;
-import com.hechsmanwilczak.ecorun.Sprites.PlasticBag;
-import com.hechsmanwilczak.ecorun.Sprites.Portal;
-import com.hechsmanwilczak.ecorun.Sprites.Water;
 
 
-public class B2WorldCreator extends B2WorldCreatorEmpty {
+public class B2WorldCreatorLvl3 extends B2WorldCreatorEmpty {
     private Array<PlasticBag> plasticBagArray;
     private Array<Leaf> leavesArray;
     private Array<Trash> trashArray;
 
-    public B2WorldCreator(PlayScreen screen){
+    public B2WorldCreatorLvl3(PlayScreen screen){
         super(screen);
 
         World world = screen.getWorld();
@@ -33,7 +30,7 @@ public class B2WorldCreator extends B2WorldCreatorEmpty {
 
 
         //ground layer
-        for(MapObject object : map.getLayers().get(3).getObjects().getByType(RectangleMapObject.class)){
+        for(MapObject object : map.getLayers().get(4).getObjects().getByType(RectangleMapObject.class)){
             Rectangle rectangle = ((RectangleMapObject) object).getRectangle();
 
             bdef.type = BodyDef.BodyType.StaticBody;
@@ -48,40 +45,40 @@ public class B2WorldCreator extends B2WorldCreatorEmpty {
         }
 
         //bins layer
-        for(MapObject object : map.getLayers().get(4).getObjects().getByType(RectangleMapObject.class)){
+        for(MapObject object : map.getLayers().get(7).getObjects().getByType(RectangleMapObject.class)){
             Rectangle rectangle = ((RectangleMapObject) object).getRectangle();
             new Bin(screen, rectangle, object.getName());
         }
 
-        //portal layer
-        for(MapObject object : map.getLayers().get(5).getObjects().getByType(RectangleMapObject.class)){
+        //portal layer - warstwa 8
+        for(MapObject object : map.getLayers().get(8).getObjects().getByType(RectangleMapObject.class)){
             Rectangle rectangle = ((RectangleMapObject) object).getRectangle();
             new Portal(screen, rectangle);
         }
 
-        //plastic bags
+        //plastic bags - warstwa 10
         plasticBagArray = new Array<PlasticBag>();
-        for(MapObject object : map.getLayers().get(6).getObjects().getByType(RectangleMapObject.class)){
+        for(MapObject object : map.getLayers().get(10).getObjects().getByType(RectangleMapObject.class)){
             Rectangle rectangle = ((RectangleMapObject) object).getRectangle();
             plasticBagArray.add(new PlasticBag(screen, rectangle.getX() / EcoRun.PPM, rectangle.getY() / EcoRun.PPM));
         }
 
-        //water
-        for(MapObject object : map.getLayers().get(7).getObjects().getByType(RectangleMapObject.class)){
+        //water - warstwa 12
+        for(MapObject object : map.getLayers().get(12).getObjects().getByType(RectangleMapObject.class)){
             Rectangle rectangle = ((RectangleMapObject) object).getRectangle();
             new Water(screen, rectangle);
         }
 
-        //leaves
+        //leaves - warstwa 13
         leavesArray = new Array<Leaf>();
-        for(MapObject object : map.getLayers().get(8).getObjects().getByType(RectangleMapObject.class)){
+        for(MapObject object : map.getLayers().get(13).getObjects().getByType(RectangleMapObject.class)){
             Rectangle rectangle = ((RectangleMapObject) object).getRectangle();
             leavesArray.add(new Leaf(screen, rectangle.getX() / EcoRun.PPM, rectangle.getY()/ EcoRun.PPM));
         }
 
-        //trash
+        //trash - warstwa 11
         trashArray = new Array<Trash>();
-        for(MapObject object : map.getLayers().get(9).getObjects().getByType(RectangleMapObject.class)){
+        for(MapObject object : map.getLayers().get(11).getObjects().getByType(RectangleMapObject.class)){
             Rectangle rectangle = ((RectangleMapObject) object).getRectangle();
             String name = object.getName();
             Integer category = 3;
@@ -91,8 +88,19 @@ public class B2WorldCreator extends B2WorldCreatorEmpty {
                 category = 1;
             else if (name.equals("Paper"))
                 category = 2;
+            else
+                category = 3; //Smog mask
             trashArray.add(new Trash(screen, rectangle.getX() / EcoRun.PPM, rectangle.getY()/ EcoRun.PPM, category));
         }
+
+        //oil - warstwa 5
+        for(MapObject object : map.getLayers().get(5).getObjects().getByType(RectangleMapObject.class)){
+            Rectangle rectangle = ((RectangleMapObject) object).getRectangle();
+            new Oil(screen, rectangle);
+        }
+
+        //acid clouds - warstwa 6
+        //smog - warstwa 9
     }
     public Array<PlasticBag> getPlasticBagArray() {
         return plasticBagArray;

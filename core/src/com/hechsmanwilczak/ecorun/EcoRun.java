@@ -20,13 +20,13 @@ public class EcoRun extends Game {
 	public static final short EARTH_BIT = 2;
 	public static final short BIN_BIT = 4;
 	public static final short PORTAL_BIT = 8;
-	public static final short OPEN_PORTAL_BIT = 16;
+	public static final short OIL_BIT = 16;
 	public static final short ENEMY_BIT = 32;
 	public static final short ENEMY_HEAD_BIT = 64;
 	public static final short WATER_BIT = 128;
 	public static final short TOUCHED_WATER_BIT = 256;
 	public static final short ITEM_BIT = 512;
-	public static final short IN_BIN_BIT = 1024;
+	public static final short SMOG_MASK_BIT = 1024;
 	public static final short PAPER_BIT = 2048;
 	public static final short METAL_BIT = 4096;
 	public static final short PLASTIC_BIT = 8192;

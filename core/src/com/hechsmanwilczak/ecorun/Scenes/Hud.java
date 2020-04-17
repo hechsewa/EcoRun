@@ -6,18 +6,23 @@ import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
+import com.badlogic.gdx.utils.Align;
 import com.badlogic.gdx.utils.Disposable;
 import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
 import com.hechsmanwilczak.ecorun.EcoRun;
 
+import java.util.Timer;
+import java.util.TimerTask;
+
 //dolny pasek - zycia, level, wynik
 public class Hud implements Disposable {
-    public Stage stage;
+    public static Stage stage;
     private Viewport viewport;
 
     private static Integer score;
@@ -30,7 +35,8 @@ public class Hud implements Disposable {
     private static Label plasticLabel;
     private static Label metalLabel;
     private static Label paperLabel;
-    BitmapFont hudFont;
+    private static Label infoLabel;
+    private static BitmapFont hudFont;
 
     private static Integer noPlastic, colPlastic;
     private static Integer noMetal, colMetal;
@@ -74,11 +80,16 @@ public class Hud implements Disposable {
 
         livesLabel = new Label(String.format("lives: %01d", lives), new Label.LabelStyle(hudFont, Color.WHITE));
 
-        topTable.add(imagePlastic).center().padRight(5);
-        topTable.add(plasticLabel).center().padRight(20);
-        topTable.add(imageMetal).center().padRight(5);
-        topTable.add(metalLabel).center().padRight(20);
-        topTable.add(imagePaper).center().padRight(5);
+        infoLabel = new Label("", new Label.LabelStyle(hudFont, Color.WHITE));
+        infoLabel.setPosition(Math.round(0.3*EcoRun.V_WIDTH),
+                Math.round(0.8*(EcoRun.V_HEIGHT)),
+                Align.center);
+
+        topTable.add(imagePlastic).center().padRight(5f);
+        topTable.add(plasticLabel).center().padRight(20f);
+        topTable.add(imageMetal).center().padRight(5f);
+        topTable.add(metalLabel).center().padRight(20f);
+        topTable.add(imagePaper).center().padRight(5f);
         topTable.add(paperLabel).center();
 
         table.add(scoreLabel).expandX().left().padLeft(20);
@@ -93,6 +104,7 @@ public class Hud implements Disposable {
             }
         }*/
 
+        stage.addActor(infoLabel);
         stage.addActor(topTable);
         stage.addActor(table);
     }
@@ -111,6 +123,48 @@ public class Hud implements Disposable {
     public static void loseLive(){
         lives -= 1;
         livesLabel.setText(String.format("lives: %01d", lives));
+    }
+
+    private static String returnInfoString(Integer type, Integer colType) {
+        String retStr = "";
+        if (type == 0)
+            retStr = "Collected a smog mask";
+        else if (type == 1) {
+                String binKey = "";
+                String binType = "";
+                if (colType == 0) { //metal
+                    binKey = "R";
+                    binType = "metal";
+                } else if (colType == 1) { //plastic
+                    binKey = "Y";
+                    binType = "plastic";
+                } else {              //paper
+                    binKey = "B";
+                    binType = "paper";
+                }
+                retStr = "Press " + binKey + " to throw out " + binType;
+            }
+        else if (type == 2)
+            retStr = "Cannot pass without a smog mask";
+        else if (type == 3)
+            retStr = "Cannot go in without collecting all trash";
+
+        return retStr;
+    }
+
+    public static void showDialog(Integer type, Integer colType) {
+        String infoStr = returnInfoString(type, colType);
+        infoLabel.setText(infoStr);
+        infoLabel.setAlignment(Align.center);
+
+        final Timer t = new Timer();
+        t.schedule(new TimerTask() {
+            public void run() {
+                infoLabel.setText("");
+                t.cancel();
+            }
+        }, 2000);
+
     }
 
     public boolean isLifeZero(){

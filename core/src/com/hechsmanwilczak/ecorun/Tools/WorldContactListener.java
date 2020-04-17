@@ -59,6 +59,12 @@ public class WorldContactListener implements ContactListener {
                 else
                     ((InteractiveTileObject) fixB.getUserData()).onCollision();
                 break;
+            case EcoRun.EARTH_BIT | EcoRun.OIL_BIT:
+                if (fixA.getFilterData().categoryBits == EcoRun.OIL_BIT)
+                    ((InteractiveTileObject) fixA.getUserData()).onCollision();
+                else
+                    ((InteractiveTileObject) fixB.getUserData()).onCollision();
+                break;
             case EcoRun.EARTH_BIT | EcoRun.ENEMY_BIT:
                 //if(!isEnemyHit)
                 Hud.loseLive();
@@ -85,6 +91,12 @@ public class WorldContactListener implements ContactListener {
                     ((Item) fixA.getUserData()).onCollision(2);
                 else
                     ((Item) fixB.getUserData()).onCollision(2);
+                break;
+            case EcoRun.SMOG_MASK_BIT | EcoRun.EARTH_BIT:
+                if (fixA.getFilterData().categoryBits == EcoRun.SMOG_MASK_BIT)
+                    ((Item) fixA.getUserData()).onCollision(3);
+                else
+                    ((Item) fixB.getUserData()).onCollision(3);
                 break;
             case EcoRun.ITEM_BIT | EcoRun.EARTH_BIT:
                 if (fixA.getFilterData().categoryBits == EcoRun.ITEM_BIT)

@@ -9,6 +9,7 @@ import com.badlogic.gdx.physics.box2d.*;
 import com.badlogic.gdx.utils.Array;
 import com.hechsmanwilczak.ecorun.EcoRun;
 import com.hechsmanwilczak.ecorun.Scenes.Hud;
+import com.hechsmanwilczak.ecorun.Screens.LevelsScreen;
 import com.hechsmanwilczak.ecorun.Screens.PlayScreen;
 
 import java.util.concurrent.TimeUnit;
@@ -28,7 +29,7 @@ public class Earth extends Sprite {
     private Boolean runningRight;
     private Boolean earthIsDead;
     private PlayScreen screen;
-    public static Boolean hit, redBin, yellowBin, blueBin, inPortal;
+    public static Boolean hit, redBin, yellowBin, blueBin, inPortal, inMask;
     public static float binBounds;
     public static int binType;
 
@@ -36,6 +37,8 @@ public class Earth extends Sprite {
         super(screen.getAtlas().findRegion("earth_left"));
         this.world = screen.getWorld();
         this.screen = screen;
+
+        //init variables
         currentState = State.STILL;
         previousState = State.STILL;
         stateTimer = 0;
@@ -46,6 +49,7 @@ public class Earth extends Sprite {
         yellowBin = false;
         blueBin = false;
         inPortal = false;
+        inMask = false;
 
         Array<TextureRegion> frames = new Array<TextureRegion>();
         //running animation
@@ -182,6 +186,8 @@ public class Earth extends Sprite {
                 EcoRun.METAL_BIT |
                 EcoRun.PAPER_BIT |
                 EcoRun.ITEM_BIT |
+                EcoRun.SMOG_MASK_BIT |
+                EcoRun.OIL_BIT |
                 EcoRun.BIN_BIT;
 
         fdef.shape = shape;
@@ -206,7 +212,11 @@ public class Earth extends Sprite {
     private void insidePortal() {
         if (inPortal && Hud.areTrashThrown()){
           b2body.setActive(false);
+          screen.nextLevel();
           inPortal = false;
+        } else if (inPortal) {
+            Hud.showDialog(3,0);
+            inPortal = false;
         } else {
             inPortal = false;
         }
@@ -218,14 +228,17 @@ public class Earth extends Sprite {
                 redBin = true;
                 yellowBin = false;
                 blueBin = false;
+                Hud.showDialog(1,0);
             } else if (binType == 1) { //yellowBin active
                 redBin = false;
                 yellowBin = true;
                 blueBin = false;
+                Hud.showDialog(1,1);
             } else if (binType == 2) { //blueBin active
                 redBin = false;
                 yellowBin = false;
                 blueBin = true;
+                Hud.showDialog(1,2);
             }
             else { //nothing active
                 redBin = false;
