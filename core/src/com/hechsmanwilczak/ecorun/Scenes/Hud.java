@@ -38,6 +38,8 @@ public class Hud implements Disposable {
     private static Label infoLabel;
     private static BitmapFont hudFont;
 
+    private static Image heart, heart2, heart3;
+
     private static Integer noPlastic, colPlastic;
     private static Integer noMetal, colMetal;
     private static Integer noPaper, colPaper;
@@ -78,7 +80,7 @@ public class Hud implements Disposable {
         metalLabel = new Label(String.format(": %01d/%01d", colMetal, noMetal), new Label.LabelStyle(hudFont, Color.WHITE));
         paperLabel = new Label(String.format(": %01d/%01d", colPaper, noPaper), new Label.LabelStyle(hudFont, Color.WHITE));
 
-        livesLabel = new Label(String.format("lives: %01d", lives), new Label.LabelStyle(hudFont, Color.WHITE));
+        livesLabel = new Label(String.format("lives: "), new Label.LabelStyle(hudFont, Color.WHITE));
 
         infoLabel = new Label("", new Label.LabelStyle(hudFont, Color.WHITE));
         infoLabel.setPosition(Math.round(0.3*EcoRun.V_WIDTH),
@@ -94,15 +96,15 @@ public class Hud implements Disposable {
 
         table.add(scoreLabel).expandX().left().padLeft(20);
         table.add(livesLabel).expandX().right().padRight(20); //table.row() zeby utworzyc nowy rekord w tabeli
-        /*for (int i =1; i<=lives; i++){
-            if (i==lives) {
-                Image heart = new Image(imageLife.getDrawable());
-                table.add(heart).right().padRight(20);
-            } else {
-                Image heart2 = new Image(imageLife.getDrawable());
-                table.add(heart2).right();
-            }
-        }*/
+
+
+        heart = new Image(imageLife.getDrawable());
+        table.add(heart).right();
+        heart2 = new Image(imageLife.getDrawable());
+        table.add(heart2).right();
+        heart3 = new Image(imageLife.getDrawable());
+        table.add(heart3).right().padRight(20f);
+
 
         stage.addActor(infoLabel);
         stage.addActor(topTable);
@@ -116,13 +118,23 @@ public class Hud implements Disposable {
 
     public static void zeroLives(){
         lives = 0;
-        livesLabel.setText(String.format("lives: %01d", lives));
+        //livesLabel.setText(String.format("lives: %01d", lives));
+        heart3.setVisible(false);
+        heart2.setVisible(false);
+        heart.setVisible(false);
     }
 
 
     public static void loseLive(){
         lives -= 1;
-        livesLabel.setText(String.format("lives: %01d", lives));
+        //livesLabel.setText(String.format("lives: %01d", lives));
+        if (lives == 2){
+          heart3.setVisible(false);
+        } else if (lives == 1){
+          heart2.setVisible(false);
+        } else {
+            heart.setVisible(false);
+        }
     }
 
     private static String returnInfoString(Integer type, Integer colType) {
