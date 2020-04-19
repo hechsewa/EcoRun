@@ -28,15 +28,18 @@ public class MenuScreen implements Screen {
     private BitmapFont menuFont;
     private BitmapFont detailFont;
     private Image imageLogo;
+    private OrthographicCamera cam;
 
     //background
     private TextureRegion texRegBg;
 
     public MenuScreen(Game game){
         this.game = game;
-        viewport = new FitViewport(EcoRun.V_WIDTH, EcoRun.V_HEIGHT, new OrthographicCamera());
+        cam = new OrthographicCamera();
+        viewport = new FitViewport(EcoRun.V_WIDTH, EcoRun.V_HEIGHT, cam);
         stage = new Stage(viewport, ((EcoRun) game).batch);
         Gdx.input.setInputProcessor(stage);
+
 
         float btnWidth = EcoRun.V_WIDTH/4f; //100
         float btnHeight = EcoRun.V_HEIGHT/5f; //41
@@ -143,13 +146,13 @@ public class MenuScreen implements Screen {
     public void render(float delta) {
         Gdx.gl.glClearColor(0,0,0,1);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
+        viewport.apply();
         stage.act();
         stage.draw();
     }
 
     @Override
     public void resize(int width, int height) {
-
     }
 
     @Override

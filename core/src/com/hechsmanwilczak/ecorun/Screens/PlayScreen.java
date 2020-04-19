@@ -66,6 +66,10 @@ public class PlayScreen implements Screen {
     //current level
     private static Integer level;
 
+    //map bounds
+    private static Float camBoundStart;
+    private static Float camBoundEnd;
+
     public static Boolean rThrown, yThrown, bThrown;
 
     public PlayScreen(EcoRun game, Integer lvl) {
@@ -83,13 +87,20 @@ public class PlayScreen implements Screen {
         gameport = new FitViewport(EcoRun.V_WIDTH / EcoRun.PPM, EcoRun.V_HEIGHT / EcoRun.PPM, gamecam);
         hud = new Hud(game.batch, noPlastic, noMetal, noPaper);
 
+        camBoundStart = 2f;
         mapLoader = new TmxMapLoader();
-        if (level == 1)
+        if (level == 1) {
             map = mapLoader.load("ecorun-lvl1.tmx");
-        else if (level == 2)
+            camBoundEnd = 36.4f;
+        }
+        else if (level == 2) {
             map = mapLoader.load("ecorun-lvl2.tmx");
-        else
+            camBoundEnd = 42.7f;
+        }
+        else {
             map = mapLoader.load("ecorun-lvl3.tmx");
+            camBoundEnd = 42.75f;
+        }
         renderer = new OrthogonalTiledMapRenderer(map, 1 / EcoRun.PPM);
         gamecam.position.set(gameport.getWorldWidth() / 2, gameport.getWorldHeight() / 2, 0);
 
@@ -182,12 +193,17 @@ public class PlayScreen implements Screen {
         //move camera when earth is not dead
         if (player.currentState != Earth.State.DEAD) {
             gamecam.position.x = player.b2body.getPosition().x;
+
+            //zatrzymanie kamery na granicach mapy
+            if (player.b2body.getPosition().x <= camBoundStart){
+                gamecam.position.x = camBoundStart;
+            } else if (player.b2body.getPosition().x >= camBoundEnd) {
+                gamecam.position.x = camBoundEnd;
+            }
         }
 
         gamecam.update();
         renderer.setView(gamecam);
-
-
     }
 
     @Override
@@ -217,7 +233,11 @@ public class PlayScreen implements Screen {
         game.batch.end();
 
         game.batch.setProjectionMatrix(hud.stage.getCamera().combined);
-        hud.stage.draw();
+        try {
+            hud.stage.draw();
+        } catch (Exception e) { //to byl jakis szalony wyjatek przy koszach wiec go zlapalam tu
+            hud.stage.getBatch().end();
+        }
 
         if (gameOver()) {
             game.setScreen(new GameOverScreen(game));
