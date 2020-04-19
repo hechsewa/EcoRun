@@ -24,12 +24,15 @@ public class Bin extends InteractiveTileObject {
 
 
     public int getBinType(){
-        if (binType.equals("RedBin"))
-            return 0;
-        else if (binType.equals("YellowBin"))
-            return 1;
-        else
-            return 2;
+        if (binType != null) {
+            if (binType.equals("RedBin"))
+                return 0;
+            else if (binType.equals("YellowBin"))
+                return 1;
+            else
+                return 2;
+        }
+        return 0;
     }
 
     public float getBinBounds(){

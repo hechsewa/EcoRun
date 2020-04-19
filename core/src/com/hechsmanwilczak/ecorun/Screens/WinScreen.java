@@ -11,75 +11,89 @@ import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.Stage;
-import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
+import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
-import com.badlogic.gdx.utils.Align;
 import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
 import com.hechsmanwilczak.ecorun.EcoRun;
+import com.hechsmanwilczak.ecorun.Scenes.Hud;
 
-public class InfoScreen implements Screen {
+public class WinScreen implements Screen {
     private Viewport viewport;
     private Stage stage;
-
+    private BitmapFont screenFont;
     private Game game;
-    private TextureRegion texRegBg;
-    private BitmapFont fontInfo;
-    private BitmapFont fontButton;
 
-    public InfoScreen(Game game){
+    private TextureRegion texRegBg;
+
+    public WinScreen(Game game){
         this.game = game;
         viewport = new FitViewport(EcoRun.V_WIDTH, EcoRun.V_HEIGHT, new OrthographicCamera());
         stage = new Stage(viewport, ((EcoRun) game).batch);
         Gdx.input.setInputProcessor(stage);
+        screenFont = new BitmapFont(Gdx.files.internal("font.fnt"));
+        Label.LabelStyle font = new Label.LabelStyle(screenFont, Color.WHITE);
 
-        fontButton = new BitmapFont(Gdx.files.internal("font.fnt"));
-        fontInfo = new BitmapFont();
-        fontInfo.getData().setScale(0.7f);
-
-        Label.LabelStyle fontBtn = new Label.LabelStyle(fontButton, Color.WHITE);
-        Label.LabelStyle fontIn = new Label.LabelStyle(fontInfo, Color.WHITE);
         texRegBg = new TextureRegion(new Texture(Gdx.files.internal("bg.jpg")));
-
 
         Table table = new Table();
         table.center();
-        table.setFillParent(true);
         table.setBackground(new TextureRegionDrawable(texRegBg));
+        table.setFillParent(true);
 
-        Label infoLabel = new Label("Information", fontBtn);
-        Label infoTextLabel = new Label("The aim of the game is to collect all the trash and throw them out to appropriate bins." +
-                " \n Move the Earth with right and left arrow, jump with an up arrow." +
-                " \n Avoid plastic bags and oil stains. Collect leaves for points." +
-                " \n To go through the PM10 cloud, collect a mask." +
-                " \n \n game created by Ewa Hechsman & Katarzyna Wilczak, 2020", fontIn);
-        infoTextLabel.setAlignment(Align.center);
+        Label congratsLabel = new Label("Congratulations!", font);
+        Label descriptionLabel = new Label("you've won the game\n and saved the Earth #stayeco", font);
 
-        Image backToMenuButton = new Image(new Texture("back.png"));
-        backToMenuButton.setSize(125, 125);
-        backToMenuButton.addListener(new ClickListener(){
+        TextButton.TextButtonStyle textButtonStyle = new TextButton.TextButtonStyle();
+        //BitmapFont font2 = new BitmapFont();
+        textButtonStyle.font = screenFont;
+        textButtonStyle.fontColor = Color.GREEN;
+
+        TextButton exitButton=new TextButton("Exit",textButtonStyle);
+        exitButton.setText("Exit");
+        exitButton.setHeight(230);
+        exitButton.setWidth(500);
+        exitButton.setPosition(50,30);
+        exitButton.addListener(new ClickListener(){
             @Override
             public void clicked(InputEvent event, float x, float y) {
-                goToMenu();
+                Gdx.app.exit();
             }
         });
 
-        table.add(infoLabel).expandX();
+        TextButton menuButton=new TextButton("Menu",textButtonStyle);
+        menuButton.setText("Menu");
+        menuButton.setHeight(230);
+        menuButton.setWidth(500);
+        menuButton.setPosition(50,50);
+        menuButton.addListener(new ClickListener(){
+            @Override
+            public void clicked(InputEvent event, float x, float y) {
+                goToMenuScreen();
+            }
+        });
+
+        table.add(congratsLabel).expandX();
         table.row();
-        table.add(infoTextLabel).expandX().padTop(15f);
+        table.add(descriptionLabel).expandX().padTop(10f).padBottom(20f);
         table.row();
-        table.add(backToMenuButton).expandX().padTop(20f);
+        table.add(menuButton).expandX().padBottom(10f);
+        table.row();
+        table.add(exitButton).expandX().padBottom(10f);
 
         stage.addActor(table);
 
     }
-    public void goToMenu(){
+
+
+    public void goToMenuScreen(){
         game.setScreen(new MenuScreen((EcoRun) game));
         dispose();
     }
+
     @Override
     public void show() {
 

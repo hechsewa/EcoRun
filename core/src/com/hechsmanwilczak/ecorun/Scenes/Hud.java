@@ -80,9 +80,9 @@ public class Hud implements Disposable {
         metalLabel = new Label(String.format(": %01d/%01d", colMetal, noMetal), new Label.LabelStyle(hudFont, Color.WHITE));
         paperLabel = new Label(String.format(": %01d/%01d", colPaper, noPaper), new Label.LabelStyle(hudFont, Color.WHITE));
 
-        livesLabel = new Label(String.format("lives: "), new Label.LabelStyle(hudFont, Color.WHITE));
+        livesLabel = new Label("lives: ", new Label.LabelStyle(hudFont, Color.WHITE));
 
-        infoLabel = new Label("", new Label.LabelStyle(hudFont, Color.WHITE));
+        infoLabel = new Label(" ", new Label.LabelStyle(hudFont, Color.WHITE));
         infoLabel.setPosition(Math.round(0.3*EcoRun.V_WIDTH),
                 Math.round(0.8*(EcoRun.V_HEIGHT)),
                 Align.center);
@@ -138,12 +138,12 @@ public class Hud implements Disposable {
     }
 
     private static String returnInfoString(Integer type, Integer colType) {
-        String retStr = "";
+        String retStr = " ";
         if (type == 0)
             retStr = "Collected a smog mask";
         else if (type == 1) {
-                String binKey = "";
-                String binType = "";
+                String binKey;
+                String binType;
                 if (colType == 0) { //metal
                     binKey = "R";
                     binType = "metal";
@@ -172,7 +172,7 @@ public class Hud implements Disposable {
         final Timer t = new Timer();
         t.schedule(new TimerTask() {
             public void run() {
-                infoLabel.setText("");
+                infoLabel.setText(" ");
                 t.cancel();
             }
         }, 2000);

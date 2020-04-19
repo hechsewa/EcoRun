@@ -232,7 +232,10 @@ public class PlayScreen implements Screen {
     }
 
     public void nextLevel() {
-        game.setScreen(new PlayScreen((EcoRun) game, level + 1));
+        if (level+1 <= 3)
+            game.setScreen(new PlayScreen((EcoRun) game, level + 1));
+        else if (level+1 == 4)
+            game.setScreen(new WinScreen(game));
     }
 
     @Override

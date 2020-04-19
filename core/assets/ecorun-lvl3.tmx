@@ -84,9 +84,9 @@
   <object id="58" x="240.5" y="32" width="32" height="16"/>
  </objectgroup>
  <objectgroup id="8" name="bins">
-  <object id="59" x="4192.5" y="128.5" width="48" height="32"/>
-  <object id="60" x="4238.5" y="127" width="48" height="32"/>
-  <object id="61" x="4287" y="127" width="48" height="32"/>
+  <object id="59" name="RedBin" x="4192.5" y="128.5" width="48" height="32"/>
+  <object id="60" name="YellowBin" x="4238.5" y="127" width="48" height="32"/>
+  <object id="61" name="BlueBin" x="4287" y="127" width="48" height="32"/>
  </objectgroup>
  <objectgroup id="9" name="portal">
   <object id="62" x="4416.5" y="111" width="32" height="48"/>

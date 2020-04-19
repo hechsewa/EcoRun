@@ -30,6 +30,7 @@ public class EcoRun extends Game {
 	public static final short PAPER_BIT = 2048;
 	public static final short METAL_BIT = 4096;
 	public static final short PLASTIC_BIT = 8192;
+	public static final short SMOG_BIT = 16384;
 
 
 	@Override

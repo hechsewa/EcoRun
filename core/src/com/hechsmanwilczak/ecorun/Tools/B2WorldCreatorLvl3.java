@@ -101,6 +101,11 @@ public class B2WorldCreatorLvl3 extends B2WorldCreatorEmpty {
 
         //acid clouds - warstwa 6
         //smog - warstwa 9
+        for(MapObject object : map.getLayers().get(9).getObjects().getByType(RectangleMapObject.class)){
+            Rectangle rectangle = ((RectangleMapObject) object).getRectangle();
+            new Smog(screen, rectangle);
+        }
+
     }
     public Array<PlasticBag> getPlasticBagArray() {
         return plasticBagArray;

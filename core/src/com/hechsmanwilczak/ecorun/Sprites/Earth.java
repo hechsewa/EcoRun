@@ -188,6 +188,7 @@ public class Earth extends Sprite {
                 EcoRun.ITEM_BIT |
                 EcoRun.SMOG_MASK_BIT |
                 EcoRun.OIL_BIT |
+                EcoRun.SMOG_BIT |
                 EcoRun.BIN_BIT;
 
         fdef.shape = shape;

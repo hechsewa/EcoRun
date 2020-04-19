@@ -14,6 +14,8 @@ import com.badlogic.gdx.scenes.scene2d.*;
 import com.badlogic.gdx.scenes.scene2d.ui.*;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
+import com.badlogic.gdx.utils.Align;
+import com.badlogic.gdx.utils.Scaling;
 import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
 import com.hechsmanwilczak.ecorun.EcoRun;
@@ -24,6 +26,8 @@ public class MenuScreen implements Screen {
 
     private Game game;
     private BitmapFont menuFont;
+    private BitmapFont detailFont;
+    private Image imageLogo;
 
     //background
     private TextureRegion texRegBg;
@@ -41,21 +45,27 @@ public class MenuScreen implements Screen {
         float btnPosMov = EcoRun.V_HEIGHT/6f; //35
 
         menuFont = new BitmapFont(Gdx.files.internal("font.fnt"));
+        detailFont = new BitmapFont(Gdx.files.internal("EcoRun-30.fnt"));
         Label.LabelStyle font = new Label.LabelStyle(menuFont, Color.WHITE);
+        Label.LabelStyle detFont = new Label.LabelStyle(detailFont, Color.WHITE);
 
-        texRegBg = new TextureRegion(new Texture(Gdx.files.internal("bg.jpg")));
+        imageLogo = new Image(new Texture(Gdx.files.internal("logo.png")));
+        //imageLogo.setScale(0.5f);
+        //imageLogo.setPosition(0.4f*EcoRun.V_WIDTH,0.9f*EcoRun.V_HEIGHT, Align.center);
+
+        texRegBg = new TextureRegion(new Texture(Gdx.files.internal("bg2.jpg")));
         Table table = new Table();
         table.center();
         table.setBackground(new TextureRegionDrawable(texRegBg));
         table.setFillParent(true);
 
         Label gameNameLabel = new Label("ECO-RUN", font);
-        Label playLabel = new Label("click to play!", font);
+        Label playLabel = new Label("click to play!", detFont);
 
         //TextBtn style
         TextButton.TextButtonStyle textButtonStyle = new TextButton.TextButtonStyle();
         textButtonStyle.font = new BitmapFont(Gdx.files.internal("font.fnt"));
-        textButtonStyle.fontColor = Color.GREEN;
+        //textButtonStyle.fontColor = Color.GREEN;
 
         //Play the game
         TextButton playBtn =new TextButton("Play",textButtonStyle);
@@ -98,11 +108,11 @@ public class MenuScreen implements Screen {
 
         //TODO: background image, wykrywanie przyciskow
 
-        table.add(gameNameLabel).expandX();
+        table.add(imageLogo).expandX().size(220f,100f);
+        //table.row();
+        //table.add(playLabel).expandX().padBottom(10f);
         table.row();
-        table.add(playLabel).expandX().padBottom(10f);
-        table.row();
-        table.add(playBtn).expandX().padTop(10f);
+        table.add(playBtn).expandX().padTop(5f);
         table.row();
         table.add(infoBtn).expandX().padTop(5f);
         table.row();

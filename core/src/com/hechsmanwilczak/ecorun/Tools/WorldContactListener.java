@@ -104,6 +104,12 @@ public class WorldContactListener implements ContactListener {
                 else
                     ((Item) fixB.getUserData()).onCollision(3);
                 break;
+            case EcoRun.SMOG_BIT | EcoRun.EARTH_BIT:
+                if (fixA.getFilterData().categoryBits == EcoRun.SMOG_BIT)
+                    ((InteractiveTileObject) fixA.getUserData()).onCollision();
+                else
+                    ((InteractiveTileObject) fixB.getUserData()).onCollision();
+                break;
             case EcoRun.BIN_BIT | EcoRun.EARTH_BIT:
                 Bin bin;
                 if (fixA.getFilterData().categoryBits == EcoRun.BIN_BIT) {
