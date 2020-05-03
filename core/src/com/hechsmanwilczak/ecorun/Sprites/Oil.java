@@ -23,7 +23,6 @@ public class Oil extends InteractiveTileObject {
     @Override
     public void onCollision() {
         Gdx.app.log("Oil", "collision");
-        //po 2 sekundach tracisz zycie
-        //Hud.loseLive();
+        Hud.loseScore(1);
     }
 }

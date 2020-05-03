@@ -25,7 +25,7 @@ public class Leaf extends Item {
 
         FixtureDef fdef = new FixtureDef();
         CircleShape shape = new CircleShape();
-        shape.setRadius(4f / EcoRun.PPM);
+        shape.setRadius(2f / EcoRun.PPM);
         fdef.isSensor = true;
         shape.setPosition(new Vector2(8f / EcoRun.PPM ,8f / EcoRun.PPM));
         fdef.filter.categoryBits = EcoRun.ITEM_BIT;

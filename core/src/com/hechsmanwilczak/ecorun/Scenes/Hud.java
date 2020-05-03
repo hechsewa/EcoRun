@@ -3,14 +3,16 @@ package com.hechsmanwilczak.ecorun.Scenes;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.OrthographicCamera;
+import com.badlogic.gdx.graphics.Pixmap;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.scenes.scene2d.Actor;
+import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.Stage;
-import com.badlogic.gdx.scenes.scene2d.ui.Image;
-import com.badlogic.gdx.scenes.scene2d.ui.Label;
-import com.badlogic.gdx.scenes.scene2d.ui.Table;
+import com.badlogic.gdx.scenes.scene2d.ui.*;
+import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
+import com.badlogic.gdx.scenes.scene2d.utils.Drawable;
 import com.badlogic.gdx.utils.Align;
 import com.badlogic.gdx.utils.Disposable;
 import com.badlogic.gdx.utils.viewport.FitViewport;
@@ -39,6 +41,8 @@ public class Hud implements Disposable {
     private static BitmapFont hudFont;
 
     private static Image heart, heart2, heart3;
+    public static Window pauseWin;
+    private static Label.LabelStyle labelStyle;
 
     private static Integer noPlastic, colPlastic;
     private static Integer noMetal, colMetal;
@@ -58,6 +62,7 @@ public class Hud implements Disposable {
 
         viewport = new FitViewport(EcoRun.V_WIDTH, EcoRun.V_HEIGHT, new OrthographicCamera());
         stage = new Stage(viewport, sb);
+        Stage pauseStage = new Stage(stage.getViewport(), stage.getBatch());
         hudFont = new BitmapFont(Gdx.files.internal("hudFont.fnt"));
 
         //images
@@ -75,12 +80,14 @@ public class Hud implements Disposable {
         topTable.setFillParent(true);
         table.setFillParent(true);
 
-        scoreLabel = new Label(String.format("score: %05d", score), new Label.LabelStyle(hudFont, Color.WHITE));
-        plasticLabel = new Label(String.format(": %01d/%01d", colPlastic, noPlastic), new Label.LabelStyle(hudFont, Color.WHITE));
-        metalLabel = new Label(String.format(": %01d/%01d", colMetal, noMetal), new Label.LabelStyle(hudFont, Color.WHITE));
-        paperLabel = new Label(String.format(": %01d/%01d", colPaper, noPaper), new Label.LabelStyle(hudFont, Color.WHITE));
+        labelStyle = new Label.LabelStyle(hudFont, Color.WHITE);
 
-        livesLabel = new Label("lives: ", new Label.LabelStyle(hudFont, Color.WHITE));
+        scoreLabel = new Label(String.format("score: %05d", score), labelStyle);
+        plasticLabel = new Label(String.format(": %01d/%01d", colPlastic, noPlastic),labelStyle);
+        metalLabel = new Label(String.format(": %01d/%01d", colMetal, noMetal), labelStyle);
+        paperLabel = new Label(String.format(": %01d/%01d", colPaper, noPaper), labelStyle);
+
+        livesLabel = new Label("lives: ", labelStyle);
 
         infoLabel = new Label(" ", new Label.LabelStyle(hudFont, Color.WHITE));
         infoLabel.setPosition(Math.round(0.3*EcoRun.V_WIDTH),
@@ -105,14 +112,40 @@ public class Hud implements Disposable {
         heart3 = new Image(imageLife.getDrawable());
         table.add(heart3).right().padRight(20f);
 
+        //pause window
+        initPauseWindow(viewport.getScreenWidth(), viewport.getScreenHeight());
 
         stage.addActor(infoLabel);
         stage.addActor(topTable);
         stage.addActor(table);
     }
 
+    public static void displayPauseWindow(){
+        stage.addActor(pauseWin);
+    }
+
+    public static void removePauseWindow(){
+        pauseWin.remove();
+    }
+
+    public static void initPauseWindow(int w, int h){
+        Pixmap winPixmap = new Pixmap(w, h, Pixmap.Format.RGBA8888);
+        winPixmap.setColor(0f,0f,0f,0.5f);
+        winPixmap.fill();
+        Texture winBg = new Texture(winPixmap);
+        Window.WindowStyle winStyle = new Window.WindowStyle(hudFont, Color.WHITE, new Image(winBg).getDrawable());
+        pauseWin = new Window("PAUSED",winStyle);
+        pauseWin.setHeight(w);
+        pauseWin.setWidth(h);
+    }
+
     public static void addScore(int value){
         score += value;
+        scoreLabel.setText(String.format("score: %05d", score));
+    }
+
+    public static void loseScore(int value){
+        score -= value;
         scoreLabel.setText(String.format("score: %05d", score));
     }
 
@@ -183,6 +216,10 @@ public class Hud implements Disposable {
         if (lives == 0)
                 return true;
         else return false;
+    }
+
+    public static Integer getScore() {
+        return score;
     }
 
     public static void resetCollected(int type) {

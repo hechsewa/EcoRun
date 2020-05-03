@@ -8,6 +8,7 @@ import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
+import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.Stage;
@@ -26,12 +27,14 @@ public class GameOverScreen implements Screen {
     private Stage stage;
     private BitmapFont screenFont;
     private Game game;
+    private OrthographicCamera cam;
 
     private TextureRegion texRegBg;
 
     public GameOverScreen(Game game){
         this.game = game;
-        viewport = new FitViewport(EcoRun.V_WIDTH, EcoRun.V_HEIGHT, new OrthographicCamera());
+        cam = new OrthographicCamera();
+        viewport = new FitViewport(EcoRun.V_WIDTH, EcoRun.V_HEIGHT, cam);
         stage = new Stage(viewport, ((EcoRun) game).batch);
         Gdx.input.setInputProcessor(stage);
         screenFont = new BitmapFont(Gdx.files.internal("font.fnt"));
@@ -89,7 +92,7 @@ public class GameOverScreen implements Screen {
     }
 
     public void goToGameScreen(){
-        game.setScreen(new PlayScreen((EcoRun) game, 1));
+        game.setScreen(new PlayScreen((EcoRun) game, 1, 0));
         Hud.resetCollected(3);
         dispose();
     }
@@ -109,13 +112,19 @@ public class GameOverScreen implements Screen {
     public void render(float delta) {
         Gdx.gl.glClearColor(0,0,0,1);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
+        SpriteBatch batch = new SpriteBatch();
+        batch.setTransformMatrix(cam.view);
+        batch.setProjectionMatrix(cam.projection);
+        batch.begin();
         stage.act();
         stage.draw();
+        batch.end();
     }
 
     @Override
     public void resize(int width, int height) {
-
+        viewport.update(width, height);
+        cam.update();
     }
 
     @Override

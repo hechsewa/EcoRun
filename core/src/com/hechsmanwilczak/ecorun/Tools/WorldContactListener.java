@@ -9,6 +9,7 @@ import com.hechsmanwilczak.ecorun.Sprites.Earth;
 import com.hechsmanwilczak.ecorun.Sprites.Enemy;
 import com.hechsmanwilczak.ecorun.Sprites.InteractiveTileObject;
 import com.hechsmanwilczak.ecorun.Sprites.Items.Item;
+import com.hechsmanwilczak.ecorun.Sprites.Items.Trash;
 
 public class WorldContactListener implements ContactListener {
 
@@ -82,15 +83,15 @@ public class WorldContactListener implements ContactListener {
                 break;
             case EcoRun.METAL_BIT | EcoRun.EARTH_BIT:
                 if (fixA.getFilterData().categoryBits == EcoRun.METAL_BIT)
-                    ((Item) fixA.getUserData()).onCollision(1);
+                    ((Trash) fixA.getUserData()).onCollision(1);
                 else
-                    ((Item) fixB.getUserData()).onCollision(1);
+                    ((Trash) fixB.getUserData()).onCollision(1);
                 break;
             case EcoRun.PAPER_BIT | EcoRun.EARTH_BIT:
                 if (fixA.getFilterData().categoryBits == EcoRun.PAPER_BIT)
-                    ((Item) fixA.getUserData()).onCollision(2);
-                else
-                    ((Item) fixB.getUserData()).onCollision(2);
+                    ((Trash) fixA.getUserData()).onCollision(2);
+                 else
+                    ((Trash) fixB.getUserData()).onCollision(2);
                 break;
             case EcoRun.SMOG_MASK_BIT | EcoRun.EARTH_BIT:
                 if (fixA.getFilterData().categoryBits == EcoRun.SMOG_MASK_BIT)
@@ -124,7 +125,6 @@ public class WorldContactListener implements ContactListener {
                 Earth.binType = bin.getBinType();
                 break;
             case EcoRun.PORTAL_BIT | EcoRun.EARTH_BIT:
-                Gdx.app.log("Portal", "Bit");
                 Earth.inPortal = true;
                 break;
         }
@@ -146,6 +146,7 @@ public class WorldContactListener implements ContactListener {
         if (fixB.getUserData() != null && fixB.getUserData().equals("bottom")){
             playerOnGround = false;
         }
+
     }
 
     @Override

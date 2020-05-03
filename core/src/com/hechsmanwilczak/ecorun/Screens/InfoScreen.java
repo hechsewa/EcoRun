@@ -8,6 +8,7 @@ import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
+import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.Stage;
@@ -24,6 +25,7 @@ import com.hechsmanwilczak.ecorun.EcoRun;
 public class InfoScreen implements Screen {
     private Viewport viewport;
     private Stage stage;
+    private OrthographicCamera cam;
 
     private Game game;
     private TextureRegion texRegBg;
@@ -32,7 +34,8 @@ public class InfoScreen implements Screen {
 
     public InfoScreen(Game game){
         this.game = game;
-        viewport = new FitViewport(EcoRun.V_WIDTH, EcoRun.V_HEIGHT, new OrthographicCamera());
+        cam = new OrthographicCamera();
+        viewport = new FitViewport(EcoRun.V_WIDTH, EcoRun.V_HEIGHT, cam);
         stage = new Stage(viewport, ((EcoRun) game).batch);
         Gdx.input.setInputProcessor(stage);
 
@@ -89,13 +92,19 @@ public class InfoScreen implements Screen {
     public void render(float delta) {
         Gdx.gl.glClearColor(0,0,0,1);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
+        SpriteBatch batch = new SpriteBatch();
+        batch.setTransformMatrix(cam.view);
+        batch.setProjectionMatrix(cam.projection);
+        batch.begin();
         stage.act();
         stage.draw();
+        batch.end();
     }
 
     @Override
     public void resize(int width, int height) {
-
+        viewport.update(width, height);
+        cam.update();
     }
 
     @Override

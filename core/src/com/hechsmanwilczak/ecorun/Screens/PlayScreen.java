@@ -20,6 +20,7 @@ import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.*;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
+import com.badlogic.gdx.scenes.scene2d.ui.Window;
 import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.viewport.Viewport;
 import com.badlogic.gdx.utils.viewport.FitViewport;
@@ -70,15 +71,23 @@ public class PlayScreen implements Screen {
     private static Float camBoundStart;
     private static Float camBoundEnd;
 
+    //pause and resume handlers
+    public static final int GAME_RUNNING = 0;
+    public static final int GAME_PAUSED = 1;
+    private int gameStatus;
+    private boolean paused;
+
     public static Boolean rThrown, yThrown, bThrown;
 
-    public PlayScreen(EcoRun game, Integer lvl) {
+    public PlayScreen(EcoRun game, Integer lvl, Integer passedScore) {
         atlas = new TextureAtlas("Earth_and_enemy.pack");
 
+        gameStatus = GAME_RUNNING;
         rThrown = false;
         yThrown = false;
         bThrown = false;
         level = lvl;
+        paused = false;
 
         setTrashAmount();
 
@@ -86,6 +95,7 @@ public class PlayScreen implements Screen {
         gamecam = new OrthographicCamera();
         gameport = new FitViewport(EcoRun.V_WIDTH / EcoRun.PPM, EcoRun.V_HEIGHT / EcoRun.PPM, gamecam);
         hud = new Hud(game.batch, noPlastic, noMetal, noPaper);
+        hud.addScore(passedScore);
 
         camBoundStart = 2f;
         mapLoader = new TmxMapLoader();
@@ -170,8 +180,20 @@ public class PlayScreen implements Screen {
             if (Gdx.input.isKeyPressed(Input.Keys.B) && player.blueBin) {
                 hud.areAllCollected(2);
             }
+            if (Gdx.input.isKeyJustPressed(Input.Keys.SPACE)){
+                pauseGame();
+            }
         }
 
+    }
+
+    public void resumeGame() {
+        gameStatus = GAME_RUNNING;
+    }
+
+    private void pauseGame() {
+        gameStatus = GAME_PAUSED;
+        game.setScreen(new PausedScreen(game, this));
     }
 
     public void update(float dt) {
@@ -179,17 +201,18 @@ public class PlayScreen implements Screen {
 
         world.step(1 / 60f, 6, 2);
 
-        player.update(dt);
+        if (gameStatus != GAME_PAUSED) {
+            player.update(dt);
 
-        for (Enemy enemy : creator.getPlasticBagArray())
-            enemy.update(dt);
+            for (Enemy enemy : creator.getPlasticBagArray())
+                enemy.update(dt);
 
-        for (Item item : creator.getLeavesArray())
-            item.update(dt);
+            for (Item item : creator.getLeavesArray())
+                item.update(dt);
 
-        for (Item item : creator.getTrashArray())
-            item.update(dt);
-
+            for (Item item : creator.getTrashArray())
+                item.update(dt);
+        }
         //move camera when earth is not dead
         if (player.currentState != Earth.State.DEAD) {
             gamecam.position.x = player.b2body.getPosition().x;
@@ -216,6 +239,7 @@ public class PlayScreen implements Screen {
         renderer.render();
 
         b2dr.render(world, gamecam.combined);
+
 
         game.batch.setProjectionMatrix(gamecam.combined);
         game.batch.begin();
@@ -253,7 +277,7 @@ public class PlayScreen implements Screen {
 
     public void nextLevel() {
         if (level+1 <= 3)
-            game.setScreen(new PlayScreen((EcoRun) game, level + 1));
+            game.setScreen(new PlayScreen((EcoRun) game, level + 1, Hud.getScore()));
         else if (level+1 == 4)
             game.setScreen(new WinScreen(game));
     }
@@ -261,7 +285,7 @@ public class PlayScreen implements Screen {
     @Override
     public void resize(int width, int height) {
         gameport.update(width, height);
-
+        hud.initPauseWindow(width, height);
     }
 
     public TiledMap getMap() {
@@ -274,12 +298,12 @@ public class PlayScreen implements Screen {
 
     @Override
     public void pause() {
-
+        pauseGame();
     }
 
     @Override
     public void resume() {
-
+        resumeGame();
     }
 
     @Override

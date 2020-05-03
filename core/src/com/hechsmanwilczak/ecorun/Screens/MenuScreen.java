@@ -132,7 +132,7 @@ public class MenuScreen implements Screen {
     }
 
     public void goToInfoScreen(){
-        game.setScreen(new InfoScreen((EcoRun) game));
+        game.setScreen(new WinScreen((EcoRun) game));
         dispose();
     }
 
@@ -146,13 +146,21 @@ public class MenuScreen implements Screen {
     public void render(float delta) {
         Gdx.gl.glClearColor(0,0,0,1);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
-        viewport.apply();
+
+        SpriteBatch batch = new SpriteBatch();
+        batch.setTransformMatrix(cam.view);
+        batch.setProjectionMatrix(cam.projection);
+        batch.begin();
+
         stage.act();
         stage.draw();
+        batch.end();
     }
 
     @Override
     public void resize(int width, int height) {
+        viewport.update(width, height);
+        cam.update();
     }
 
     @Override

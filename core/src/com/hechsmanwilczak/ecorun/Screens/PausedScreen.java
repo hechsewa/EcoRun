@@ -3,38 +3,41 @@ package com.hechsmanwilczak.ecorun.Screens;
 import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
-import com.badlogic.gdx.graphics.Color;
-import com.badlogic.gdx.graphics.GL20;
-import com.badlogic.gdx.graphics.OrthographicCamera;
-import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.*;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.Stage;
-import com.badlogic.gdx.scenes.scene2d.ui.*;
+import com.badlogic.gdx.scenes.scene2d.ui.Label;
+import com.badlogic.gdx.scenes.scene2d.ui.Table;
+import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
 import com.hechsmanwilczak.ecorun.EcoRun;
+import com.hechsmanwilczak.ecorun.Scenes.Hud;
 
-public class LevelsScreen implements Screen {
+public class PausedScreen implements Screen {
     private Viewport viewport;
     private Stage stage;
-    private BitmapFont font;
+    private BitmapFont screenFont;
+    private Game game;
     private OrthographicCamera cam;
 
-    private Game game;
     private TextureRegion texRegBg;
+    private PlayScreen playSc;
 
-    public LevelsScreen(Game game){
+    public PausedScreen(Game game, PlayScreen playScreen){
         this.game = game;
+        playSc = playScreen;
         cam = new OrthographicCamera();
-        viewport = new FitViewport(EcoRun.V_WIDTH, EcoRun.V_HEIGHT,cam);
+        viewport = new FitViewport(EcoRun.V_WIDTH, EcoRun.V_HEIGHT, cam);
         stage = new Stage(viewport, ((EcoRun) game).batch);
         Gdx.input.setInputProcessor(stage);
-        font = new BitmapFont(Gdx.files.internal("font.fnt"));
+        screenFont = new BitmapFont(Gdx.files.internal("font.fnt"));
+        Label.LabelStyle font = new Label.LabelStyle(screenFont, Color.WHITE);
 
         texRegBg = new TextureRegion(new Texture(Gdx.files.internal("bg.jpg")));
 
@@ -43,62 +46,71 @@ public class LevelsScreen implements Screen {
         table.setBackground(new TextureRegionDrawable(texRegBg));
         table.setFillParent(true);
 
+        Label pausedLabel = new Label("PAUSED", font);
+
         TextButton.TextButtonStyle textButtonStyle = new TextButton.TextButtonStyle();
-        textButtonStyle.font = font;
+        textButtonStyle.font = screenFont;
+        textButtonStyle.fontColor = Color.GREEN;
 
-        TextButton level1Button=new TextButton("Level 1",textButtonStyle);
-        level1Button.setText("Level 1");
-        level1Button.setHeight(230);
-        level1Button.setWidth(500);
-        level1Button.setPosition(50,90);
-        level1Button.addListener(new ClickListener(){
+        TextButton resumeButton=new TextButton("Resume",textButtonStyle);
+        resumeButton.setText("Resume");
+        resumeButton.setHeight(230);
+        resumeButton.setWidth(500);
+        resumeButton.setPosition(50,50);
+        resumeButton.addListener(new ClickListener(){
             @Override
             public void clicked(InputEvent event, float x, float y) {
-                goToGameScreen(1);
+                goToGameScreen();
             }
         });
 
-        TextButton level2Button=new TextButton("Level 2",textButtonStyle);
-        level2Button.setText("Level 2");
-        level2Button.setHeight(230);
-        level2Button.setWidth(500);
-        level2Button.setPosition(50,50);
-        level2Button.addListener(new ClickListener(){
+        TextButton menuButton=new TextButton("Menu",textButtonStyle);
+        menuButton.setText("Menu");
+        menuButton.setHeight(230);
+        menuButton.setWidth(500);
+        menuButton.setPosition(50,30);
+        menuButton.addListener(new ClickListener(){
             @Override
             public void clicked(InputEvent event, float x, float y) {
-                goToGameScreen(2);
+                goToMenuScreen();
             }
         });
 
-
-        TextButton level3Button=new TextButton("Level 3",textButtonStyle);
-        level3Button.setText("Level 3");
-        level3Button.setHeight(230);
-        level3Button.setWidth(500);
-        level3Button.setPosition(50,10);
-        level3Button.addListener(new ClickListener(){
+        TextButton exitButton=new TextButton("Exit",textButtonStyle);
+        exitButton.setText("Exit");
+        exitButton.setHeight(230);
+        exitButton.setWidth(500);
+        exitButton.setPosition(50,10);
+        exitButton.addListener(new ClickListener(){
             @Override
             public void clicked(InputEvent event, float x, float y) {
-                goToGameScreen(3);
+                Gdx.app.exit();
             }
         });
 
-
-        table.add(level1Button).expandX().padBottom(10);
+        table.add(pausedLabel).expandX();
         table.row();
-        table.add(level2Button).expandX().padBottom(10);
+        table.add(resumeButton).expandX().padTop(20f);
         table.row();
-        table.add(level3Button).expandX();
+        table.add(menuButton).expandX().padTop(10f);
         table.row();
+        table.add(exitButton).expandX().padTop(10f);
 
         stage.addActor(table);
 
     }
 
-    public void goToGameScreen(Integer lvl){
-        game.setScreen(new PlayScreen((EcoRun) game, lvl,0));
+    public void goToGameScreen(){
+        game.setScreen(playSc);
+        playSc.resumeGame();
         dispose();
     }
+
+    public void goToMenuScreen(){
+        game.setScreen(new MenuScreen((EcoRun) game));
+        dispose();
+    }
+
     @Override
     public void show() {
 

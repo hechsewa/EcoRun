@@ -242,6 +242,8 @@ public class Earth extends Sprite {
                 Hud.showDialog(1,2);
             }
             else { //nothing active
+                binBounds = 0f;
+                binType = -1;
                 redBin = false;
                 yellowBin = false;
                 blueBin = false;
