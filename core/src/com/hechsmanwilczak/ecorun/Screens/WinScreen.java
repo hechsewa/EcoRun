@@ -2,7 +2,9 @@ package com.hechsmanwilczak.ecorun.Screens;
 
 import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Preferences;
 import com.badlogic.gdx.Screen;
+import com.badlogic.gdx.assets.loaders.AssetLoader;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
@@ -29,6 +31,7 @@ public class WinScreen implements Screen {
     private BitmapFont screenFont;
     private Game game;
     private OrthographicCamera cam;
+    public static Preferences preferences;
 
     private TextureRegion texRegBg;
 
@@ -39,6 +42,13 @@ public class WinScreen implements Screen {
         stage = new Stage(viewport, ((EcoRun) game).batch);
         Gdx.input.setInputProcessor(stage);
         screenFont = new BitmapFont(Gdx.files.internal("font.fnt"));
+
+        preferences = Gdx.app.getPreferences("HighScore_EcoRun");
+
+        if (!preferences.contains("highScore")) {
+            preferences.putInteger("highScore", 0);
+        }
+
         Label.LabelStyle font = new Label.LabelStyle(screenFont, Color.WHITE);
 
         texRegBg = new TextureRegion(new Texture(Gdx.files.internal("bg.jpg")));
@@ -59,6 +69,10 @@ public class WinScreen implements Screen {
             gameScore = Hud.getScore();
         }
         Label scoreLabel = new Label(String.format("Your score: %01d", gameScore), font);
+
+        if(gameScore > getHighScore())
+            setHighScore(gameScore);
+        Label highScoreLabel = new Label(String.format("High score: %01d", getHighScore()), font);
 
         TextButton.TextButtonStyle textButtonStyle = new TextButton.TextButtonStyle();
         //BitmapFont font2 = new BitmapFont();
@@ -91,9 +105,11 @@ public class WinScreen implements Screen {
 
         table.add(congratsLabel).expandX();
         table.row();
-        table.add(descriptionLabel).expandX().padTop(10f);
+        table.add(descriptionLabel).expandX().padTop(20f);
         table.row();
-        table.add(scoreLabel).expandX().padTop(10f).padBottom(20f);
+        table.add(scoreLabel).expandX().padTop(20f).padBottom(10f);
+        table.row();
+        table.add(highScoreLabel).expandX().padBottom(20f);
         table.row();
         table.add(menuButton).expandX().padBottom(10f);
         table.row();
@@ -108,6 +124,16 @@ public class WinScreen implements Screen {
         game.setScreen(new MenuScreen((EcoRun) game));
         dispose();
     }
+
+    public static void setHighScore(int value) {
+        preferences.putInteger("highScore", value);
+        preferences.flush();
+    }
+
+    public static int getHighScore() {
+        return preferences.getInteger("highScore");
+    }
+
 
     @Override
     public void show() {
