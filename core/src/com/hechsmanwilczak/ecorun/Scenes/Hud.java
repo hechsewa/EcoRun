@@ -261,16 +261,19 @@ public class Hud implements Disposable {
     public static boolean areAllCollected(int type){
         if (type == 0){ //metal
             if (colMetal >= noMetal){
+                EcoRun.trash_sound.play();
                 resetCollected(0);
                 return true;
             }
         } else if (type == 1){ //plastic
             if (colPlastic >= noPlastic){
+                EcoRun.trash_sound.play();
                 resetCollected(1);
                 return true;
             }
         } else { //paper
             if (colPaper >= noPaper){
+                EcoRun.trash_sound.play();
                 resetCollected(2);
                 return true;
             }

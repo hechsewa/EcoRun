@@ -3,6 +3,7 @@ package com.hechsmanwilczak.ecorun.Screens;
 import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
+import com.badlogic.gdx.audio.Music;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
@@ -32,6 +33,7 @@ public class MenuScreen implements Screen {
 
     //background
     private TextureRegion texRegBg;
+
 
     public MenuScreen(Game game){
         this.game = game;
@@ -123,6 +125,10 @@ public class MenuScreen implements Screen {
 
 
         stage.addActor(table);
+
+        EcoRun.music = EcoRun.assetManager.get("sounds/bgmusic.mp3", Music.class);
+        EcoRun.music.setLooping(true);
+        EcoRun.music.play();
 
     }
 

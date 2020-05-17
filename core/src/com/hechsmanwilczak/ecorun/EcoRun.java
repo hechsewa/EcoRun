@@ -3,6 +3,9 @@ package com.hechsmanwilczak.ecorun;
 import com.badlogic.gdx.ApplicationAdapter;
 import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.assets.AssetManager;
+import com.badlogic.gdx.audio.Music;
+import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
@@ -32,10 +35,28 @@ public class EcoRun extends Game {
 	public static final short PLASTIC_BIT = 8192;
 	public static final short SMOG_BIT = 16384;
 
+	public static AssetManager assetManager;
+	public static Music music;
+	public static Sound leaf_sound;
+	public static Sound trash_sound;
+	public static Sound kick_sound;
+	public static Sound portal_sound;
+	public static Sound smog_sound;
+	public static Sound destroy_sound;
+
 
 	@Override
 	public void create () {
 		batch = new SpriteBatch();
+		assetManager = new AssetManager();
+		assetManager.load("sounds/bgmusic.mp3", Music.class);
+		assetManager.load("sounds/kick.mp3", Sound.class);
+		assetManager.load("sounds/leaf.mp3", Sound.class);
+		assetManager.load("sounds/portal.mp3", Sound.class);
+		assetManager.load("sounds/trash.wav", Sound.class);
+		assetManager.load("sounds/smog.mp3", Sound.class);
+		assetManager.load("sounds/destroy.mp3", Sound.class);
+		assetManager.finishLoading();
 		setScreen(new MenuScreen(this));
 	}
 
@@ -47,5 +68,6 @@ public class EcoRun extends Game {
 	@Override
 	public void dispose () {
 		batch.dispose();
+		assetManager.dispose();
 	}
 }

@@ -3,6 +3,7 @@ package com.hechsmanwilczak.ecorun.Screens;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.Screen;
+import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
@@ -170,6 +171,7 @@ public class PlayScreen implements Screen {
                 player.b2body.applyLinearImpulse(new Vector2(0.1f, 0), player.b2body.getWorldCenter(), true);
             if (Gdx.input.isKeyPressed(Input.Keys.LEFT) && player.b2body.getLinearVelocity().x >= -2)
                 player.b2body.applyLinearImpulse(new Vector2(-0.1f, 0), player.b2body.getWorldCenter(), true);
+
             //inside red bin
             if (Gdx.input.isKeyPressed(Input.Keys.R) && player.redBin) {
                 hud.areAllCollected(0);
@@ -190,10 +192,12 @@ public class PlayScreen implements Screen {
     }
 
     public void resumeGame() {
+        EcoRun.music.setVolume(0.1f);
         gameStatus = GAME_RUNNING;
     }
 
     private void pauseGame() {
+        EcoRun.music.setVolume(1f);
         gameStatus = GAME_PAUSED;
         game.setScreen(new PausedScreen(game, this));
     }
@@ -266,6 +270,7 @@ public class PlayScreen implements Screen {
         }
 
         if (gameOver()) {
+            EcoRun.music.setVolume(1f);
             game.setScreen(new GameOverScreen(game, level));
             dispose();
         }
@@ -280,8 +285,10 @@ public class PlayScreen implements Screen {
     public void nextLevel() {
         if (level+1 <= 3)
             game.setScreen(new PlayScreen((EcoRun) game, level + 1, Hud.getScore()));
-        else if (level+1 == 4)
+        else if (level+1 == 4) {
+            EcoRun.music.setVolume(1f);
             game.setScreen(new WinScreen(game));
+        }
     }
 
     @Override

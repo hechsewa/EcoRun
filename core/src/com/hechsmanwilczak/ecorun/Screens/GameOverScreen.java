@@ -95,6 +95,7 @@ public class GameOverScreen implements Screen {
     }
 
     public void goToGameScreen(){
+        EcoRun.music.setVolume(0.1f);
         game.setScreen(new PlayScreen((EcoRun) game, currentLevel, 0));
         Hud.resetCollected(3);
         dispose();
@@ -102,7 +103,6 @@ public class GameOverScreen implements Screen {
 
     public void goToMenuScreen(){
         game.setScreen(new MenuScreen((EcoRun) game));
-
         dispose();
     }
 

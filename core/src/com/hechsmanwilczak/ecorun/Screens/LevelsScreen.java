@@ -96,6 +96,7 @@ public class LevelsScreen implements Screen {
     }
 
     public void goToGameScreen(Integer lvl){
+        EcoRun.music.setVolume(0.1f);
         game.setScreen(new PlayScreen((EcoRun) game, lvl,0));
         dispose();
     }

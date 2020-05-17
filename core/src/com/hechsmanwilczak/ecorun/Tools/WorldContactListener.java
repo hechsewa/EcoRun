@@ -1,6 +1,8 @@
 package com.hechsmanwilczak.ecorun.Tools;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.audio.Music;
+import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.physics.box2d.*;
 import com.hechsmanwilczak.ecorun.EcoRun;
 import com.hechsmanwilczak.ecorun.Scenes.Hud;
@@ -19,6 +21,15 @@ public class WorldContactListener implements ContactListener {
     public void beginContact(Contact contact) {
         Fixture fixA = contact.getFixtureA();
         Fixture fixB = contact.getFixtureB();
+
+        //sounds
+        EcoRun.leaf_sound = EcoRun.assetManager.get("sounds/leaf.mp3", Sound.class);
+        EcoRun.trash_sound = EcoRun.assetManager.get("sounds/trash.wav", Sound.class);
+        EcoRun.kick_sound = EcoRun.assetManager.get("sounds/kick.mp3", Sound.class);
+        EcoRun.portal_sound = EcoRun.assetManager.get("sounds/portal.mp3", Sound.class);
+        EcoRun.smog_sound = EcoRun.assetManager.get("sounds/smog.mp3", Sound.class);
+        EcoRun.destroy_sound = EcoRun.assetManager.get("sounds/destroy.mp3", Sound.class);
+
 
         int cDef = fixA.getFilterData().categoryBits | fixB.getFilterData().categoryBits;
 
@@ -48,12 +59,14 @@ public class WorldContactListener implements ContactListener {
         switch (cDef) {
             case EcoRun.ENEMY_HEAD_BIT | EcoRun.EARTH_BIT:
                 //isEnemyHit = true;
+                EcoRun.destroy_sound.play();
                 if (fixA.getFilterData().categoryBits == EcoRun.ENEMY_HEAD_BIT)
                     ((Enemy) fixA.getUserData()).hitOnHead();
                 else
                     ((Enemy) fixB.getUserData()).hitOnHead();
                 break;
             case EcoRun.EARTH_BIT | EcoRun.WATER_BIT:
+                EcoRun.kick_sound.play();
                 Hud.zeroLives();
                 if (fixA.getFilterData().categoryBits == EcoRun.WATER_BIT)
                     ((InteractiveTileObject) fixA.getUserData()).onCollision();
@@ -61,6 +74,7 @@ public class WorldContactListener implements ContactListener {
                     ((InteractiveTileObject) fixB.getUserData()).onCollision();
                 break;
             case EcoRun.EARTH_BIT | EcoRun.OIL_BIT:
+                EcoRun.kick_sound.play();
                 if (fixA.getFilterData().categoryBits == EcoRun.OIL_BIT)
                     ((InteractiveTileObject) fixA.getUserData()).onCollision();
                 else
@@ -68,6 +82,7 @@ public class WorldContactListener implements ContactListener {
                 break;
             case EcoRun.EARTH_BIT | EcoRun.ENEMY_BIT:
                 //if(!isEnemyHit)
+                EcoRun.kick_sound.play();
                 Hud.loseLive();
                 Earth.hit = true;
                 break;
@@ -76,36 +91,42 @@ public class WorldContactListener implements ContactListener {
                 ((Enemy) fixB.getUserData()).reverseVelocity(true, false);
                 break;
             case EcoRun.PLASTIC_BIT | EcoRun.EARTH_BIT:
+                EcoRun.trash_sound.play();
                 if (fixA.getFilterData().categoryBits == EcoRun.PLASTIC_BIT)
                     ((Item) fixA.getUserData()).onCollision(0);
                 else
                     ((Item) fixB.getUserData()).onCollision(0);
                 break;
             case EcoRun.METAL_BIT | EcoRun.EARTH_BIT:
+                EcoRun.trash_sound.play();
                 if (fixA.getFilterData().categoryBits == EcoRun.METAL_BIT)
                     ((Trash) fixA.getUserData()).onCollision(1);
                 else
                     ((Trash) fixB.getUserData()).onCollision(1);
                 break;
             case EcoRun.PAPER_BIT | EcoRun.EARTH_BIT:
+                EcoRun.trash_sound.play();
                 if (fixA.getFilterData().categoryBits == EcoRun.PAPER_BIT)
                     ((Trash) fixA.getUserData()).onCollision(2);
                  else
                     ((Trash) fixB.getUserData()).onCollision(2);
                 break;
             case EcoRun.SMOG_MASK_BIT | EcoRun.EARTH_BIT:
+                EcoRun.leaf_sound.play();
                 if (fixA.getFilterData().categoryBits == EcoRun.SMOG_MASK_BIT)
                     ((Item) fixA.getUserData()).onCollision(3);
                 else
                     ((Item) fixB.getUserData()).onCollision(3);
                 break;
             case EcoRun.ITEM_BIT | EcoRun.EARTH_BIT:
+                EcoRun.leaf_sound.play();
                 if (fixA.getFilterData().categoryBits == EcoRun.ITEM_BIT)
                     ((Item) fixA.getUserData()).onCollision(3);
                 else
                     ((Item) fixB.getUserData()).onCollision(3);
                 break;
             case EcoRun.SMOG_BIT | EcoRun.EARTH_BIT:
+                EcoRun.smog_sound.play();
                 if (fixA.getFilterData().categoryBits == EcoRun.SMOG_BIT)
                     ((InteractiveTileObject) fixA.getUserData()).onCollision();
                 else
@@ -125,6 +146,7 @@ public class WorldContactListener implements ContactListener {
                 Earth.binType = bin.getBinType();
                 break;
             case EcoRun.PORTAL_BIT | EcoRun.EARTH_BIT:
+                EcoRun.portal_sound.play();
                 Earth.inPortal = true;
                 break;
         }
