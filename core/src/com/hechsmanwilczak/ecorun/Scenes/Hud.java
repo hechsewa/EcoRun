@@ -34,6 +34,7 @@ public class Hud implements Disposable {
     private static Label scoreLabel;
     private static Label livesLabel;
     private static Label itemsLabel;
+    private static Label pauseLabel;
     private static Label plasticLabel;
     private static Label metalLabel;
     private static Label paperLabel;
@@ -83,11 +84,13 @@ public class Hud implements Disposable {
         labelStyle = new Label.LabelStyle(hudFont, Color.WHITE);
 
         scoreLabel = new Label(String.format("score: %05d", score), labelStyle);
+        pauseLabel = new Label("Press spacebar to pause", labelStyle);
         plasticLabel = new Label(String.format(": %01d/%01d", colPlastic, noPlastic),labelStyle);
         metalLabel = new Label(String.format(": %01d/%01d", colMetal, noMetal), labelStyle);
         paperLabel = new Label(String.format(": %01d/%01d", colPaper, noPaper), labelStyle);
 
         livesLabel = new Label("lives: ", labelStyle);
+
 
         infoLabel = new Label(" ", new Label.LabelStyle(hudFont, Color.WHITE));
         infoLabel.setPosition(Math.round(0.3*EcoRun.V_WIDTH),
@@ -102,7 +105,8 @@ public class Hud implements Disposable {
         topTable.add(paperLabel).center();
 
         table.add(scoreLabel).expandX().left().padLeft(20);
-        table.add(livesLabel).expandX().right().padRight(20); //table.row() zeby utworzyc nowy rekord w tabeli
+        table.add(pauseLabel).expandX().center();
+        table.add(livesLabel).expandX().right().padRight(20);
 
 
         heart = new Image(imageLife.getDrawable());
@@ -162,9 +166,9 @@ public class Hud implements Disposable {
         lives -= 1;
         //livesLabel.setText(String.format("lives: %01d", lives));
         if (lives == 2){
-          heart3.setVisible(false);
+            heart3.setVisible(false);
         } else if (lives == 1){
-          heart2.setVisible(false);
+            heart2.setVisible(false);
         } else {
             heart.setVisible(false);
         }

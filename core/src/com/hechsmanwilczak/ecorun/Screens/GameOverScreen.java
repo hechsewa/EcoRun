@@ -28,10 +28,11 @@ public class GameOverScreen implements Screen {
     private BitmapFont screenFont;
     private Game game;
     private OrthographicCamera cam;
+    private int currentLevel;
 
     private TextureRegion texRegBg;
 
-    public GameOverScreen(Game game){
+    public GameOverScreen(Game game, int level){
         this.game = game;
         cam = new OrthographicCamera();
         viewport = new FitViewport(EcoRun.V_WIDTH, EcoRun.V_HEIGHT, cam);
@@ -41,6 +42,8 @@ public class GameOverScreen implements Screen {
         Label.LabelStyle font = new Label.LabelStyle(screenFont, Color.WHITE);
 
         texRegBg = new TextureRegion(new Texture(Gdx.files.internal("bg.jpg")));
+
+        currentLevel = level;
 
         Table table = new Table();
         table.center();
@@ -92,7 +95,7 @@ public class GameOverScreen implements Screen {
     }
 
     public void goToGameScreen(){
-        game.setScreen(new PlayScreen((EcoRun) game, 1, 0));
+        game.setScreen(new PlayScreen((EcoRun) game, currentLevel, 0));
         Hud.resetCollected(3);
         dispose();
     }

@@ -132,7 +132,7 @@ public class MenuScreen implements Screen {
     }
 
     public void goToInfoScreen(){
-        game.setScreen(new WinScreen((EcoRun) game));
+        game.setScreen(new InfoScreen((EcoRun) game));
         dispose();
     }
 

@@ -2,6 +2,7 @@ package com.hechsmanwilczak.ecorun.Sprites;
 
 import com.badlogic.gdx.maps.tiled.TiledMap;
 import com.badlogic.gdx.maps.tiled.TiledMapTile;
+import com.badlogic.gdx.maps.tiled.TiledMapTileLayer;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.physics.box2d.*;
 import com.hechsmanwilczak.ecorun.EcoRun;
@@ -38,6 +39,12 @@ public abstract class InteractiveTileObject {
 
     public abstract void onHeadTouch();
     public abstract void onCollision();
+
+    public TiledMapTileLayer.Cell getCell(){
+        TiledMapTileLayer tiledMapTileLayer = (TiledMapTileLayer) map.getLayers().get(1);
+        return tiledMapTileLayer.getCell((int)(body.getPosition().x * EcoRun.PPM / 16),
+                (int)(body.getPosition().y * EcoRun.PPM / 16));
+    }
 
     public void setCategoryFilter(short filterBit){
         Filter filter = new Filter();

@@ -264,7 +264,7 @@ public class PlayScreen implements Screen {
         }
 
         if (gameOver()) {
-            game.setScreen(new GameOverScreen(game));
+            game.setScreen(new GameOverScreen(game, level));
             dispose();
         }
     }
