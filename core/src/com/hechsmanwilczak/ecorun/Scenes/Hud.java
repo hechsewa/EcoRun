@@ -7,20 +7,18 @@ import com.badlogic.gdx.graphics.Pixmap;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import com.badlogic.gdx.scenes.scene2d.Actor;
-import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.*;
-import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
-import com.badlogic.gdx.scenes.scene2d.utils.Drawable;
 import com.badlogic.gdx.utils.Align;
 import com.badlogic.gdx.utils.Disposable;
 import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
 import com.hechsmanwilczak.ecorun.EcoRun;
 
-import java.util.Timer;
-import java.util.TimerTask;
+
+//import java.util.Timer;
+//import java.util.TimerTask;
+
 
 //dolny pasek - zycia, level, wynik
 public class Hud implements Disposable {
@@ -83,11 +81,12 @@ public class Hud implements Disposable {
 
         labelStyle = new Label.LabelStyle(hudFont, Color.WHITE);
 
-        scoreLabel = new Label(String.format("score: %05d", score), labelStyle);
+        //NumberFormat fmt = NumberFormat.getDecimalFormat();
+        scoreLabel = new Label("score: " + score, labelStyle);
         pauseLabel = new Label("Press spacebar to pause", labelStyle);
-        plasticLabel = new Label(String.format(": %01d/%01d", colPlastic, noPlastic),labelStyle);
-        metalLabel = new Label(String.format(": %01d/%01d", colMetal, noMetal), labelStyle);
-        paperLabel = new Label(String.format(": %01d/%01d", colPaper, noPaper), labelStyle);
+        plasticLabel = new Label(colPlastic + "/" + noPlastic,labelStyle);
+        metalLabel = new Label(colMetal + "/" + noMetal, labelStyle);
+        paperLabel = new Label(colPaper + "/" + noPaper, labelStyle);
 
         livesLabel = new Label("lives: ", labelStyle);
 
@@ -145,12 +144,12 @@ public class Hud implements Disposable {
 
     public static void addScore(int value){
         score += value;
-        scoreLabel.setText(String.format("score: %05d", score));
+        scoreLabel.setText("score: " + score);
     }
 
     public static void loseScore(int value){
         score -= value;
-        scoreLabel.setText(String.format("score: %05d", score));
+        scoreLabel.setText("score: " + score);
     }
 
     public static void zeroLives(){
@@ -206,13 +205,13 @@ public class Hud implements Disposable {
         infoLabel.setText(infoStr);
         infoLabel.setAlignment(Align.center);
 
-        final Timer t = new Timer();
+        /*final Timer t = new Timer();
         t.schedule(new TimerTask() {
             public void run() {
                 infoLabel.setText(" ");
                 t.cancel();
             }
-        }, 2000);
+        }, 2000);*/ //musiałam wykomentowac
 
     }
 
@@ -238,24 +237,24 @@ public class Hud implements Disposable {
             colPaper = 0;
             colPlastic = 0;
         }
-        plasticLabel.setText(String.format(": %01d/%01d", colPlastic, noPlastic));
-        paperLabel.setText(String.format(": %01d/%01d", colPaper, noPaper));
-        metalLabel.setText(String.format(": %01d/%01d", colMetal, noMetal));
+        plasticLabel.setText(colPlastic + "/" + noPlastic);
+        paperLabel.setText(colPaper + "/" + noPaper);
+        metalLabel.setText(colMetal + "/" + noMetal);
     }
 
     public static void addPlastic(){
         colPlastic += 1;
-        plasticLabel.setText(String.format(": %01d/%01d", colPlastic, noPlastic));
+        plasticLabel.setText(colPlastic + "/" + noPlastic);
     }
 
     public static void addPaper(){
         colPaper += 1;
-        paperLabel.setText(String.format(": %01d/%01d", colPaper, noPaper));
+        paperLabel.setText(colPaper + "/" + noPaper);
     }
 
     public static void addMetal(){
         colMetal += 1;
-        metalLabel.setText(String.format(": %01d/%01d", colMetal, noMetal));
+        metalLabel.setText(colMetal + "/" + noMetal);
     }
 
     public static boolean areAllCollected(int type){

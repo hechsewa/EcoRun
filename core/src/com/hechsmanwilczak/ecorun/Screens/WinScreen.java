@@ -25,6 +25,8 @@ import com.badlogic.gdx.utils.viewport.Viewport;
 import com.hechsmanwilczak.ecorun.EcoRun;
 import com.hechsmanwilczak.ecorun.Scenes.Hud;
 
+
+
 public class WinScreen implements Screen {
     private Viewport viewport;
     private Stage stage;
@@ -68,11 +70,13 @@ public class WinScreen implements Screen {
         } else {
             gameScore = Hud.getScore();
         }
-        Label scoreLabel = new Label(String.format("Your score: %01d", gameScore), font);
+
+        Label scoreLabel = new Label("Your score: " + gameScore, font);
 
         if(gameScore > getHighScore())
             setHighScore(gameScore);
-        Label highScoreLabel = new Label(String.format("High score: %01d", getHighScore()), font);
+
+        Label highScoreLabel = new Label("High score: " + getHighScore(), font);
 
         TextButton.TextButtonStyle textButtonStyle = new TextButton.TextButtonStyle();
         //BitmapFont font2 = new BitmapFont();

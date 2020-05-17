@@ -37,7 +37,7 @@ public class WorldContactListener implements ContactListener {
             Fixture head = fixA.getUserData() == "head" ? fixA : fixB;
             Fixture object = head == fixA ? fixB : fixA;
 
-            if (object.getUserData() != null && InteractiveTileObject.class.isAssignableFrom(object.getUserData().getClass())) {
+            if (object.getUserData() != null && isAssignable(InteractiveTileObject.class, object.getUserData().getClass())) {
                 ((InteractiveTileObject) object.getUserData()).onHeadTouch();
             }
         }
@@ -45,7 +45,7 @@ public class WorldContactListener implements ContactListener {
         if (fixA.getUserData() == "body" || fixB.getUserData() == "collision") {
             Fixture body = fixA.getUserData() == "body" ? fixA : fixB;
             Fixture object = body == fixA ? fixB : fixA;
-            if (object.getUserData() != null && InteractiveTileObject.class.isAssignableFrom(object.getUserData().getClass())) {
+            if (object.getUserData() != null && isAssignable(InteractiveTileObject.class, object.getUserData().getClass())) {
                 ((InteractiveTileObject) object.getUserData()).onCollision();
             }
         }
@@ -154,6 +154,16 @@ public class WorldContactListener implements ContactListener {
 
     public boolean isPlayerOnGround(){
         return playerOnGround;
+    }
+
+    public static boolean isAssignable(Class<?> c1, Class<?> c2) {
+        while (c2 != null) {
+            if (c2.equals(c1)) {
+                return true;
+            }
+            c2 = c2.getSuperclass();
+        }
+        return false;
     }
 
     @Override
