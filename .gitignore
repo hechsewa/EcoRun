@@ -38,7 +38,6 @@ com_crashlytics_export_strings.xml
 .metadata/
 /android/bin/
 /core/bin/
-/desktop/bin/
 /html/bin/
 /ios/bin/
 /ios-moe/bin/
@@ -61,10 +60,8 @@ com_crashlytics_export_strings.xml
 /ios/nbproject/private/
 /ios-moe/nbproject/private/
 
-/build/
 /android/build/
 /core/build/
-/desktop/build/
 /html/build/
 /ios/build/
 /ios-moe/build/
@@ -101,10 +98,8 @@ nb-configuration.xml
 /local.properties
 .gradle/
 gradle-app.setting
-/build/
 /android/build/
 /core/build/
-/desktop/build/
 /html/build/
 /ios/build/
 /ios-moe/build/

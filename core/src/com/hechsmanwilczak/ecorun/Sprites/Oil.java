@@ -22,7 +22,7 @@ public class Oil extends InteractiveTileObject {
 
     @Override
     public void onCollision() {
-        Gdx.app.log("Oil", "collision");
-        Hud.loseScore(1);
+        if (Hud.getScore()-1 >= 0)
+            Hud.loseScore(1);
     }
 }
