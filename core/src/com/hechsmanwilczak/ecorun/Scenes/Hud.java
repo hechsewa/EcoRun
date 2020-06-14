@@ -7,12 +7,11 @@ import com.badlogic.gdx.graphics.Pixmap;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import com.badlogic.gdx.scenes.scene2d.Actor;
-import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.Stage;
-import com.badlogic.gdx.scenes.scene2d.ui.*;
-import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
-import com.badlogic.gdx.scenes.scene2d.utils.Drawable;
+import com.badlogic.gdx.scenes.scene2d.ui.Image;
+import com.badlogic.gdx.scenes.scene2d.ui.Label;
+import com.badlogic.gdx.scenes.scene2d.ui.Table;
+import com.badlogic.gdx.scenes.scene2d.ui.Window;
 import com.badlogic.gdx.utils.Align;
 import com.badlogic.gdx.utils.Disposable;
 import com.badlogic.gdx.utils.viewport.FitViewport;
@@ -22,18 +21,15 @@ import com.hechsmanwilczak.ecorun.EcoRun;
 import java.util.Timer;
 import java.util.TimerTask;
 
-//dolny pasek - zycia, level, wynik
 public class Hud implements Disposable {
     public static Stage stage;
     private Viewport viewport;
 
     private static Integer score;
     private static Integer lives;
-    private static Integer items;
 
     private static Label scoreLabel;
     private static Label livesLabel;
-    private static Label itemsLabel;
     private static Label pauseLabel;
     private static Label plasticLabel;
     private static Label metalLabel;
@@ -53,17 +49,15 @@ public class Hud implements Disposable {
     public Hud(SpriteBatch sb, Integer plastic, Integer metal, Integer paper){
         score = 0;
         lives = 3;
-        items = 0;
-        noPlastic = plastic; //ilosc plastiku na planszy
-        noMetal = metal; //ilosc metalu na planszy
-        noPaper = paper; //ilosc papieru na planszy
-        colPlastic = 0; //zebrana ilosc plastiku
+        noPlastic = plastic;
+        noMetal = metal;
+        noPaper = paper;
+        colPlastic = 0;
         colMetal = 0;
         colPaper = 0;
 
         viewport = new FitViewport(EcoRun.V_WIDTH, EcoRun.V_HEIGHT, new OrthographicCamera());
         stage = new Stage(viewport, sb);
-        Stage pauseStage = new Stage(stage.getViewport(), stage.getBatch());
         hudFont = new BitmapFont(Gdx.files.internal("hudFont.fnt"));
 
         //images
@@ -88,10 +82,7 @@ public class Hud implements Disposable {
         plasticLabel = new Label(String.format(": %01d/%01d", colPlastic, noPlastic),labelStyle);
         metalLabel = new Label(String.format(": %01d/%01d", colMetal, noMetal), labelStyle);
         paperLabel = new Label(String.format(": %01d/%01d", colPaper, noPaper), labelStyle);
-
         livesLabel = new Label("lives: ", labelStyle);
-
-
         infoLabel = new Label(" ", new Label.LabelStyle(hudFont, Color.WHITE));
         infoLabel.setPosition(Math.round(0.3*EcoRun.V_WIDTH),
                 Math.round(0.8*(EcoRun.V_HEIGHT)),
@@ -124,14 +115,6 @@ public class Hud implements Disposable {
         stage.addActor(table);
     }
 
-    public static void displayPauseWindow(){
-        stage.addActor(pauseWin);
-    }
-
-    public static void removePauseWindow(){
-        pauseWin.remove();
-    }
-
     public static void initPauseWindow(int w, int h){
         Pixmap winPixmap = new Pixmap(w, h, Pixmap.Format.RGBA8888);
         winPixmap.setColor(0f,0f,0f,0.5f);
@@ -155,16 +138,13 @@ public class Hud implements Disposable {
 
     public static void zeroLives(){
         lives = 0;
-        //livesLabel.setText(String.format("lives: %01d", lives));
         heart3.setVisible(false);
         heart2.setVisible(false);
         heart.setVisible(false);
     }
 
-
     public static void loseLive(){
         lives -= 1;
-        //livesLabel.setText(String.format("lives: %01d", lives));
         if (lives == 2){
             heart3.setVisible(false);
         } else if (lives == 1){

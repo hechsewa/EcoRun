@@ -11,12 +11,14 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
-import com.badlogic.gdx.scenes.scene2d.*;
-import com.badlogic.gdx.scenes.scene2d.ui.*;
+import com.badlogic.gdx.scenes.scene2d.InputEvent;
+import com.badlogic.gdx.scenes.scene2d.Stage;
+import com.badlogic.gdx.scenes.scene2d.ui.Image;
+import com.badlogic.gdx.scenes.scene2d.ui.Label;
+import com.badlogic.gdx.scenes.scene2d.ui.Table;
+import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
-import com.badlogic.gdx.utils.Align;
-import com.badlogic.gdx.utils.Scaling;
 import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
 import com.hechsmanwilczak.ecorun.EcoRun;
@@ -34,14 +36,12 @@ public class MenuScreen implements Screen {
     //background
     private TextureRegion texRegBg;
 
-
     public MenuScreen(Game game){
         this.game = game;
         cam = new OrthographicCamera();
         viewport = new FitViewport(EcoRun.V_WIDTH, EcoRun.V_HEIGHT, cam);
         stage = new Stage(viewport, ((EcoRun) game).batch);
         Gdx.input.setInputProcessor(stage);
-
 
         float btnWidth = EcoRun.V_WIDTH/4f; //100
         float btnHeight = EcoRun.V_HEIGHT/5f; //41
@@ -55,8 +55,6 @@ public class MenuScreen implements Screen {
         Label.LabelStyle detFont = new Label.LabelStyle(detailFont, Color.WHITE);
 
         imageLogo = new Image(new Texture(Gdx.files.internal("logo.png")));
-        //imageLogo.setScale(0.5f);
-        //imageLogo.setPosition(0.4f*EcoRun.V_WIDTH,0.9f*EcoRun.V_HEIGHT, Align.center);
 
         texRegBg = new TextureRegion(new Texture(Gdx.files.internal("bg2.jpg")));
         Table table = new Table();
@@ -64,13 +62,9 @@ public class MenuScreen implements Screen {
         table.setBackground(new TextureRegionDrawable(texRegBg));
         table.setFillParent(true);
 
-        Label gameNameLabel = new Label("ECO-RUN", font);
-        Label playLabel = new Label("click to play!", detFont);
-
         //TextBtn style
         TextButton.TextButtonStyle textButtonStyle = new TextButton.TextButtonStyle();
         textButtonStyle.font = new BitmapFont(Gdx.files.internal("font.fnt"));
-        //textButtonStyle.fontColor = Color.GREEN;
 
         //Play the game
         TextButton playBtn =new TextButton("Play",textButtonStyle);
@@ -111,11 +105,7 @@ public class MenuScreen implements Screen {
             }
         });
 
-        //TODO: background image, wykrywanie przyciskow
-
         table.add(imageLogo).expandX().size(220f,100f);
-        //table.row();
-        //table.add(playLabel).expandX().padBottom(10f);
         table.row();
         table.add(playBtn).expandX().padTop(5f);
         table.row();
@@ -123,13 +113,11 @@ public class MenuScreen implements Screen {
         table.row();
         table.add(exitBtn).expandX().padTop(5f);
 
-
         stage.addActor(table);
 
         EcoRun.music = EcoRun.assetManager.get("sounds/bgmusic.mp3", Music.class);
         EcoRun.music.setLooping(true);
         EcoRun.music.play();
-
     }
 
     public void goToGameScreen(){
@@ -144,20 +132,16 @@ public class MenuScreen implements Screen {
 
     @Override
     public void show() {
-
-
     }
 
     @Override
     public void render(float delta) {
         Gdx.gl.glClearColor(0,0,0,1);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
-
         SpriteBatch batch = new SpriteBatch();
         batch.setTransformMatrix(cam.view);
         batch.setProjectionMatrix(cam.projection);
         batch.begin();
-
         stage.act();
         stage.draw();
         batch.end();

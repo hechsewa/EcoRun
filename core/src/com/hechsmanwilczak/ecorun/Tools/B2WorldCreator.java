@@ -31,7 +31,6 @@ public class B2WorldCreator extends B2WorldCreatorEmpty {
         FixtureDef fdef = new FixtureDef();
         Body body;
 
-
         //ground layer
         for(MapObject object : map.getLayers().get(3).getObjects().getByType(RectangleMapObject.class)){
             Rectangle rectangle = ((RectangleMapObject) object).getRectangle();

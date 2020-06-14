@@ -3,42 +3,24 @@ package com.hechsmanwilczak.ecorun.Screens;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.Screen;
-import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
-import com.badlogic.gdx.graphics.Texture;
-import com.badlogic.gdx.graphics.g2d.BitmapFont;
-import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
-import com.badlogic.gdx.maps.MapObject;
-import com.badlogic.gdx.maps.objects.RectangleMapObject;
 import com.badlogic.gdx.maps.tiled.TiledMap;
-import com.badlogic.gdx.maps.tiled.TiledMapTileLayer;
-import com.badlogic.gdx.maps.tiled.TiledMapTileSet;
 import com.badlogic.gdx.maps.tiled.TmxMapLoader;
-import com.badlogic.gdx.maps.tiled.renderers.OrthoCachedTiledMapRenderer;
 import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
-import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
-import com.badlogic.gdx.physics.box2d.*;
-import com.badlogic.gdx.scenes.scene2d.Stage;
-import com.badlogic.gdx.scenes.scene2d.ui.Skin;
-import com.badlogic.gdx.scenes.scene2d.ui.Window;
+import com.badlogic.gdx.physics.box2d.Box2DDebugRenderer;
+import com.badlogic.gdx.physics.box2d.World;
 import com.badlogic.gdx.utils.Array;
-import com.badlogic.gdx.utils.viewport.Viewport;
 import com.badlogic.gdx.utils.viewport.FitViewport;
+import com.badlogic.gdx.utils.viewport.Viewport;
 import com.hechsmanwilczak.ecorun.EcoRun;
 import com.hechsmanwilczak.ecorun.Scenes.Hud;
 import com.hechsmanwilczak.ecorun.Sprites.Earth;
 import com.hechsmanwilczak.ecorun.Sprites.Enemy;
 import com.hechsmanwilczak.ecorun.Sprites.Items.Item;
-import com.hechsmanwilczak.ecorun.Sprites.PlasticBag;
 import com.hechsmanwilczak.ecorun.Tools.*;
-import com.badlogic.gdx.scenes.scene2d.ui.Dialog;
-
-import java.util.PriorityQueue;
-import java.util.Timer;
-import java.util.TimerTask;
 
 public class PlayScreen implements Screen {
     private EcoRun game;
@@ -223,14 +205,12 @@ public class PlayScreen implements Screen {
         if (player.currentState != Earth.State.DEAD) {
             gamecam.position.x = player.b2body.getPosition().x;
 
-            //zatrzymanie kamery na granicach mapy
             if (player.b2body.getPosition().x <= camBoundStart){
                 gamecam.position.x = camBoundStart;
             } else if (player.b2body.getPosition().x >= camBoundEnd) {
                 gamecam.position.x = camBoundEnd;
             }
         }
-
         gamecam.update();
         renderer.setView(gamecam);
     }
@@ -245,7 +225,6 @@ public class PlayScreen implements Screen {
         renderer.render();
 
         b2dr.render(world, gamecam.combined);
-
 
         game.batch.setProjectionMatrix(gamecam.combined);
         game.batch.begin();
@@ -265,7 +244,7 @@ public class PlayScreen implements Screen {
         game.batch.setProjectionMatrix(hud.stage.getCamera().combined);
         try {
             hud.stage.draw();
-        } catch (Exception e) { //to byl jakis szalony wyjatek przy koszach wiec go zlapalam tu
+        } catch (Exception e) {
             hud.stage.getBatch().end();
         }
 

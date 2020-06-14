@@ -4,7 +4,6 @@ import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Preferences;
 import com.badlogic.gdx.Screen;
-import com.badlogic.gdx.assets.loaders.AssetLoader;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
@@ -42,7 +41,6 @@ public class WinScreen implements Screen {
         stage = new Stage(viewport, ((EcoRun) game).batch);
         Gdx.input.setInputProcessor(stage);
         screenFont = new BitmapFont(Gdx.files.internal("font.fnt"));
-
         preferences = Gdx.app.getPreferences("HighScore_EcoRun");
 
         if (!preferences.contains("highScore")) {
@@ -75,7 +73,6 @@ public class WinScreen implements Screen {
         Label highScoreLabel = new Label(String.format("High score: %01d", getHighScore()), font);
 
         TextButton.TextButtonStyle textButtonStyle = new TextButton.TextButtonStyle();
-        //BitmapFont font2 = new BitmapFont();
         textButtonStyle.font = screenFont;
         textButtonStyle.fontColor = Color.GREEN;
 
@@ -114,9 +111,7 @@ public class WinScreen implements Screen {
         table.add(menuButton).expandX().padBottom(10f);
         table.row();
         table.add(exitButton).expandX().padBottom(10f);
-
         stage.addActor(table);
-
     }
 
 

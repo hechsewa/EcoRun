@@ -1,7 +1,5 @@
 package com.hechsmanwilczak.ecorun.Tools;
 
-import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.audio.Music;
 import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.physics.box2d.*;
 import com.hechsmanwilczak.ecorun.EcoRun;
@@ -50,7 +48,6 @@ public class WorldContactListener implements ContactListener {
             }
         }
 
-        //zablokowanie podwojnego skoku
         if ((fixA.getUserData() != null && fixA.getUserData().equals("bottom")) ||
         (fixB.getUserData() != null && fixB.getUserData().equals("bottom"))){
             playerOnGround = true;
@@ -58,7 +55,6 @@ public class WorldContactListener implements ContactListener {
 
         switch (cDef) {
             case EcoRun.ENEMY_HEAD_BIT | EcoRun.EARTH_BIT:
-                //isEnemyHit = true;
                 EcoRun.destroy_sound.play();
                 if (fixA.getFilterData().categoryBits == EcoRun.ENEMY_HEAD_BIT)
                     ((Enemy) fixA.getUserData()).hitOnHead();
@@ -81,7 +77,6 @@ public class WorldContactListener implements ContactListener {
                     ((InteractiveTileObject) fixB.getUserData()).onCollision();
                 break;
             case EcoRun.EARTH_BIT | EcoRun.ENEMY_BIT:
-                //if(!isEnemyHit)
                 EcoRun.kick_sound.play();
                 Hud.loseLive();
                 Earth.hit = true;

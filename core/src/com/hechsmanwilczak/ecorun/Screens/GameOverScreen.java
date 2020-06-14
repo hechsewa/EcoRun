@@ -54,7 +54,6 @@ public class GameOverScreen implements Screen {
         Label playAgainLabel = new Label("play again or go back to menu", font);
 
         TextButton.TextButtonStyle textButtonStyle = new TextButton.TextButtonStyle();
-        //BitmapFont font2 = new BitmapFont();
         textButtonStyle.font = screenFont;
         textButtonStyle.fontColor = Color.GREEN;
 

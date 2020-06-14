@@ -28,7 +28,6 @@ public class B2WorldCreatorLvl2 extends B2WorldCreatorEmpty {
         FixtureDef fdef = new FixtureDef();
         Body body;
 
-
         //ground layer
         for(MapObject object : map.getLayers().get(4).getObjects().getByType(RectangleMapObject.class)){
             Rectangle rectangle = ((RectangleMapObject) object).getRectangle();
@@ -96,8 +95,6 @@ public class B2WorldCreatorLvl2 extends B2WorldCreatorEmpty {
             Rectangle rectangle = ((RectangleMapObject) object).getRectangle();
             new Oil(screen, rectangle);
         }
-
-        //acid clouds - warstwa 6
     }
     public Array<PlasticBag> getPlasticBagArray() {
         return plasticBagArray;

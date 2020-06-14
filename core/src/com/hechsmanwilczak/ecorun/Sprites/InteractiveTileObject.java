@@ -2,8 +2,6 @@ package com.hechsmanwilczak.ecorun.Sprites;
 
 import com.badlogic.gdx.maps.tiled.TiledMap;
 import com.badlogic.gdx.maps.tiled.TiledMapTile;
-import com.badlogic.gdx.maps.tiled.TiledMapTileLayer;
-import com.badlogic.gdx.maps.tiled.TiledMapTileSet;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.physics.box2d.*;
 import com.hechsmanwilczak.ecorun.EcoRun;
@@ -15,7 +13,6 @@ public abstract class InteractiveTileObject {
     protected TiledMapTile tile;
     protected Rectangle bounds;
     protected Body body;
-
     protected Fixture fixture;
 
     public InteractiveTileObject(PlayScreen screen, Rectangle bounds){
@@ -35,14 +32,10 @@ public abstract class InteractiveTileObject {
         shape.setAsBox(bounds.getWidth() / 2 / EcoRun.PPM, bounds.getHeight() / 2 / EcoRun.PPM);
         fdef.shape = shape;
         fixture = body.createFixture(fdef);
-
-
-
     }
 
     public abstract void onHeadTouch();
     public abstract void onCollision();
-
 
     public void setCategoryFilter(short filterBit){
         Filter filter = new Filter();

@@ -9,10 +9,7 @@ import com.badlogic.gdx.physics.box2d.*;
 import com.badlogic.gdx.utils.Array;
 import com.hechsmanwilczak.ecorun.EcoRun;
 import com.hechsmanwilczak.ecorun.Scenes.Hud;
-import com.hechsmanwilczak.ecorun.Screens.LevelsScreen;
 import com.hechsmanwilczak.ecorun.Screens.PlayScreen;
-
-import java.util.concurrent.TimeUnit;
 
 public class Earth extends Sprite {
     public enum State {JUMPING, STILL, RUNNING, DEAD, HIT};
@@ -88,7 +85,6 @@ public class Earth extends Sprite {
         setRegion(getFrame(dt));
         //handle hit animation
         if (hit) {
-            Gdx.app.log("Hit", String.valueOf(earthHit.getKeyFrameIndex(stateTimer)));
             setRegion(earthHit.getKeyFrame(stateTimer));
             if (earthHit.isAnimationFinished(stateTimer))
                 hit = false;

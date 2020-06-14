@@ -1,16 +1,11 @@
 package com.hechsmanwilczak.ecorun;
 
-import com.badlogic.gdx.ApplicationAdapter;
 import com.badlogic.gdx.Game;
-import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.audio.Music;
 import com.badlogic.gdx.audio.Sound;
-import com.badlogic.gdx.graphics.GL20;
-import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.hechsmanwilczak.ecorun.Screens.MenuScreen;
-import com.hechsmanwilczak.ecorun.Screens.PlayScreen;
 
 public class EcoRun extends Game {
 	public SpriteBatch batch;
@@ -43,7 +38,6 @@ public class EcoRun extends Game {
 	public static Sound portal_sound;
 	public static Sound smog_sound;
 	public static Sound destroy_sound;
-
 
 	@Override
 	public void create () {

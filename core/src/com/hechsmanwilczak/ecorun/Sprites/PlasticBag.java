@@ -47,12 +47,11 @@ public class PlasticBag extends Enemy {
             setPosition(b2body.getPosition().x - getWidth() / 2, b2body.getPosition().y - getHeight() / 2);
             setRegion((TextureRegion) walkAnimation.getKeyFrame(stateTime, true));
             float vel = b2body.getPosition().x - getWidth() / 2;
-            if (stepCount % 50 == 0) { //co 50 ramke zmiana kierunku
+            if (stepCount % 50 == 0) {
                 this.reverseVelocity(true, false);
             }
         }
     }
-
 
     @Override
     protected void defineEnemy() {
@@ -80,7 +79,6 @@ public class PlasticBag extends Enemy {
         vertice[2] = new Vector2(-2, 3).scl(1 / EcoRun.PPM);
         vertice[3] = new Vector2(2, 3).scl(1 / EcoRun.PPM);
         head.set(vertice);
-
 
         fdef.shape = head;
         fdef.restitution = 0.5f;

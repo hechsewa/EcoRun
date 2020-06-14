@@ -1,6 +1,5 @@
 package com.hechsmanwilczak.ecorun.Sprites;
 
-import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.math.Rectangle;
 import com.hechsmanwilczak.ecorun.EcoRun;
 import com.hechsmanwilczak.ecorun.Scenes.Hud;
@@ -19,7 +18,6 @@ public class Smog extends InteractiveTileObject {
 
     @Override
     public void onCollision() {
-        Gdx.app.log("Smog", "collision");
         if(Earth.inMask){
           fixture.setSensor(true);
         } else {
