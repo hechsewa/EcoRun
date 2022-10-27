@@ -1,1 +1,3 @@
+rootProject.name = 'EcoRun'
+
 include 'desktop', 'html', 'core'
