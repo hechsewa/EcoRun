@@ -37,7 +37,7 @@ allprojects {
     sourceSets {
         test {
             java {
-                srcDirs = ["test/com/hechsmanwilczak/ecorun/test/"]
+                srcDirs = ["test/"]
             }
         }
     }
@@ -49,6 +49,13 @@ allprojects {
         google()
         maven { url "https://oss.sonatype.org/content/repositories/snapshots/" }
         maven { url "https://oss.sonatype.org/content/repositories/releases/" }
+    }
+}
+
+project(":test") {
+
+    dependencies {
+        implementation project(":core")
     }
 }
 
