@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="com.hechsmanwilczak.ecorun.test.RegressionTests" tests="9" skipped="0" failures="0" errors="0" timestamp="2022-11-03T23:06:20" hostname="Julias-MBP-3.lan" time="0.004">
+  <properties/>
+  <testcase name="testLevelSelection" classname="com.hechsmanwilczak.ecorun.test.RegressionTests" time="0.002"/>
+  <testcase name="testcollectItems" classname="com.hechsmanwilczak.ecorun.test.RegressionTests" time="0.0"/>
+  <testcase name="testLoseLife" classname="com.hechsmanwilczak.ecorun.test.RegressionTests" time="0.0"/>
+  <testcase name="testScoreChanges" classname="com.hechsmanwilczak.ecorun.test.RegressionTests" time="0.0"/>
+  <testcase name="testKillEnemy" classname="com.hechsmanwilczak.ecorun.test.RegressionTests" time="0.0"/>
+  <testcase name="testFailLevel" classname="com.hechsmanwilczak.ecorun.test.RegressionTests" time="0.0"/>
+  <testcase name="testMovementKeys" classname="com.hechsmanwilczak.ecorun.test.RegressionTests" time="0.0"/>
+  <testcase name="testRestartGame" classname="com.hechsmanwilczak.ecorun.test.RegressionTests" time="0.0"/>
+  <testcase name="testPauseButton" classname="com.hechsmanwilczak.ecorun.test.RegressionTests" time="0.0"/>
+  <system-out><![CDATA[]]></system-out>
+  <system-err><![CDATA[]]></system-err>
+</testsuite>

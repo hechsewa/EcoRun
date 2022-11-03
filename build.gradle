@@ -37,7 +37,7 @@ allprojects {
     sourceSets {
         test {
             java {
-                srcDirs = ["test/"]
+                srcDirs = ["test/com/hechsmanwilczak/ecorun/test/"]
             }
         }
     }
