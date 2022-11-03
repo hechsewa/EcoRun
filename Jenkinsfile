@@ -1,12 +1,13 @@
 pipeline {
     agent any
 
-    steps {
-		echo 'Testing..'
+    stages {
+        stage('Test') {
+            steps {
+                echo 'Testing..'
 
-    	script {
-	        sh './gradlew test'
+                sh './gradlew test'
+            }
         }
     }
-
 }
