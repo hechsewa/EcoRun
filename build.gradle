@@ -34,6 +34,14 @@ allprojects {
         testImplementation('junit:junit:4.13')
     }
 
+    sourceSets {
+        test {
+            java {
+                srcDirs = ["test/"]
+            }
+        }
+    }
+
     repositories {
         mavenLocal()
         mavenCentral()
