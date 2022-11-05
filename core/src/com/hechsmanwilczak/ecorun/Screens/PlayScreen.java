@@ -92,8 +92,12 @@ public class PlayScreen implements Screen {
             map = mapLoader.load("ecorun-lvl2.tmx");
             camBoundEnd = 42.7f;
         }
-        else {
+        else if (level == 3){
             map = mapLoader.load("ecorun-lvl3.tmx");
+            camBoundEnd = 42.75f;
+        }
+        else {
+            map = mapLoader.load("ecorun-lvl5.tmx");
             camBoundEnd = 42.75f;
         }
         renderer = new OrthogonalTiledMapRenderer(map, 1 / EcoRun.PPM);
@@ -107,8 +111,10 @@ public class PlayScreen implements Screen {
             creator = new B2WorldCreator(this);
         } else if (level == 2) {
             creator = new B2WorldCreatorLvl2(this);
-        } else {
+        } else if(level == 3){
             creator = new B2WorldCreatorLvl3(this);
+        } else {
+            creator = new B2WorldCreatorLvl5(this);
         }
 
         player = new Earth(this);
@@ -145,13 +151,15 @@ public class PlayScreen implements Screen {
 
     public void handleInput(float dt) {
         if (player.currentState != Earth.State.DEAD) {
-            if (Gdx.input.isKeyJustPressed(Input.Keys.UP)) {
+            if (Gdx.input.isKeyJustPressed(Input.Keys.UP) || Gdx.input.isKeyJustPressed(Input.Keys.W)) {
                 if (contactListener.isPlayerOnGround())
                     player.b2body.applyLinearImpulse(new Vector2(0, 3f), player.b2body.getWorldCenter(), true);
             }
-            if (Gdx.input.isKeyPressed(Input.Keys.RIGHT) && player.b2body.getLinearVelocity().x <= 2)
+            if ((Gdx.input.isKeyPressed(Input.Keys.RIGHT) || Gdx.input.isKeyPressed(Input.Keys.D))
+                    && player.b2body.getLinearVelocity().x <= 2)
                 player.b2body.applyLinearImpulse(new Vector2(0.1f, 0), player.b2body.getWorldCenter(), true);
-            if (Gdx.input.isKeyPressed(Input.Keys.LEFT) && player.b2body.getLinearVelocity().x >= -2)
+            if ((Gdx.input.isKeyPressed(Input.Keys.LEFT) || Gdx.input.isKeyPressed(Input.Keys.A))
+                    && player.b2body.getLinearVelocity().x >= -2)
                 player.b2body.applyLinearImpulse(new Vector2(-0.1f, 0), player.b2body.getWorldCenter(), true);
 
             //inside red bin
