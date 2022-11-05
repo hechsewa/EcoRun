@@ -1,6 +1,4 @@
 buildscript {
-    
-
     repositories {
         mavenLocal()
         mavenCentral()
@@ -11,8 +9,6 @@ buildscript {
     }
     dependencies {
         classpath 'org.wisepersist:gwt-gradle-plugin:1.0.9'
-        
-
     }
 }
 
@@ -30,20 +26,6 @@ allprojects {
         aiVersion = '1.8.0'
     }
 
-    dependencies {
-        testImplementation('junit:junit:4.13.2')
-        testImplementation('org.mockito:mockito-inline:4.8.0')
-        testImplementation('org.mockito:mockito-junit-jupiter:4.8.0')
-    }
-
-    sourceSets {
-        test {
-            java {
-                srcDirs = ["core/test/"]
-            }
-        }
-    }
-
     repositories {
         mavenLocal()
         mavenCentral()
@@ -52,12 +34,17 @@ allprojects {
         maven { url "https://oss.sonatype.org/content/repositories/snapshots/" }
         maven { url "https://oss.sonatype.org/content/repositories/releases/" }
     }
+
+    dependencies {
+        testImplementation('junit:junit:4.13.2')
+        testImplementation('org.mockito:mockito-inline:4.8.0')
+        testImplementation('org.mockito:mockito-junit-jupiter:4.8.0')
+    }
 }
 
 
 project(":desktop") {
     apply plugin: "java-library"
-
 
     dependencies {
         implementation project(":core")
@@ -71,10 +58,16 @@ project(":desktop") {
 project(":core") {
     apply plugin: "java-library"
 
+    sourceSets {
+        test {
+            java {
+                srcDirs = ["test/"]
+            }
+        }
+    }
 
     dependencies {
         api "com.badlogicgames.gdx:gdx:$gdxVersion"
         api "com.badlogicgames.gdx:gdx-box2d:$gdxVersion"
-        
     }
 }

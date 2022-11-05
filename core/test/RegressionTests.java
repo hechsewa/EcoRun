@@ -1,9 +1,14 @@
+import com.hechsmanwilczak.ecorun.Scenes.Hud;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.junit.runners.JUnit4;
+import org.mockito.Mock;
+import org.mockito.Mockito;
+import org.mockito.junit.MockitoJUnitRunner;
+
 import static org.mockito.Mockito.*;
 
-@RunWith(JUnit4.class)
+@RunWith(MockitoJUnitRunner.class)
 public class RegressionTests {
 
     // in game functions
@@ -58,6 +63,11 @@ public class RegressionTests {
     @Test
     public void testPauseButton(){
 
+    }
+
+    @Test
+    public void testGetHud() {
+        Hud hud = Mockito.mock(Hud.class);
     }
 
 }
