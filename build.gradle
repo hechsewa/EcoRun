@@ -52,12 +52,6 @@ allprojects {
     }
 }
 
-project(":test") {
-
-    dependencies {
-        implementation project(":core")
-    }
-}
 
 project(":desktop") {
     apply plugin: "java-library"
