@@ -67,6 +67,7 @@ project(":core") {
     }
 
     dependencies {
+        testReportData project(':core')
         api "com.badlogicgames.gdx:gdx:$gdxVersion"
         api "com.badlogicgames.gdx:gdx-box2d:$gdxVersion"
     }
@@ -76,6 +77,5 @@ project(":core") {
             junitXml.enabled = false
             html.enabled = true
         }
-        reports.html.required = false
     }
 }
