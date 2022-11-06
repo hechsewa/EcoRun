@@ -75,7 +75,7 @@ project(":core") {
         reports {
             junitXml.enabled = false
             html.enabled = true
-            html.required = false
         }
+        reports.html.required = false
     }
 }
