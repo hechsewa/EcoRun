@@ -1,4 +1,6 @@
 import com.hechsmanwilczak.ecorun.Scenes.Hud;
+import com.hechsmanwilczak.ecorun.Screens.PlayScreen;
+import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.junit.runners.JUnit4;
@@ -67,7 +69,9 @@ public class RegressionTests {
 
     @Test
     public void testGetHud() {
-        Hud hud = Mockito.mock(Hud.class);
+        PlayScreen playScreen = Mockito.mock(PlayScreen.class);
+        when(playScreen.getHud()).thenReturn(Mockito.mock(Hud.class));
+        Assert.assertEquals(Hud.class, playScreen.getHud().getClass());
     }
 
 }
