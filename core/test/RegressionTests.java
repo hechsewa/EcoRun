@@ -12,6 +12,12 @@ import static org.mockito.Mockito.*;
 
 @RunWith(MockitoJUnitRunner.class)
 public class RegressionTests {
+    @Test
+    public void testGetHud() {
+        PlayScreen playScreen = Mockito.mock(PlayScreen.class);
+        when(playScreen.getHud()).thenReturn(Mockito.mock(Hud.class));
+        Assert.assertEquals(Hud.class, playScreen.getHud().getClass());
+    }
 
     // in game functions
     @Test
@@ -66,12 +72,4 @@ public class RegressionTests {
     public void testPauseButton(){
 
     }
-
-    @Test
-    public void testGetHud() {
-        PlayScreen playScreen = Mockito.mock(PlayScreen.class);
-        when(playScreen.getHud()).thenReturn(Mockito.mock(Hud.class));
-        Assert.assertEquals(Hud.class, playScreen.getHud().getClass());
-    }
-
 }
