@@ -63,15 +63,18 @@ project(":core") {
             java {
                 srcDirs = ["test/"]
             }
-            reports {
-                junitXml.enabled = false
-                html.enabled = true
-            }
         }
     }
 
     dependencies {
         api "com.badlogicgames.gdx:gdx:$gdxVersion"
         api "com.badlogicgames.gdx:gdx-box2d:$gdxVersion"
+    }
+
+    test {
+        reports {
+            junitXml.enabled = false
+            html.enabled = true
+        }
     }
 }
