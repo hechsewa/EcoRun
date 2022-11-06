@@ -75,7 +75,6 @@ project(":core") {
         reports {
             junitXml.enabled = false
             html.enabled = true
-            outputPerTestCase = false
         }
     }
 }
