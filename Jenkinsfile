@@ -15,6 +15,12 @@ pipeline {
             }
             post {
                 always {
+                    junitReporter: {
+                        outputDir: 'test-reports',
+                        outputFile: 'unit-test-report.xml',
+                        useBrowserName: false,
+                        xmlVersion: null
+                    }
                     junit "core/build/reports/tests/**/*.html"
                 }
             }
