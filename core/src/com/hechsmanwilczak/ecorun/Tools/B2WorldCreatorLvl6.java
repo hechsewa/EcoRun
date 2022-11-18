@@ -13,12 +13,12 @@ import com.hechsmanwilczak.ecorun.Sprites.Items.Leaf;
 import com.hechsmanwilczak.ecorun.Sprites.Items.Trash;
 
 
-public class B2WorldCreatorLvl2 extends B2WorldCreatorEmpty {
+public class B2WorldCreatorLvl6 extends B2WorldCreatorEmpty {
     private Array<PlasticBag> plasticBagArray;
     private Array<Leaf> leavesArray;
     private Array<Trash> trashArray;
 
-    public B2WorldCreatorLvl2(PlayScreen screen){
+    public B2WorldCreatorLvl6(PlayScreen screen){
         super(screen);
 
         World world = screen.getWorld();
