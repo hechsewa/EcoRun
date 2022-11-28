@@ -3,14 +3,12 @@ import com.hechsmanwilczak.ecorun.Screens.PlayScreen;
 import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.junit.runners.JUnit4;
-import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.junit.MockitoJUnitRunner;
 
-import static org.mockito.Mockito.*;
+import static org.mockito.Mockito.when;
 
-@RunWith(MockitoJUnitRunner.class)
+@RunWith(MockitoJUnitRunner.Silent.class)
 public class RegressionTests {
     @Test
     public void testGetHud() {
@@ -19,12 +17,16 @@ public class RegressionTests {
         Assert.assertEquals(Hud.class, playScreen.getHud().getClass());
     }
 
+
     // in game functions
     @Test
     public void testMovementKeys(){
-        //test UP, LEFT, RIGHT keys for movement
+        PlayScreen playScreen = Mockito.mock(PlayScreen.class);
+        when(playScreen.getHud()).thenReturn(Mockito.mock(Hud.class));
 
-        Assert.assertEquals(true, true);
+        //test UP, LEFT, RIGHT keys for movement
+        playScreen.handleInput(10);
+
     }
 
     @Test
