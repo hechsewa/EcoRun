@@ -119,7 +119,6 @@ public class LevelsScreen implements Screen {
             }
         });
 
-
         table.add(level1Button).expandX().padBottom(10);
         table.row();
         table.add(level2Button).expandX().padBottom(10);
