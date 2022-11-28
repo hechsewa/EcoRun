@@ -95,9 +95,14 @@ public class PlayScreen implements Screen {
         else if (level == 3){
             map = mapLoader.load("ecorun-lvl3.tmx");
             camBoundEnd = 42.75f;
-        }
-        else {
+        } else if(level == 4){
             map = mapLoader.load("ecorun-lvl4.tmx");
+            camBoundEnd = 42.75f;
+        } else if(level == 5){
+            map = mapLoader.load("ecorun-lvl5.tmx");
+            camBoundEnd = 42.75f;
+        } else {
+            map = mapLoader.load("ecorun-lvl6.tmx");
             camBoundEnd = 42.75f;
         }
         renderer = new OrthogonalTiledMapRenderer(map, 1 / EcoRun.PPM);
@@ -113,8 +118,12 @@ public class PlayScreen implements Screen {
             creator = new B2WorldCreatorLvl2(this);
         } else if(level == 3){
             creator = new B2WorldCreatorLvl3(this);
-        } else {
+        } else if(level == 4){
             creator = new B2WorldCreatorLvl4(this);
+        } else if(level == 5){
+            creator = new B2WorldCreatorLvl5(this);
+        } else {
+            creator = new B2WorldCreatorLvl6(this);
         }
 
         player = new Earth(this);
