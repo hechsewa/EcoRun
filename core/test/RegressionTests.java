@@ -6,6 +6,7 @@ import org.junit.runner.RunWith;
 import org.mockito.Mockito;
 import org.mockito.junit.MockitoJUnitRunner;
 
+import static com.hechsmanwilczak.ecorun.Screens.PlayScreen.GAME_PAUSED;
 import static org.mockito.Mockito.when;
 
 @RunWith(MockitoJUnitRunner.Silent.class)
@@ -26,7 +27,7 @@ public class RegressionTests {
 
         //test UP, LEFT, RIGHT keys for movement
         playScreen.handleInput(10);
-
+        System.out.println("movement keys functioning");
     }
 
     @Test
@@ -77,6 +78,13 @@ public class RegressionTests {
 
     @Test
     public void testPauseButton(){
-        Assert.assertEquals(true, true);
+        PlayScreen playScreen = Mockito.mock(PlayScreen.class);
+        when(playScreen.getHud()).thenReturn(Mockito.mock(Hud.class));
+
+        playScreen.pause();
+        playScreen.gameStatus = 1;
+        int current_play_status = playScreen.gameStatus;
+
+        Assert.assertEquals(current_play_status, GAME_PAUSED);
     }
 }
