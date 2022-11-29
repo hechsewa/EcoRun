@@ -92,6 +92,8 @@ public class MenuScreen implements Screen {
             }
         });
 
+
+
         //Exit
         TextButton exitBtn =new TextButton("Exit",textButtonStyle);
         exitBtn.setText("Exit");
