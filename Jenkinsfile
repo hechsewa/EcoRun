@@ -2,19 +2,21 @@ pipeline {
     agent any
 
     stages {
-        stage('Build') {
+        stage('Build'){
             steps {
-                echo 'Building..'
+                echo 'Building...'
+                sh './gradlew build'
             }
         }
         stage('Test') {
             steps {
                 echo 'Testing..'
+                sh './gradlew test'
             }
-        }
-        stage('Deploy') {
-            steps {
-                echo 'Deploying....'
+            post {
+                always {
+                    junit "core/build/test-results/**/TEST*.xml"
+                }
             }
         }
     }
