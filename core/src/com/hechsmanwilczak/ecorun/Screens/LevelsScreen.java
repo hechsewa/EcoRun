@@ -85,11 +85,11 @@ public class LevelsScreen implements Screen {
 
 
         TextButton level4Button=new TextButton("Level 4",textButtonStyle);
-        level2Button.setText("Level 4");
-        level2Button.setHeight(230);
-        level2Button.setWidth(500);
-        level2Button.setPosition(50,40);
-        level2Button.addListener(new ClickListener(){
+        level4Button.setText("Level 4");
+        level4Button.setHeight(230);
+        level4Button.setWidth(500);
+        level4Button.setPosition(50,40);
+        level4Button.addListener(new ClickListener(){
             @Override
             public void clicked(InputEvent event, float x, float y) {
                 goToGameScreen(4);
@@ -98,11 +98,11 @@ public class LevelsScreen implements Screen {
 
 
         TextButton level5Button=new TextButton("Level 5",textButtonStyle);
-        level2Button.setText("Level 5");
-        level2Button.setHeight(230);
-        level2Button.setWidth(500);
-        level2Button.setPosition(50,25);
-        level2Button.addListener(new ClickListener(){
+        level5Button.setText("Level 5");
+        level5Button.setHeight(230);
+        level5Button.setWidth(500);
+        level5Button.setPosition(50,25);
+        level5Button.addListener(new ClickListener(){
             @Override
             public void clicked(InputEvent event, float x, float y) {
                 goToGameScreen(5);
@@ -111,11 +111,11 @@ public class LevelsScreen implements Screen {
 
 
         TextButton level6Button=new TextButton("Level 6",textButtonStyle);
-        level2Button.setText("Level 6");
-        level2Button.setHeight(230);
-        level2Button.setWidth(500);
-        level2Button.setPosition(50,10);
-        level2Button.addListener(new ClickListener(){
+        level6Button.setText("Level 6");
+        level6Button.setHeight(230);
+        level6Button.setWidth(500);
+        level6Button.setPosition(50,10);
+        level6Button.addListener(new ClickListener(){
             @Override
             public void clicked(InputEvent event, float x, float y) {
                 goToGameScreen(6);
