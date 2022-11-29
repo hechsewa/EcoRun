@@ -6,6 +6,7 @@ import com.hechsmanwilczak.ecorun.Screens.PlayScreen;
 import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.mockito.MockedStatic;
 import org.mockito.Mockito;
 import org.mockito.invocation.InvocationOnMock;
 import org.mockito.junit.MockitoJUnitRunner;
@@ -41,11 +42,21 @@ public class RegressionTests {
 
     @Test
     public void testScoreChanges(){
-        //increase in score
+        try(MockedStatic<Hud> mock = Mockito.mockStatic(Hud.class)){
+            //increase in score
+            int score = Hud.getScore();
+            mock.when(new MockedStatic.Verification() {
+                @Override
+                public void apply() throws Throwable {
+                    Hud.getScore();
+                }
+            }).thenReturn(10);
 
-        //decrease in score
+            Hud.addScore(10);
+            int finalScore = Hud.getScore();
 
-        Assert.assertEquals(true, true);
+            Assert.assertNotEquals(score, finalScore);
+        }
     }
 
     @Test
