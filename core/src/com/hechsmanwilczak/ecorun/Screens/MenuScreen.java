@@ -92,7 +92,18 @@ public class MenuScreen implements Screen {
             }
         });
 
-
+        //Character Selection
+        TextButton charBtn =new TextButton("Character Select",textButtonStyle);
+        charBtn.setText("Character Select");
+        charBtn.setHeight(btnHeight);
+        charBtn.setWidth(btnWidth);
+        charBtn.setPosition(btnPosX,btnPosY-2*btnPosMov);
+        charBtn.addListener(new ClickListener(){
+            @Override
+            public void clicked(InputEvent event, float x, float y) {
+                goToCharacterScreen();
+            }
+        });
 
         //Exit
         TextButton exitBtn =new TextButton("Exit",textButtonStyle);
@@ -113,6 +124,8 @@ public class MenuScreen implements Screen {
         table.row();
         table.add(infoBtn).expandX().padTop(5f);
         table.row();
+        table.add(charBtn).expandX().padTop(5f);
+        table.row();
         table.add(exitBtn).expandX().padTop(5f);
 
         stage.addActor(table);
@@ -128,6 +141,11 @@ public class MenuScreen implements Screen {
     }
 
     public void goToInfoScreen(){
+        game.setScreen(new InfoScreen((EcoRun) game));
+        dispose();
+    }
+
+    public void goToCharacterScreen(){
         game.setScreen(new InfoScreen((EcoRun) game));
         dispose();
     }
