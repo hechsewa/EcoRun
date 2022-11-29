@@ -53,12 +53,8 @@ public class CharacterScreen implements Screen {
         table.setFillParent(true);
         table.setBackground(new TextureRegionDrawable(texRegBg));
 
-        Label infoLabel = new Label("Information", fontBtn);
-        Label infoTextLabel = new Label("The aim of the game is to collect all the trash and throw them out to appropriate bins." +
-                " \n Move the Earth with right and left arrow, jump with an up arrow." +
-                " \n Avoid plastic bags and oil stains. Collect leaves for points." +
-                " \n To go through the PM10 cloud, collect a mask." +
-                " \n \n game created by Ewa Hechsman & Katarzyna Wilczak, 2020", fontIn);
+        Label infoLabel = new Label("Select a Character: ", fontBtn);
+        Label infoTextLabel = new Label("", fontIn);
         infoTextLabel.setAlignment(Align.center);
 
         Image backToMenuButton = new Image(new Texture("back.png"));
