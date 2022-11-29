@@ -1,3 +1,4 @@
+import com.hechsmanwilczak.ecorun.EcoRun;
 import com.hechsmanwilczak.ecorun.Scenes.Hud;
 import com.hechsmanwilczak.ecorun.Screens.PlayScreen;
 import org.junit.Assert;
@@ -23,16 +24,22 @@ public class RegressionTests {
     @Test
     public void testMovementKeys(){
         PlayScreen playScreen = Mockito.mock(PlayScreen.class);
-        when(playScreen.getHud()).thenReturn(Mockito.mock(Hud.class));
 
-        //test UP, LEFT, RIGHT keys for movement
+        //test keys for movement
         playScreen.handleInput(10);
         System.out.println("movement keys functioning");
     }
 
     @Test
     public void testcollectItems(){
-        Assert.assertEquals(true, true);
+        EcoRun game = Mockito.mock(EcoRun.class);
+        Hud hud = new Hud(game.batch, 1,1,1);
+
+        int initScore = Hud.getScore();
+        Hud.addScore(10);
+        int finalScore = Hud.getScore();
+
+        Assert.assertNotEquals(initScore, finalScore);
     }
 
     @Test
