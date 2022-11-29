@@ -105,6 +105,7 @@ public class PlayScreen implements Screen {
             map = mapLoader.load("ecorun-lvl6.tmx");
             camBoundEnd = 42.75f;
         }
+
         renderer = new OrthogonalTiledMapRenderer(map, 1 / EcoRun.PPM);
         gamecam.position.set(gameport.getWorldWidth() / 2, gameport.getWorldHeight() / 2, 0);
 
@@ -142,10 +143,14 @@ public class PlayScreen implements Screen {
             noMetal = 2;
             noPlastic = 2;
             noPaper = 2;
-        } else {
+        } else if (level == 3){
             noMetal = 3;
             noPlastic = 3;
             noPaper = 3;
+        }else{
+            noMetal = 6;
+            noPlastic = 6;
+            noPaper = 6;
         }
     }
 
