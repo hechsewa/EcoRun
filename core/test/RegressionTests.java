@@ -5,7 +5,9 @@ import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.Mockito;
+import org.mockito.invocation.InvocationOnMock;
 import org.mockito.junit.MockitoJUnitRunner;
+import org.mockito.stubbing.Answer;
 
 import static com.hechsmanwilczak.ecorun.Screens.PlayScreen.GAME_PAUSED;
 import static org.mockito.Mockito.when;
@@ -31,7 +33,7 @@ public class RegressionTests {
     }
 
     @Test
-    public void testcollectItems(){
+    public void testCollectItems(){
         EcoRun game = Mockito.mock(EcoRun.class);
         Hud hud = new Hud(game.batch, 1,1,1);
 
@@ -85,11 +87,16 @@ public class RegressionTests {
 
     @Test
     public void testPauseButton(){
-        PlayScreen playScreen = Mockito.mock(PlayScreen.class);
-        when(playScreen.getHud()).thenReturn(Mockito.mock(Hud.class));
+        final PlayScreen playScreen = Mockito.mock(PlayScreen.class);
+        Mockito.doAnswer(new Answer<Object>() {
+            public Object answer(InvocationOnMock invocation) throws Throwable {
+                playScreen.gameStatus = 1;
+                return null;
+            }
+        }).when(playScreen).pause();
+
 
         playScreen.pause();
-        playScreen.gameStatus = 1;
         int current_play_status = playScreen.gameStatus;
 
         Assert.assertEquals(current_play_status, GAME_PAUSED);
