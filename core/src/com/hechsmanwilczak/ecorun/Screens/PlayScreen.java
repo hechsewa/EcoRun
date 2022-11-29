@@ -92,10 +92,20 @@ public class PlayScreen implements Screen {
             map = mapLoader.load("ecorun-lvl2.tmx");
             camBoundEnd = 42.7f;
         }
-        else {
+        else if (level == 3){
             map = mapLoader.load("ecorun-lvl3.tmx");
             camBoundEnd = 42.75f;
+        } else if(level == 4){
+            map = mapLoader.load("ecorun-lvl4.tmx");
+            camBoundEnd = 42.75f;
+        } else if(level == 5){
+            map = mapLoader.load("ecorun-lvl5.tmx");
+            camBoundEnd = 42.75f;
+        } else {
+            map = mapLoader.load("ecorun-lvl6.tmx");
+            camBoundEnd = 42.75f;
         }
+
         renderer = new OrthogonalTiledMapRenderer(map, 1 / EcoRun.PPM);
         gamecam.position.set(gameport.getWorldWidth() / 2, gameport.getWorldHeight() / 2, 0);
 
@@ -107,8 +117,14 @@ public class PlayScreen implements Screen {
             creator = new B2WorldCreator(this);
         } else if (level == 2) {
             creator = new B2WorldCreatorLvl2(this);
-        } else {
+        } else if(level == 3){
             creator = new B2WorldCreatorLvl3(this);
+        } else if(level == 4){
+            creator = new B2WorldCreatorLvl4(this);
+        } else if(level == 5){
+            creator = new B2WorldCreatorLvl5(this);
+        } else {
+            creator = new B2WorldCreatorLvl6(this);
         }
 
         player = new Earth(this);
@@ -127,10 +143,14 @@ public class PlayScreen implements Screen {
             noMetal = 2;
             noPlastic = 2;
             noPaper = 2;
-        } else {
+        } else if (level == 3){
             noMetal = 3;
             noPlastic = 3;
             noPaper = 3;
+        }else{
+            noMetal = 6;
+            noPlastic = 6;
+            noPaper = 6;
         }
     }
 
@@ -264,9 +284,9 @@ public class PlayScreen implements Screen {
     }
 
     public void nextLevel() {
-        if (level+1 <= 3)
+        if (level+1 <= 6)
             game.setScreen(new PlayScreen((EcoRun) game, level + 1, Hud.getScore()));
-        else if (level+1 == 4) {
+        else if (level+1 == 7) {
             EcoRun.music.setVolume(1f);
             game.setScreen(new WinScreen(game));
         }
