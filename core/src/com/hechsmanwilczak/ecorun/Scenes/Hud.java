@@ -26,6 +26,7 @@ public class Hud implements Disposable {
     private Viewport viewport;
 
     private static Integer score;
+    private static int texture;
     private static Integer lives;
 
     private static Label scoreLabel;
@@ -46,8 +47,9 @@ public class Hud implements Disposable {
     private static Integer noPaper, colPaper;
     private Image imagePlastic, imageMetal, imagePaper, imageLife;
 
-    public Hud(SpriteBatch sb, Integer plastic, Integer metal, Integer paper){
+    public Hud(SpriteBatch sb, Integer plastic, Integer metal, Integer paper, int character){
         score = 0;
+        texture = character;
         lives = 3;
         noPlastic = plastic;
         noMetal = metal;
@@ -205,6 +207,7 @@ public class Hud implements Disposable {
     public static Integer getScore() {
         return score;
     }
+    public static int getTexture(){return texture;}
 
     public static void resetCollected(int type) {
         if (type == 0)

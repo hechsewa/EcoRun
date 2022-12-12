@@ -96,7 +96,7 @@ public class GameOverScreen implements Screen {
 
     public void goToGameScreen(){
         EcoRun.music.setVolume(AppSettings.getMusicVolume());
-        game.setScreen(new PlayScreen((EcoRun) game, currentLevel, 0));
+        game.setScreen(new PlayScreen((EcoRun) game, currentLevel, 0, 0));
         Hud.resetCollected(3);
         dispose();
     }

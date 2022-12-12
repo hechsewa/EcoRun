@@ -60,13 +60,20 @@ public class PlayScreen implements Screen {
     //pause and resume handlers
     public static final int GAME_RUNNING = 0;
     public static final int GAME_PAUSED = 1;
-    private int gameStatus;
+    public int gameStatus;
     private boolean paused;
 
     public static Boolean rThrown, yThrown, bThrown;
 
-    public PlayScreen(EcoRun game, Integer lvl, Integer passedScore) {
-        atlas = new TextureAtlas("Earth_and_enemy.pack");
+    public PlayScreen(EcoRun game, Integer lvl, Integer passedScore, int character) {
+        if(character == 1){
+            atlas = new TextureAtlas("Saturn_and_enemy.pack");
+        } else if(character == 2) {
+            atlas = new TextureAtlas("GraySpot_and_enemy.pack");
+        } else {
+            atlas = new TextureAtlas("Earth_and_enemy.pack");
+        }
+
 
         gameStatus = GAME_RUNNING;
         rThrown = false;
@@ -80,7 +87,7 @@ public class PlayScreen implements Screen {
         this.game = game;
         gamecam = new OrthographicCamera();
         gameport = new FitViewport(EcoRun.V_WIDTH / EcoRun.PPM, EcoRun.V_HEIGHT / EcoRun.PPM, gamecam);
-        hud = new Hud(game.batch, noPlastic, noMetal, noPaper);
+        hud = new Hud(game.batch, noPlastic, noMetal, noPaper, character);
         hud.addScore(passedScore);
 
         camBoundStart = 2f;
@@ -286,7 +293,7 @@ public class PlayScreen implements Screen {
 
     public void nextLevel() {
         if (level+1 <= 6)
-            game.setScreen(new PlayScreen((EcoRun) game, level + 1, Hud.getScore()));
+            game.setScreen(new PlayScreen((EcoRun) game, level + 1, Hud.getScore(), Hud.getTexture()));
         else if (level+1 == 7) {
             EcoRun.music.setVolume(AppSettings.getMusicVolume());
             game.setScreen(new WinScreen(game));

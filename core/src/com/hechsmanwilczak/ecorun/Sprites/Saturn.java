@@ -1,6 +1,5 @@
 package com.hechsmanwilczak.ecorun.Sprites;
 
-import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
@@ -11,27 +10,27 @@ import com.hechsmanwilczak.ecorun.EcoRun;
 import com.hechsmanwilczak.ecorun.Scenes.Hud;
 import com.hechsmanwilczak.ecorun.Screens.PlayScreen;
 
-public class Earth extends Sprite {
+public class Saturn extends Sprite {
     public enum State {JUMPING, STILL, RUNNING, DEAD, HIT};
     public State currentState;
     public State previousState;
     public World world;
     public Body b2body;
-    private TextureRegion earthStill;
-    private TextureRegion earthDead;
-    private Animation<TextureRegion> earthRun;
-    private Animation<TextureRegion> earthJump;
-    private Animation<TextureRegion> earthHit;
+    private TextureRegion saturnStill;
+    private TextureRegion saturnDead;
+    private Animation<TextureRegion> saturnRun;
+    private Animation<TextureRegion> saturnJump;
+    private Animation<TextureRegion> saturnHit;
     private float stateTimer;
     private Boolean runningRight;
-    public Boolean earthIsDead;
+    private Boolean saturnIsDead;
     private PlayScreen screen;
     public static Boolean hit, redBin, yellowBin, blueBin, inPortal, inMask;
     public static float binBounds;
     public static int binType;
 
-    public Earth(PlayScreen screen){
-        super(screen.getAtlas().findRegion("earth_left"));
+    public Saturn(PlayScreen screen){
+        super(screen.getAtlas().findRegion("saturn_left"));
         this.world = screen.getWorld();
         this.screen = screen;
 
@@ -40,7 +39,7 @@ public class Earth extends Sprite {
         previousState = State.STILL;
         stateTimer = 0;
         runningRight = true;
-        earthIsDead = false;
+        saturnIsDead = false;
         hit = false;
         redBin = false;
         yellowBin = false;
@@ -51,30 +50,30 @@ public class Earth extends Sprite {
         Array<TextureRegion> frames = new Array<TextureRegion>();
         //running animation
         for (int i=1; i<4; i++)
-            frames.add(new TextureRegion(screen.getAtlas().findRegion("earth_left"), i*16, 0, 16, 16));
-        earthRun = new Animation<TextureRegion>(0.1f, frames);
+            frames.add(new TextureRegion(screen.getAtlas().findRegion("saturn_left"), i*16, 0, 16, 16));
+        saturnRun = new Animation<TextureRegion>(0.1f, frames);
         frames.clear();
 
         //jumping animation
-        frames.add(new TextureRegion(screen.getAtlas().findRegion("earth_left"), 4*16, 0, 16, 16));
-        earthJump = new Animation<TextureRegion>(0.1f, frames);
+        frames.add(new TextureRegion(screen.getAtlas().findRegion("saturn_left"), 4*16, 0, 16, 16));
+        saturnJump = new Animation<TextureRegion>(0.1f, frames);
         frames.clear();
 
-        earthStill = new TextureRegion(screen.getAtlas().findRegion("earth_left"), 0,0, 16, 16);
+        saturnStill = new TextureRegion(screen.getAtlas().findRegion("saturn_left"), 0,0, 16, 16);
 
-        earthDead = new TextureRegion(screen.getAtlas().findRegion("earth_dead"), 0, 0, 16, 16);
+        saturnDead = new TextureRegion(screen.getAtlas().findRegion("saturn_dead"), 0, 0, 16, 16);
 
         //hit by enemy animation
-        frames.add(earthDead);
-        frames.add(earthStill);
-        frames.add(earthDead);
-        frames.add(earthStill);
-        earthHit = new Animation<TextureRegion>(0.05f, frames);
+        frames.add(saturnDead);
+        frames.add(saturnStill);
+        frames.add(saturnDead);
+        frames.add(saturnStill);
+        saturnHit = new Animation<TextureRegion>(0.05f, frames);
         frames.clear();
 
-        defineEarth();
+        defineSaturn();
         setBounds(0,0, 16/EcoRun.PPM, 16/EcoRun.PPM);
-        setRegion(earthStill);
+        setRegion(saturnStill);
 
     }
 
@@ -85,8 +84,8 @@ public class Earth extends Sprite {
         setRegion(getFrame(dt));
         //handle hit animation
         if (hit) {
-            setRegion(earthHit.getKeyFrame(stateTimer));
-            if (earthHit.isAnimationFinished(stateTimer))
+            setRegion(saturnHit.getKeyFrame(stateTimer));
+            if (saturnHit.isAnimationFinished(stateTimer))
                 hit = false;
             else
                 hit = true;
@@ -102,17 +101,17 @@ public class Earth extends Sprite {
         TextureRegion region;
         switch (currentState) {
             case JUMPING:
-                region = earthJump.getKeyFrame(stateTimer);
+                region = saturnJump.getKeyFrame(stateTimer);
                 break;
             case RUNNING:
-                region = earthRun.getKeyFrame(stateTimer, true);
+                region = saturnRun.getKeyFrame(stateTimer, true);
                 break;
             case DEAD:
-                region = earthDead;
+                region = saturnDead;
                 break;
             case STILL:
             default:
-                region = earthStill;
+                region = saturnStill;
                 break;
         }
 
@@ -133,7 +132,7 @@ public class Earth extends Sprite {
     }
 
     public State getState() {
-        if (earthIsDead)
+        if (saturnIsDead)
             return State.DEAD;
         else if (b2body.getLinearVelocity().y > 0)
             return State.JUMPING;
@@ -145,7 +144,7 @@ public class Earth extends Sprite {
 
     public void die(){
         if(!isDead()){
-            earthIsDead = true;
+            saturnIsDead = true;
             Filter filter = new Filter();
             filter.maskBits = EcoRun.NOTHING_BIT;
             for(Fixture fixture : b2body.getFixtureList())
@@ -155,14 +154,14 @@ public class Earth extends Sprite {
     }
 
     public boolean isDead(){
-        return earthIsDead;
+        return saturnIsDead;
     }
 
     public float getStateTimer(){
         return stateTimer;
     }
 
-    public void defineEarth(){
+    public void defineSaturn(){
         BodyDef bdef = new BodyDef();
         bdef.position.set(32 / EcoRun.PPM, 32 / EcoRun.PPM);
         bdef.type = BodyDef.BodyType.DynamicBody;
@@ -219,7 +218,7 @@ public class Earth extends Sprite {
         }
     }
 
-    public void checkBin() {
+    private void checkBin() {
         if (100*b2body.getPosition().x >= binBounds && 100*b2body.getPosition().x <= (binBounds + 16)) {
             if (binType == 0) { //redBin active
                 redBin = true;

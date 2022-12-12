@@ -29,7 +29,7 @@ public class LevelsScreen implements Screen {
     public Game game;
     private TextureRegion texRegBg;
 
-    public LevelsScreen(Game game){
+    public LevelsScreen(Game game, final int character){
         this.game = game;
         cam = new OrthographicCamera();
         viewport = new FitViewport(EcoRun.V_WIDTH, EcoRun.V_HEIGHT,cam);
@@ -55,7 +55,7 @@ public class LevelsScreen implements Screen {
         level1Button.addListener(new ClickListener(){
             @Override
             public void clicked(InputEvent event, float x, float y) {
-                goToGameScreen(1);
+                goToGameScreen(1, character);
             }
         });
 
@@ -67,7 +67,7 @@ public class LevelsScreen implements Screen {
         level2Button.addListener(new ClickListener(){
             @Override
             public void clicked(InputEvent event, float x, float y) {
-                goToGameScreen(2);
+                goToGameScreen(2, character);
             }
         });
 
@@ -80,7 +80,7 @@ public class LevelsScreen implements Screen {
         level3Button.addListener(new ClickListener(){
             @Override
             public void clicked(InputEvent event, float x, float y) {
-                goToGameScreen(3);
+                goToGameScreen(3, character);
             }
         });
 
@@ -92,7 +92,7 @@ public class LevelsScreen implements Screen {
         level4Button.addListener(new ClickListener(){
             @Override
             public void clicked(InputEvent event, float x, float y) {
-                goToGameScreen(4);
+                goToGameScreen(4, character);
             }
         });
 
@@ -104,7 +104,7 @@ public class LevelsScreen implements Screen {
         level5Button.addListener(new ClickListener(){
             @Override
             public void clicked(InputEvent event, float x, float y) {
-                goToGameScreen(5);
+                goToGameScreen(5, character);
             }
         });
 
@@ -116,7 +116,7 @@ public class LevelsScreen implements Screen {
         level6Button.addListener(new ClickListener(){
             @Override
             public void clicked(InputEvent event, float x, float y) {
-                goToGameScreen(6);
+                goToGameScreen(6,character);
             }
         });
 
@@ -137,9 +137,9 @@ public class LevelsScreen implements Screen {
 
     }
 
-    public void goToGameScreen(Integer lvl){
+    public void goToGameScreen(Integer lvl, int character){
         EcoRun.music.setVolume(AppSettings.getMusicVolume());
-        game.setScreen(new PlayScreen((EcoRun) game, lvl,0));
+        game.setScreen(new PlayScreen((EcoRun) game, lvl,0, character));
         dispose();
     }
     @Override

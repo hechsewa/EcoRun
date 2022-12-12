@@ -18,7 +18,7 @@ public class PlasticBag extends Enemy {
     private int stepCount;
     private Animation walkAnimation;
     private Array<TextureRegion> frames;
-    private boolean setToDestroy;
+    public boolean setToDestroy;
     private boolean destroyed;
 
     public PlasticBag(PlayScreen screen, float x, float y) {
