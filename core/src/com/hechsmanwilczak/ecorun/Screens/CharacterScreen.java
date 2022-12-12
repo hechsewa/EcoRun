@@ -3,7 +3,6 @@ package com.hechsmanwilczak.ecorun.Screens;
 import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
-import com.badlogic.gdx.audio.Music;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
@@ -19,139 +18,122 @@ import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
+import com.badlogic.gdx.utils.Align;
 import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
 import com.hechsmanwilczak.ecorun.EcoRun;
 
-public class MenuScreen implements Screen {
+public class CharacterScreen implements Screen {
     private Viewport viewport;
     private Stage stage;
-
-    private Game game;
-    private BitmapFont menuFont;
-    private BitmapFont detailFont;
-    private Image imageLogo;
     private OrthographicCamera cam;
 
-    //background
+    private Game game;
     private TextureRegion texRegBg;
+    private BitmapFont fontInfo;
+    private BitmapFont fontButton;
 
-    public MenuScreen(Game game){
+    public CharacterScreen(Game game){
         this.game = game;
         cam = new OrthographicCamera();
         viewport = new FitViewport(EcoRun.V_WIDTH, EcoRun.V_HEIGHT, cam);
         stage = new Stage(viewport, ((EcoRun) game).batch);
         Gdx.input.setInputProcessor(stage);
 
+        fontButton = new BitmapFont(Gdx.files.internal("font.fnt"));
+        fontInfo = new BitmapFont();
+        fontInfo.getData().setScale(0.7f);
         float btnWidth = EcoRun.V_WIDTH/4f; //100
         float btnHeight = EcoRun.V_HEIGHT/5f; //41
         float btnPosX = EcoRun.V_WIDTH/8f; //50
         float btnPosY = (3f*EcoRun.V_HEIGHT)/7f; //90
         float btnPosMov = EcoRun.V_HEIGHT/6f; //35
 
-        menuFont = new BitmapFont(Gdx.files.internal("font.fnt"));
-        detailFont = new BitmapFont(Gdx.files.internal("EcoRun-30.fnt"));
-        Label.LabelStyle font = new Label.LabelStyle(menuFont, Color.WHITE);
-        Label.LabelStyle detFont = new Label.LabelStyle(detailFont, Color.WHITE);
+        Label.LabelStyle fontBtn = new Label.LabelStyle(fontButton, Color.WHITE);
+        Label.LabelStyle fontIn = new Label.LabelStyle(fontInfo, Color.WHITE);
+        texRegBg = new TextureRegion(new Texture(Gdx.files.internal("bg.jpg")));
 
-        imageLogo = new Image(new Texture(Gdx.files.internal("logo.png")));
 
-        texRegBg = new TextureRegion(new Texture(Gdx.files.internal("bg2.jpg")));
         Table table = new Table();
         table.center();
-        table.setBackground(new TextureRegionDrawable(texRegBg));
         table.setFillParent(true);
+        table.setBackground(new TextureRegionDrawable(texRegBg));
 
         //TextBtn style
         TextButton.TextButtonStyle textButtonStyle = new TextButton.TextButtonStyle();
         textButtonStyle.font = new BitmapFont(Gdx.files.internal("font.fnt"));
 
-        //Play the game
-        TextButton playBtn =new TextButton("Play",textButtonStyle);
-        playBtn.setText("Play");
-        playBtn.setHeight(btnHeight);
-        playBtn.setWidth(btnWidth);
-        playBtn.setPosition(btnPosX,btnPosY);
-        playBtn.addListener(new ClickListener(){
+        //Earth Character
+        TextButton earthBtn =new TextButton("Earth",textButtonStyle);
+        earthBtn.setText("Earth");
+        earthBtn.setHeight(btnHeight);
+        earthBtn.setWidth(btnWidth);
+        earthBtn.setPosition(btnPosX,btnPosY);
+        earthBtn.addListener(new ClickListener(){
             @Override
             public void clicked(InputEvent event, float x, float y) {
-                goToGameScreen();
+                goToGameScreen(0);
             }
         });
 
-        //Info about the game
-        TextButton infoBtn =new TextButton("Information",textButtonStyle);
-        infoBtn.setText("Information");
-        infoBtn.setHeight(btnHeight);
-        infoBtn.setWidth(btnWidth);
-        infoBtn.setPosition(btnPosX,btnPosY-btnPosMov);
-        infoBtn.addListener(new ClickListener(){
+        //Saturn Character
+        TextButton saturnBtn =new TextButton("Saturn",textButtonStyle);
+        saturnBtn.setText("Saturn");
+        saturnBtn.setHeight(btnHeight);
+        saturnBtn.setWidth(btnWidth);
+        saturnBtn.setPosition(btnPosX,btnPosY);
+        saturnBtn.addListener(new ClickListener(){
             @Override
             public void clicked(InputEvent event, float x, float y) {
-                goToInfoScreen();
+                goToGameScreen(1);
             }
         });
 
-        //Character Selection
-        TextButton charBtn =new TextButton("Character Select",textButtonStyle);
-        charBtn.setText("Character Select");
-        charBtn.setHeight(btnHeight);
-        charBtn.setWidth(btnWidth);
-        charBtn.setPosition(btnPosX,btnPosY-2*btnPosMov);
-        charBtn.addListener(new ClickListener(){
+        //GraySpot Character
+        TextButton graySpotBtn =new TextButton("GraySpot",textButtonStyle);
+        graySpotBtn.setText("GraySpot");
+        graySpotBtn.setHeight(btnHeight);
+        graySpotBtn.setWidth(btnWidth);
+        graySpotBtn.setPosition(btnPosX,btnPosY);
+        graySpotBtn.addListener(new ClickListener(){
             @Override
             public void clicked(InputEvent event, float x, float y) {
-                goToCharacterScreen();
+                goToGameScreen(2);
             }
         });
 
-        //Exit
-        TextButton exitBtn =new TextButton("Exit",textButtonStyle);
-        exitBtn.setText("Exit");
-        exitBtn.setHeight(btnHeight);
-        exitBtn.setWidth(btnWidth);
-        exitBtn.setPosition(btnPosX,btnPosY-2*btnPosMov);
-        exitBtn.addListener(new ClickListener(){
+
+        Image backToMenuButton = new Image(new Texture("back.png"));
+        backToMenuButton.setSize(125, 125);
+        backToMenuButton.addListener(new ClickListener(){
             @Override
             public void clicked(InputEvent event, float x, float y) {
-                Gdx.app.exit();
+                goToMenu();
             }
         });
 
-        table.add(imageLogo).expandX().size(220f,100f);
+        table.add(earthBtn).expandX();
         table.row();
-        table.add(playBtn).expandX().padTop(5f);
+        table.add(saturnBtn).expandX().padTop(15f);
         table.row();
-        table.add(infoBtn).expandX().padTop(5f);
+        table.add(graySpotBtn).expandX().padTop(15f);
         table.row();
-        table.add(charBtn).expandX().padTop(5f);
-        table.row();
-        table.add(exitBtn).expandX().padTop(5f);
+        table.add(backToMenuButton).expandX().padTop(20f);
 
         stage.addActor(table);
 
-        EcoRun.music = EcoRun.assetManager.get("sounds/bgmusic.mp3", Music.class);
-        EcoRun.music.setLooping(true);
-        EcoRun.music.play();
     }
-
-    public void goToGameScreen(){
-        game.setScreen(new LevelsScreen((EcoRun) game, 0));
+    public void goToMenu(){
+        game.setScreen(new MenuScreen((EcoRun) game));
         dispose();
     }
-
-    public void goToInfoScreen(){
-        game.setScreen(new InfoScreen((EcoRun) game));
+    public void goToGameScreen(int character){
+        game.setScreen(new LevelsScreen((EcoRun) game, character));
         dispose();
     }
-
-    public void goToCharacterScreen(){
-        game.setScreen(new CharacterScreen((EcoRun) game));
-        dispose();
-    }
-
     @Override
     public void show() {
+
     }
 
     @Override
