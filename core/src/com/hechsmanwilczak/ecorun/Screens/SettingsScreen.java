@@ -3,23 +3,27 @@ package com.hechsmanwilczak.ecorun.Screens;
 import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
+import com.badlogic.gdx.files.FileHandle;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
+import com.badlogic.gdx.scenes.scene2d.Event;
+import com.badlogic.gdx.scenes.scene2d.EventListener;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.Stage;
-import com.badlogic.gdx.scenes.scene2d.ui.Image;
-import com.badlogic.gdx.scenes.scene2d.ui.Label;
-import com.badlogic.gdx.scenes.scene2d.ui.Table;
+import com.badlogic.gdx.scenes.scene2d.ui.*;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
+import com.badlogic.gdx.scenes.scene2d.utils.Drawable;
 import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 import com.badlogic.gdx.utils.Align;
 import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
+import com.hechsmanwilczak.ecorun.AppSettings;
 import com.hechsmanwilczak.ecorun.EcoRun;
 
 public class SettingsScreen implements Screen {
@@ -31,6 +35,9 @@ public class SettingsScreen implements Screen {
     private TextureRegion texRegBg;
     private BitmapFont fontInfo;
     private BitmapFont fontButton;
+
+    private BitmapFont font;
+    public int Gamevolume;
 
     public SettingsScreen(Game game){
         this.game = game;
@@ -64,7 +71,46 @@ public class SettingsScreen implements Screen {
             }
         });
 
+        //volume settings
+        Label musicLabel = new Label("Music Volume", fontBtn);
+        font = new BitmapFont(Gdx.files.internal("font.fnt"));
+        TextButton.TextButtonStyle textButtonStyle = new TextButton.TextButtonStyle();
+        textButtonStyle.font = font;
+        //volumeup
+        TextButton volUpBtn=new TextButton("UP",textButtonStyle);
+        volUpBtn.setText("UP");
+        volUpBtn.setHeight(230);
+        volUpBtn.setWidth(500);
+        volUpBtn.setPosition(50,85);
+        volUpBtn.addListener(new ClickListener(){
+            @Override
+            public void clicked(InputEvent event, float x, float y) {
+                AppSettings.setMusicVolume(volLim(AppSettings.getMusicVolume()+0.1f));
+                EcoRun.music.setVolume(AppSettings.getMusicVolume());
+            }
+        });
+        //volumedown
+        TextButton volDwnBtn=new TextButton("DOWN",textButtonStyle);
+        volDwnBtn.setText("DOWN");
+        volDwnBtn.setHeight(230);
+        volDwnBtn.setWidth(500);
+        volDwnBtn.setPosition(50,85);
+        volDwnBtn.addListener(new ClickListener(){
+            @Override
+            public void clicked(InputEvent event, float x, float y) {
+                AppSettings.setMusicVolume(volLim(AppSettings.getMusicVolume()-0.1f));
+                System.out.println(AppSettings.getMusicVolume());
+                EcoRun.music.setVolume(AppSettings.getMusicVolume());
+            }
+        });
+
         table.add(infoLabel).expandX();
+        table.row();
+        table.add(musicLabel).expandX().padTop(20f);
+        table.row();
+        table.add(volUpBtn).expandX();
+        table.row();
+        table.add(volDwnBtn).expandX();
         table.row();
         table.add(backToMenuButton).expandX().padTop(20f);
 
@@ -117,5 +163,14 @@ public class SettingsScreen implements Screen {
     @Override
     public void dispose() {
         stage.dispose();
+    }
+
+    public float volLim(float vol){
+        if (vol <= 0f){
+            return 0f;
+        } else if (vol >= 1f) {
+            return 1f;
+        }
+        return vol;
     }
 }
