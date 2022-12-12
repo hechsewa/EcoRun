@@ -72,7 +72,7 @@ public class CharacterScreen implements Screen {
         earthBtn.addListener(new ClickListener(){
             @Override
             public void clicked(InputEvent event, float x, float y) {
-                goToGameScreen();
+                goToGameScreen(0);
             }
         });
 
@@ -85,7 +85,7 @@ public class CharacterScreen implements Screen {
         saturnBtn.addListener(new ClickListener(){
             @Override
             public void clicked(InputEvent event, float x, float y) {
-                goToGameScreen();
+                goToGameScreen(1);
             }
         });
 
@@ -98,7 +98,7 @@ public class CharacterScreen implements Screen {
         graySpotBtn.addListener(new ClickListener(){
             @Override
             public void clicked(InputEvent event, float x, float y) {
-                goToGameScreen();
+                goToGameScreen(2);
             }
         });
 
@@ -127,8 +127,8 @@ public class CharacterScreen implements Screen {
         game.setScreen(new MenuScreen((EcoRun) game));
         dispose();
     }
-    public void goToGameScreen(){
-        game.setScreen(new LevelsScreen((EcoRun) game));
+    public void goToGameScreen(int character){
+        game.setScreen(new LevelsScreen((EcoRun) game, character));
         dispose();
     }
     @Override

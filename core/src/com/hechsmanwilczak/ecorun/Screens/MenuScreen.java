@@ -136,7 +136,7 @@ public class MenuScreen implements Screen {
     }
 
     public void goToGameScreen(){
-        game.setScreen(new LevelsScreen((EcoRun) game));
+        game.setScreen(new LevelsScreen((EcoRun) game, 0));
         dispose();
     }
 
