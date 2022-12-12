@@ -1,5 +1,5 @@
 
-GraySpot_and_enemy.png
+Saturn_and_enemy.png
 format: RGBA8888
 filter: Nearest,Nearest
 repeat: none
@@ -10,14 +10,14 @@ items
   orig: 96, 16
   offset: 0, 0
   index: -1
-earth_left
+saturn_left
   rotate: false
   xy: 99, 1
   size: 80, 16
   orig: 80, 16
   offset: 0, 0
   index: -1
-earth_right
+saturn_right
   rotate: false
   xy: 181, 1
   size: 80, 16
@@ -31,11 +31,10 @@ bag
   orig: 48, 16
   offset: 0, 0
   index: -1
-earth_dead
+saturn_dead
   rotate: false
   xy: 313, 1
   size: 16, 16
   orig: 16, 16
   offset: 0, 0
   index: -1
-
