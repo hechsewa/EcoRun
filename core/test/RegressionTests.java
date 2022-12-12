@@ -3,9 +3,13 @@ import com.hechsmanwilczak.ecorun.EcoRun;
 import com.hechsmanwilczak.ecorun.Scenes.Hud;
 import com.hechsmanwilczak.ecorun.Screens.LevelsScreen;
 import com.hechsmanwilczak.ecorun.Screens.PlayScreen;
+import com.hechsmanwilczak.ecorun.Sprites.Enemy;
+import com.hechsmanwilczak.ecorun.Sprites.PlasticBag;
+import com.hechsmanwilczak.ecorun.Sprites.Saturn;
 import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.mockito.Mock;
 import org.mockito.MockedStatic;
 import org.mockito.Mockito;
 import org.mockito.invocation.InvocationOnMock;
@@ -61,7 +65,17 @@ public class RegressionTests {
 
     @Test
     public void testKillEnemy(){
-        Assert.assertEquals(true, true);
+        final PlasticBag enemy = Mockito.mock(PlasticBag.class);
+        Mockito.doAnswer(new Answer<Object>() {
+            public Object answer(InvocationOnMock invocation) throws Throwable {
+                enemy.setToDestroy = true;
+                return null;
+            }
+        }).when(enemy).hitOnHead();
+
+        enemy.hitOnHead();
+
+        Assert.assertEquals(true, enemy.setToDestroy);
     }
 
     @Test
@@ -94,7 +108,7 @@ public class RegressionTests {
         EcoRun game = new EcoRun();
         LevelsScreen levelsScreen = Mockito.mock(LevelsScreen.class);
 
-        levelsScreen.goToGameScreen(1);
+        levelsScreen.goToGameScreen(1, 0);
         Screen screen = game.getScreen();
 
         Assert.assertNotEquals(Mockito.mock(PlayScreen.class), screen);
