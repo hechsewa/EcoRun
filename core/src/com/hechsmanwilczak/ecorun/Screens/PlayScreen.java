@@ -59,7 +59,7 @@ public class PlayScreen implements Screen {
     //pause and resume handlers
     public static final int GAME_RUNNING = 0;
     public static final int GAME_PAUSED = 1;
-    private int gameStatus;
+    public int gameStatus;
     private boolean paused;
 
     public static Boolean rThrown, yThrown, bThrown;

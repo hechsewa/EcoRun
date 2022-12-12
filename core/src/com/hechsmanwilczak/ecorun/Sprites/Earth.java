@@ -24,7 +24,7 @@ public class Earth extends Sprite {
     private Animation<TextureRegion> earthHit;
     private float stateTimer;
     private Boolean runningRight;
-    private Boolean earthIsDead;
+    public Boolean earthIsDead;
     private PlayScreen screen;
     public static Boolean hit, redBin, yellowBin, blueBin, inPortal, inMask;
     public static float binBounds;
@@ -219,7 +219,7 @@ public class Earth extends Sprite {
         }
     }
 
-    private void checkBin() {
+    public void checkBin() {
         if (100*b2body.getPosition().x >= binBounds && 100*b2body.getPosition().x <= (binBounds + 16)) {
             if (binType == 0) { //redBin active
                 redBin = true;
