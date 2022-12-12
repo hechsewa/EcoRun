@@ -15,6 +15,7 @@ import com.badlogic.gdx.physics.box2d.World;
 import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
+import com.hechsmanwilczak.ecorun.AppSettings;
 import com.hechsmanwilczak.ecorun.EcoRun;
 import com.hechsmanwilczak.ecorun.Scenes.Hud;
 import com.hechsmanwilczak.ecorun.Sprites.Earth;
@@ -203,12 +204,12 @@ public class PlayScreen implements Screen {
     }
 
     public void resumeGame() {
-        EcoRun.music.setVolume(0.1f);
+        EcoRun.music.setVolume(AppSettings.getMusicVolume());
         gameStatus = GAME_RUNNING;
     }
 
     private void pauseGame() {
-        EcoRun.music.setVolume(1f);
+        EcoRun.music.setVolume(AppSettings.getMusicVolume());
         gameStatus = GAME_PAUSED;
         game.setScreen(new PausedScreen(game, this));
     }
@@ -278,7 +279,7 @@ public class PlayScreen implements Screen {
         }
 
         if (gameOver()) {
-            EcoRun.music.setVolume(1f);
+            EcoRun.music.setVolume(AppSettings.getMusicVolume());
             game.setScreen(new GameOverScreen(game, level));
             dispose();
         }
@@ -294,7 +295,7 @@ public class PlayScreen implements Screen {
         if (level+1 <= 6)
             game.setScreen(new PlayScreen((EcoRun) game, level + 1, Hud.getScore(), Hud.getTexture()));
         else if (level+1 == 7) {
-            EcoRun.music.setVolume(1f);
+            EcoRun.music.setVolume(AppSettings.getMusicVolume());
             game.setScreen(new WinScreen(game));
         }
     }

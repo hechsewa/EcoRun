@@ -17,6 +17,7 @@ import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
+import com.hechsmanwilczak.ecorun.AppSettings;
 import com.hechsmanwilczak.ecorun.EcoRun;
 
 public class LevelsScreen implements Screen {
@@ -25,7 +26,7 @@ public class LevelsScreen implements Screen {
     private BitmapFont font;
     private OrthographicCamera cam;
 
-    private Game game;
+    public Game game;
     private TextureRegion texRegBg;
 
     public LevelsScreen(Game game, final int character){
@@ -137,7 +138,7 @@ public class LevelsScreen implements Screen {
     }
 
     public void goToGameScreen(Integer lvl, int character){
-        EcoRun.music.setVolume(0.1f);
+        EcoRun.music.setVolume(AppSettings.getMusicVolume());
         game.setScreen(new PlayScreen((EcoRun) game, lvl,0, character));
         dispose();
     }

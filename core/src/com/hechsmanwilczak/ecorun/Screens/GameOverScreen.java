@@ -19,6 +19,7 @@ import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
+import com.hechsmanwilczak.ecorun.AppSettings;
 import com.hechsmanwilczak.ecorun.EcoRun;
 import com.hechsmanwilczak.ecorun.Scenes.Hud;
 
@@ -94,7 +95,7 @@ public class GameOverScreen implements Screen {
     }
 
     public void goToGameScreen(){
-        EcoRun.music.setVolume(0.1f);
+        EcoRun.music.setVolume(AppSettings.getMusicVolume());
         game.setScreen(new PlayScreen((EcoRun) game, currentLevel, 0, 0));
         Hud.resetCollected(3);
         dispose();

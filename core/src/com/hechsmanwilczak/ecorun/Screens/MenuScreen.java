@@ -92,6 +92,19 @@ public class MenuScreen implements Screen {
             }
         });
 
+        //Game settings
+        TextButton settingsBtn =new TextButton("Settings",textButtonStyle);
+        settingsBtn.setText("Settings");
+        settingsBtn.setHeight(btnHeight);
+        settingsBtn.setWidth(btnWidth);
+        settingsBtn.setPosition(btnPosX,btnPosY-2*btnPosMov);
+        settingsBtn.addListener(new ClickListener(){
+            @Override
+            public void clicked(InputEvent event, float x, float y) {
+                goToSettingsScreen();
+               }
+        });
+        
         //Character Selection
         TextButton charBtn =new TextButton("Character Select",textButtonStyle);
         charBtn.setText("Character Select");
@@ -110,7 +123,7 @@ public class MenuScreen implements Screen {
         exitBtn.setText("Exit");
         exitBtn.setHeight(btnHeight);
         exitBtn.setWidth(btnWidth);
-        exitBtn.setPosition(btnPosX,btnPosY-2*btnPosMov);
+        exitBtn.setPosition(btnPosX,btnPosY-3*btnPosMov);
         exitBtn.addListener(new ClickListener(){
             @Override
             public void clicked(InputEvent event, float x, float y) {
@@ -123,6 +136,8 @@ public class MenuScreen implements Screen {
         table.add(playBtn).expandX().padTop(5f);
         table.row();
         table.add(infoBtn).expandX().padTop(5f);
+        table.row();
+        table.add(settingsBtn).expandX().padTop(5f);
         table.row();
         table.add(charBtn).expandX().padTop(5f);
         table.row();
@@ -145,6 +160,10 @@ public class MenuScreen implements Screen {
         dispose();
     }
 
+    public void goToSettingsScreen(){
+        game.setScreen(new SettingsScreen((EcoRun) game));
+        dispose();
+    }
     public void goToCharacterScreen(){
         game.setScreen(new CharacterScreen((EcoRun) game));
         dispose();
