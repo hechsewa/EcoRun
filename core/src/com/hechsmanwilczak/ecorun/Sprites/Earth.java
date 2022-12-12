@@ -219,7 +219,7 @@ public class Earth extends Sprite {
         }
     }
 
-    private void checkBin() {
+    public void checkBin() {
         if (100*b2body.getPosition().x >= binBounds && 100*b2body.getPosition().x <= (binBounds + 16)) {
             if (binType == 0) { //redBin active
                 redBin = true;

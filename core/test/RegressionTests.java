@@ -42,6 +42,16 @@ public class RegressionTests {
 
     @Test
     public void testCollectItems(){
+        final Earth earth = Mockito.mock(Earth.class);
+        Mockito.doAnswer(new Answer<Object>() {
+            public Object answer(InvocationOnMock invocation) throws Throwable {
+                Earth.redBin = true;
+                return null;
+            }
+        }).when(earth).checkBin();
+
+        earth.checkBin();
+        Assert.assertEquals(true, Earth.redBin);
 
     }
 
