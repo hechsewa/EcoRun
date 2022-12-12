@@ -3,6 +3,7 @@ import com.hechsmanwilczak.ecorun.EcoRun;
 import com.hechsmanwilczak.ecorun.Scenes.Hud;
 import com.hechsmanwilczak.ecorun.Screens.LevelsScreen;
 import com.hechsmanwilczak.ecorun.Screens.PlayScreen;
+import com.hechsmanwilczak.ecorun.Sprites.Earth;
 import com.hechsmanwilczak.ecorun.Sprites.Enemy;
 import com.hechsmanwilczak.ecorun.Sprites.PlasticBag;
 import com.hechsmanwilczak.ecorun.Sprites.Saturn;
@@ -80,7 +81,16 @@ public class RegressionTests {
 
     @Test
     public void testLoseLife(){
-        Assert.assertEquals(true, true);
+        final Earth earth = Mockito.mock(Earth.class);
+        Mockito.doAnswer(new Answer<Object>() {
+            public Object answer(InvocationOnMock invocation) throws Throwable {
+                earth.earthIsDead = true;
+                return null;
+            }
+        }).when(earth).die();
+
+        earth.die();
+        Assert.assertEquals(true, earth.earthIsDead);
     }
 
     @Test

@@ -24,7 +24,7 @@ public class Earth extends Sprite {
     private Animation<TextureRegion> earthHit;
     private float stateTimer;
     private Boolean runningRight;
-    private Boolean earthIsDead;
+    public Boolean earthIsDead;
     private PlayScreen screen;
     public static Boolean hit, redBin, yellowBin, blueBin, inPortal, inMask;
     public static float binBounds;
