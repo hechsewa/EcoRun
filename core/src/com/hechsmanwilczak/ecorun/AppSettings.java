@@ -19,4 +19,13 @@ public class AppSettings {
         getPrefs().putFloat(MUSIC_VOLUME, volume);
         getPrefs().flush();
     }
+
+    public static float volLim(float vol){
+        if (vol <= 0f){
+            return 0f;
+        } else if (vol >= 1f) {
+            return 1f;
+        }
+        return vol;
+    }
 }
