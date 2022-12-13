@@ -85,7 +85,7 @@ public class SettingsScreen implements Screen {
         volUpBtn.addListener(new ClickListener(){
             @Override
             public void clicked(InputEvent event, float x, float y) {
-                AppSettings.setMusicVolume(volLim(AppSettings.getMusicVolume()+0.1f));
+                AppSettings.setMusicVolume(AppSettings.volLim(AppSettings.getMusicVolume()+0.1f));
                 EcoRun.music.setVolume(AppSettings.getMusicVolume());
             }
         });
@@ -98,7 +98,7 @@ public class SettingsScreen implements Screen {
         volDwnBtn.addListener(new ClickListener(){
             @Override
             public void clicked(InputEvent event, float x, float y) {
-                AppSettings.setMusicVolume(volLim(AppSettings.getMusicVolume()-0.1f));
+                AppSettings.setMusicVolume(AppSettings.volLim(AppSettings.getMusicVolume()-0.1f));
                 System.out.println(AppSettings.getMusicVolume());
                 EcoRun.music.setVolume(AppSettings.getMusicVolume());
             }
@@ -178,14 +178,5 @@ public class SettingsScreen implements Screen {
     @Override
     public void dispose() {
         stage.dispose();
-    }
-
-    public float volLim(float vol){
-        if (vol <= 0f){
-            return 0f;
-        } else if (vol >= 1f) {
-            return 1f;
-        }
-        return vol;
     }
 }
