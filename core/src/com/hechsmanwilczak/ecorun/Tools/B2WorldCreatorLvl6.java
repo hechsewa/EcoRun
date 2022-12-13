@@ -57,7 +57,7 @@ public class B2WorldCreatorLvl6 extends B2WorldCreatorEmpty {
 
         //plastic bags - warstwa 9
         plasticBagArray = new Array<PlasticBag>();
-        for(MapObject object : map.getLayers().get(9).getObjects().getByType(RectangleMapObject.class)){
+        for(MapObject object : map.getLayers().get(10).getObjects().getByType(RectangleMapObject.class)){
             Rectangle rectangle = ((RectangleMapObject) object).getRectangle();
             plasticBagArray.add(new PlasticBag(screen, rectangle.getX() / EcoRun.PPM, rectangle.getY() / EcoRun.PPM));
         }
@@ -70,7 +70,7 @@ public class B2WorldCreatorLvl6 extends B2WorldCreatorEmpty {
 
         //leaves - warstwa 10
         leavesArray = new Array<Leaf>();
-        for(MapObject object : map.getLayers().get(10).getObjects().getByType(RectangleMapObject.class)){
+        for(MapObject object : map.getLayers().get(13).getObjects().getByType(RectangleMapObject.class)){
             Rectangle rectangle = ((RectangleMapObject) object).getRectangle();
             leavesArray.add(new Leaf(screen, rectangle.getX() / EcoRun.PPM, rectangle.getY()/ EcoRun.PPM));
         }
@@ -94,6 +94,12 @@ public class B2WorldCreatorLvl6 extends B2WorldCreatorEmpty {
         for(MapObject object : map.getLayers().get(5).getObjects().getByType(RectangleMapObject.class)){
             Rectangle rectangle = ((RectangleMapObject) object).getRectangle();
             new Oil(screen, rectangle);
+        }
+
+        //smog - warstwa 9
+        for(MapObject object : map.getLayers().get(9).getObjects().getByType(RectangleMapObject.class)){
+            Rectangle rectangle = ((RectangleMapObject) object).getRectangle();
+            new Smog(screen, rectangle);
         }
     }
     public Array<PlasticBag> getPlasticBagArray() {
