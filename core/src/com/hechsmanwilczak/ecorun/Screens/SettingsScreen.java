@@ -104,6 +104,19 @@ public class SettingsScreen implements Screen {
             }
         });
 
+        //change highscore
+        TextButton resetButton=new TextButton("Reset High Score",textButtonStyle);
+        resetButton.setText("Reset High Score");
+        resetButton.setHeight(230);
+        resetButton.setWidth(500);
+        resetButton.setPosition(50,30);
+        resetButton.addListener(new ClickListener(){
+            @Override
+            public void clicked(InputEvent event, float x, float y) {
+                RecordScreen.setHighScore(0);
+            }
+        });
+
         table.add(infoLabel).expandX();
         table.row();
         table.add(musicLabel).expandX().padTop(20f);
@@ -111,6 +124,8 @@ public class SettingsScreen implements Screen {
         table.add(volUpBtn).expandX();
         table.row();
         table.add(volDwnBtn).expandX();
+        table.row();
+        table.add(resetButton).expandX().padTop(20f);
         table.row();
         table.add(backToMenuButton).expandX().padTop(20f);
 
