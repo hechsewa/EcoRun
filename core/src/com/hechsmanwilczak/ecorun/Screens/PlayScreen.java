@@ -151,14 +151,10 @@ public class PlayScreen implements Screen {
             noMetal = 2;
             noPlastic = 2;
             noPaper = 2;
-        } else if (level == 3){
+        } else {
             noMetal = 3;
             noPlastic = 3;
             noPaper = 3;
-        }else{
-            noMetal = 6;
-            noPlastic = 6;
-            noPaper = 6;
         }
     }
 
