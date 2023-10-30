@@ -92,12 +92,51 @@ public class MenuScreen implements Screen {
             }
         });
 
+        //Game settings
+        TextButton settingsBtn =new TextButton("Settings",textButtonStyle);
+        settingsBtn.setText("Settings");
+        settingsBtn.setHeight(btnHeight);
+        settingsBtn.setWidth(btnWidth);
+        settingsBtn.setPosition(btnPosX,btnPosY-2*btnPosMov);
+        settingsBtn.addListener(new ClickListener(){
+            @Override
+            public void clicked(InputEvent event, float x, float y) {
+                goToSettingsScreen();
+               }
+        });
+        
+        //Character Selection
+        TextButton charBtn =new TextButton("Character Select",textButtonStyle);
+        charBtn.setText("Character Select");
+        charBtn.setHeight(btnHeight);
+        charBtn.setWidth(btnWidth);
+        charBtn.setPosition(btnPosX,btnPosY-2*btnPosMov);
+        charBtn.addListener(new ClickListener(){
+            @Override
+            public void clicked(InputEvent event, float x, float y) {
+                goToCharacterScreen();
+            }
+        });
+
+        //Record
+        TextButton recordBtn =new TextButton("High Score",textButtonStyle);
+        recordBtn.setText("High Score");
+        recordBtn.setHeight(btnHeight);
+        recordBtn.setWidth(btnWidth);
+        recordBtn.setPosition(btnPosX,btnPosY-2*btnPosMov);
+        recordBtn.addListener(new ClickListener(){
+            @Override
+            public void clicked(InputEvent event, float x, float y) {
+                goToRecordScreen();
+            }
+        });
+
         //Exit
         TextButton exitBtn =new TextButton("Exit",textButtonStyle);
         exitBtn.setText("Exit");
         exitBtn.setHeight(btnHeight);
         exitBtn.setWidth(btnWidth);
-        exitBtn.setPosition(btnPosX,btnPosY-2*btnPosMov);
+        exitBtn.setPosition(btnPosX,btnPosY-3*btnPosMov);
         exitBtn.addListener(new ClickListener(){
             @Override
             public void clicked(InputEvent event, float x, float y) {
@@ -111,6 +150,12 @@ public class MenuScreen implements Screen {
         table.row();
         table.add(infoBtn).expandX().padTop(5f);
         table.row();
+        table.add(settingsBtn).expandX().padTop(5f);
+        table.row();
+        table.add(charBtn).expandX().padTop(5f);
+        table.row();
+        table.add(recordBtn).expandX().padTop(5f);
+        table.row();
         table.add(exitBtn).expandX().padTop(5f);
 
         stage.addActor(table);
@@ -121,12 +166,25 @@ public class MenuScreen implements Screen {
     }
 
     public void goToGameScreen(){
-        game.setScreen(new LevelsScreen((EcoRun) game));
+        game.setScreen(new LevelsScreen((EcoRun) game, 0));
         dispose();
     }
 
     public void goToInfoScreen(){
         game.setScreen(new InfoScreen((EcoRun) game));
+        dispose();
+    }
+
+    public void goToSettingsScreen(){
+        game.setScreen(new SettingsScreen((EcoRun) game));
+        dispose();
+    }
+    public void goToCharacterScreen(){
+        game.setScreen(new CharacterScreen((EcoRun) game));
+        dispose();
+    }
+    public void goToRecordScreen(){
+        game.setScreen(new RecordScreen((EcoRun) game));
         dispose();
     }
 

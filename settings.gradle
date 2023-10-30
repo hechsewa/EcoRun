@@ -1,1 +1,3 @@
-include 'desktop', 'html', 'core'
+rootProject.name = 'EcoRun'
+
+include 'desktop', 'core', 'test'

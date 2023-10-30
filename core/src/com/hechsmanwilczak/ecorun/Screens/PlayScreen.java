@@ -15,6 +15,7 @@ import com.badlogic.gdx.physics.box2d.World;
 import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
+import com.hechsmanwilczak.ecorun.AppSettings;
 import com.hechsmanwilczak.ecorun.EcoRun;
 import com.hechsmanwilczak.ecorun.Scenes.Hud;
 import com.hechsmanwilczak.ecorun.Sprites.Earth;
@@ -59,13 +60,20 @@ public class PlayScreen implements Screen {
     //pause and resume handlers
     public static final int GAME_RUNNING = 0;
     public static final int GAME_PAUSED = 1;
-    private int gameStatus;
+    public int gameStatus;
     private boolean paused;
 
     public static Boolean rThrown, yThrown, bThrown;
 
-    public PlayScreen(EcoRun game, Integer lvl, Integer passedScore) {
-        atlas = new TextureAtlas("Earth_and_enemy.pack");
+    public PlayScreen(EcoRun game, Integer lvl, Integer passedScore, int character) {
+        if(character == 1){
+            atlas = new TextureAtlas("Saturn_and_enemy.pack");
+        } else if(character == 2) {
+            atlas = new TextureAtlas("GraySpot_and_enemy.pack");
+        } else {
+            atlas = new TextureAtlas("Earth_and_enemy.pack");
+        }
+
 
         gameStatus = GAME_RUNNING;
         rThrown = false;
@@ -79,7 +87,7 @@ public class PlayScreen implements Screen {
         this.game = game;
         gamecam = new OrthographicCamera();
         gameport = new FitViewport(EcoRun.V_WIDTH / EcoRun.PPM, EcoRun.V_HEIGHT / EcoRun.PPM, gamecam);
-        hud = new Hud(game.batch, noPlastic, noMetal, noPaper);
+        hud = new Hud(game.batch, noPlastic, noMetal, noPaper, character);
         hud.addScore(passedScore);
 
         camBoundStart = 2f;
@@ -92,10 +100,20 @@ public class PlayScreen implements Screen {
             map = mapLoader.load("ecorun-lvl2.tmx");
             camBoundEnd = 42.7f;
         }
-        else {
+        else if (level == 3){
             map = mapLoader.load("ecorun-lvl3.tmx");
             camBoundEnd = 42.75f;
+        } else if(level == 4){
+            map = mapLoader.load("ecorun-lvl4.tmx");
+            camBoundEnd = 42.75f;
+        } else if(level == 5){
+            map = mapLoader.load("ecorun-lvl5.tmx");
+            camBoundEnd = 42.75f;
+        } else {
+            map = mapLoader.load("ecorun-lvl6.tmx");
+            camBoundEnd = 42.75f;
         }
+
         renderer = new OrthogonalTiledMapRenderer(map, 1 / EcoRun.PPM);
         gamecam.position.set(gameport.getWorldWidth() / 2, gameport.getWorldHeight() / 2, 0);
 
@@ -107,8 +125,14 @@ public class PlayScreen implements Screen {
             creator = new B2WorldCreator(this);
         } else if (level == 2) {
             creator = new B2WorldCreatorLvl2(this);
-        } else {
+        } else if(level == 3){
             creator = new B2WorldCreatorLvl3(this);
+        } else if(level == 4){
+            creator = new B2WorldCreatorLvl4(this);
+        } else if(level == 5){
+            creator = new B2WorldCreatorLvl5(this);
+        } else {
+            creator = new B2WorldCreatorLvl6(this);
         }
 
         player = new Earth(this);
@@ -145,13 +169,15 @@ public class PlayScreen implements Screen {
 
     public void handleInput(float dt) {
         if (player.currentState != Earth.State.DEAD) {
-            if (Gdx.input.isKeyJustPressed(Input.Keys.UP)) {
+            if (Gdx.input.isKeyJustPressed(Input.Keys.UP) || Gdx.input.isKeyJustPressed(Input.Keys.W)) {
                 if (contactListener.isPlayerOnGround())
                     player.b2body.applyLinearImpulse(new Vector2(0, 3f), player.b2body.getWorldCenter(), true);
             }
-            if (Gdx.input.isKeyPressed(Input.Keys.RIGHT) && player.b2body.getLinearVelocity().x <= 2)
+            if ((Gdx.input.isKeyPressed(Input.Keys.RIGHT) || Gdx.input.isKeyPressed(Input.Keys.D))
+                    && player.b2body.getLinearVelocity().x <= 2)
                 player.b2body.applyLinearImpulse(new Vector2(0.1f, 0), player.b2body.getWorldCenter(), true);
-            if (Gdx.input.isKeyPressed(Input.Keys.LEFT) && player.b2body.getLinearVelocity().x >= -2)
+            if ((Gdx.input.isKeyPressed(Input.Keys.LEFT) || Gdx.input.isKeyPressed(Input.Keys.A))
+                    && player.b2body.getLinearVelocity().x >= -2)
                 player.b2body.applyLinearImpulse(new Vector2(-0.1f, 0), player.b2body.getWorldCenter(), true);
 
             //inside red bin
@@ -174,12 +200,12 @@ public class PlayScreen implements Screen {
     }
 
     public void resumeGame() {
-        EcoRun.music.setVolume(0.1f);
+        EcoRun.music.setVolume(AppSettings.getMusicVolume());
         gameStatus = GAME_RUNNING;
     }
 
     private void pauseGame() {
-        EcoRun.music.setVolume(1f);
+        EcoRun.music.setVolume(AppSettings.getMusicVolume());
         gameStatus = GAME_PAUSED;
         game.setScreen(new PausedScreen(game, this));
     }
@@ -249,7 +275,7 @@ public class PlayScreen implements Screen {
         }
 
         if (gameOver()) {
-            EcoRun.music.setVolume(1f);
+            EcoRun.music.setVolume(AppSettings.getMusicVolume());
             game.setScreen(new GameOverScreen(game, level));
             dispose();
         }
@@ -262,10 +288,10 @@ public class PlayScreen implements Screen {
     }
 
     public void nextLevel() {
-        if (level+1 <= 3)
-            game.setScreen(new PlayScreen((EcoRun) game, level + 1, Hud.getScore()));
-        else if (level+1 == 4) {
-            EcoRun.music.setVolume(1f);
+        if (level+1 <= 6)
+            game.setScreen(new PlayScreen((EcoRun) game, level + 1, Hud.getScore(), Hud.getTexture()));
+        else if (level+1 == 7) {
+            EcoRun.music.setVolume(AppSettings.getMusicVolume());
             game.setScreen(new WinScreen(game));
         }
     }
